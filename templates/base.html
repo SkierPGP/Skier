@@ -14,12 +14,12 @@ There is meant to be a key here. If there isn't, this page does not contain keys
 <html>
     <head lang="en">
         <meta charset="UTF-8">
-        <title>{% if title is defined %}{{ title }} | {% endif %}Hipocri.se</title>
+        <title>{% if title is defined %}{{ title }} | {% endif %}Skier</title>
 
         {# Get jQuery and bootstrap JS here. #}
         {% block defaulthead %}
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>pt>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 
 		<link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.5/cosmo/bootstrap.min.css" rel="stylesheet">
 
@@ -31,11 +31,13 @@ There is meant to be a key here. If there isn't, this page does not contain keys
         {% endblock %}
     </head>
 
-    <body {% if class is defined %}class="{{ class }}"{% endif %}>
+    <body {% if bodyclass is defined %}class="{{ class }}"{% endif %}>
+
+        {% block navbar %}
+        {% endblock %}
 
         {% block nocontainer_content %}
         {% endblock %}
-
         <div class="container">
 		{% block content %}
         {% endblock %}
