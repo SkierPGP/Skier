@@ -1,2 +1,4 @@
 flask_cfg:
   DEBUG: true
+
+pgp_keyring_path: /tmp/skier

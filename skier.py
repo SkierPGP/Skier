@@ -1,11 +1,11 @@
-from flask import render_template
+from flask import redirect, url_for
 from app import app
 
 import cfg
 
 @app.route("/")
 def index():
-    return render_template("about.html")
+    return redirect(url_for("skier.about")), 301
 
 if __name__ == '__main__':
     app.run()

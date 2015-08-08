@@ -1,13 +1,15 @@
 {% extends "base.html" %}
 
 
-
 {% block navbar %}
-<div class="container">{% include "navbar.html" %}</div>
+<div class="container">
+    {% with curr = "about" %}
+        {% include "navbar.html" %}
+    {% endwith %}
+</div>
 {% endblock %}
 
 {% block content %}
-
     {% include "generated/_about.html" %}
 
 {% endblock %}
