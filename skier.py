@@ -3,7 +3,6 @@ from app import app
 
 import cfg
 
-
 @app.route("/")
 def index():
     return render_template("about.html")
