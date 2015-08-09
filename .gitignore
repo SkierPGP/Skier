@@ -64,4 +64,7 @@ target/
 # Generated HTML
 templates/generated/
 
+# Config.yml
+config.yml
+
 
