@@ -18,15 +18,25 @@ def add_pgp_key(keydata: str):
     import_result = gpg.import_keys(keydata)
     if import_result.results[0]['ok'] != 0:
         print("Good PGP key from key {}".format(import_result.fingerprints[0]))
-        # Good result, add to cache.
+        # Good result, invalidate cache.
         keyid = import_result.fingerprints[0][-8:]
+        invalidate_cache_key(keyid)
+        invalidate_cache_key(import_result.fingerprints[0][-16:])
+        invalidate_cache_key(import_result.fingerprints[0])
+        # Invalidate cache for subkeys too.
+        # Get the key in the ring that refers to this key via key_map.
+        this_key = gpg.list_keys().key_map[import_result.fingerprints[0]]
+        # Then loop over the subkeys.
+        for subkey in this_key['subkeys']:
+            invalidate_cache_key(subkey[0])
+            invalidate_cache_key(subkey[2])
+            invalidate_cache_key(subkey[2][-8:])
         # Empty get_pgp_key call to load the key into cache.
-        get_pgp_key(keyid)
+        #get_pgp_key(keyid)
         # Return true.
         return True
     else:
         return False
-
 
 
 def has_pgp_key(keyid: str):
@@ -49,6 +59,7 @@ def get_pgp_key(keyid: str):
         key = cache.get(keyid)
         return key
     else:
+
         # Try and look it up in the keyring.
         key = gpg.export_keys(keyid, armor=False)
         if key:
@@ -68,9 +79,11 @@ def get_pgp_armor_key(keyid:str):
     :return: The armored version of the PGP key, or None if the key does not exist in either the cache or the keyring.
     """
     if has_pgp_key(keyid + "-armor"):
+        print("Cache hit")
         key = cache.get(keyid + "-armor")
         return key.decode()
     else:
+        print("Cache miss")
         # Try and look it up in the keyring.
         key = gpg.export_keys(keyid, armor=True)
         if key:
@@ -88,7 +101,9 @@ def invalidate_cache_key(keyid: str):
     :return: If the key was deleted or not.
     """
     if has_pgp_key(keyid):
-        cache.delete([keyid, keyid + "-armor"])
-        return True
+        print("Nuking cache for " + keyid)
+        deleted = cache.delete(keyid)
+        deleted_1 = cache.delete(keyid + "-armor")
+        return deleted and deleted_1
     else:
         return False
