@@ -1,3 +1,4 @@
+requests
 ConfigMaster>=2.3.3
 Flask>=0.10.1
 itsdangerous>=0.24

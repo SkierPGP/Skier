@@ -2,3 +2,8 @@ flask_cfg:
   DEBUG: true
 
 pgp_keyring_path: /tmp/skier
+
+redis:
+  host: localhost
+  port: 6379
+  db: 1

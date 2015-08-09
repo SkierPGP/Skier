@@ -4,7 +4,10 @@ from werkzeug.utils import redirect
 
 def init(app):
     from skier import frontend
+    from skier import pgpapi
+    from cfg import API_VERSION
     app.register_blueprint(frontend.frontend)
+    app.register_blueprint(pgpapi.pgpapi, url_prefix="/api/v{}".format(API_VERSION))
 
     @app.route("/")
     def index():

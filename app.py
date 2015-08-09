@@ -13,5 +13,4 @@ import gnupg
 
 gpg = gnupg.GPG(gnupghome=cfg.config.pgp_keyring_path)
 
-
 init.init(app)
