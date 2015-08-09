@@ -8,6 +8,27 @@ cache = redis.StrictRedis(host=cfg.config.redis.host,
                           port=cfg.config.redis.port,
                           db=cfg.config.redis.db)
 
+def add_pgp_key(keydata: str):
+    """
+    Adds a key to both the cache and the keyring.
+    :param keyid: The armored key data to add to the keyring.
+    :return: Nothing.
+    """
+    # First, add the key to the keyring.
+    import_result = gpg.import_keys(keydata)
+    if import_result.results[0]['ok'] != 0:
+        print("Good PGP key from key {}".format(import_result.fingerprints[0]))
+        # Good result, add to cache.
+        keyid = import_result.fingerprints[0][-8:]
+        # Empty get_pgp_key call to load the key into cache.
+        get_pgp_key(keyid)
+        # Return true.
+        return True
+    else:
+        return False
+
+
+
 def has_pgp_key(keyid: str):
     """
     Lookup an EXISTS on the Redis cache.
@@ -68,5 +89,6 @@ def invalidate_cache_key(keyid: str):
     """
     if has_pgp_key(keyid):
         cache.delete([keyid, keyid + "-armor"])
+        return True
     else:
         return False
