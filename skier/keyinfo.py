@@ -2,6 +2,9 @@ from enum import Enum
 
 
 class PGPAlgo(Enum):
+    """
+    These are the ones I know, and the ones I believe are in use.
+    """
     RSA = 1
     DSA = 17
     ECC = 19
@@ -35,7 +38,9 @@ class KeyInfo(object):
         Formats a KeyInfo object into a PKS style string for GnuPG.
         :return: Two strings, containing info about the key in GnuPG-compatible format.
         """
+        # String one gives the fingerprint, the algorithm used, the length of the key, the created date and the expiration date.
         s1 = "pub:{self.fingerprint}:{algo}:{self.length}:{self.created}:{self.expires}:".format(self=self, algo=PGPAlgo(self.algo).value)
+        # String two gives the user ID, and another date, which I believe is the date uploaded, which we don't save.
         s2 = "uid:{self.uid}:{self.created}::".format(self=self)
         return s1, s2
 

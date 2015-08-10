@@ -67,4 +67,7 @@ templates/generated/
 # Config.yml
 config.yml
 
+# Ignore PyCharm files
+.idea/
+
 

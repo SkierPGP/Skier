@@ -26,6 +26,8 @@ def pksgetkey():
             else: return "", 404
     elif 'op' in request.args and request.args.get("op") == "index":
         return pkssearch(request.args)
+    else:
+        return "Invalid request", 400
 
 def format_pks(keys: list):
     # First, add header.
