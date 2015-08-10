@@ -8,15 +8,16 @@ cache = redis.StrictRedis(host=cfg.config.redis.host,
                           port=cfg.config.redis.port,
                           db=cfg.config.redis.db)
 
-def add_pgp_key(keydata: str) -> bool:
+def add_pgp_key(keydata: str) -> tuple:
     """
     Adds a key to both the cache and the keyring.
     :param keyid: The armored key data to add to the keyring.
-    :return: Nothing.
+    :return: True and the keyid if the import succeeded, or False and None if it failed.
     """
     # First, add the key to the keyring.
     import_result = gpg.import_keys(keydata)
-    if import_result.results[0]['ok'] != 0:
+
+    if import_result and import_result.results[0]['ok'] != 0:
         print("Good PGP key from key {}".format(import_result.fingerprints[0]))
         # Good result, invalidate cache.
         keyid = import_result.fingerprints[0][-8:]
@@ -34,9 +35,9 @@ def add_pgp_key(keydata: str) -> bool:
         # Empty get_pgp_key call to load the key into cache.
         #get_pgp_key(keyid)
         # Return true.
-        return True
+        return True, keyid
     else:
-        return False
+        return False, None
 
 
 def has_pgp_key(keyid: str) -> bool:
@@ -104,6 +105,19 @@ def invalidate_cache_key(keyid: str) -> bool:
         return deleted and deleted_1
     else:
         return False
+
+def get_pgp_keyinfo(keyid: str) -> keyinfo.KeyInfo:
+    """
+    Gets a :skier.keyinfo.KeyInfo: object for the specified key.
+    :param keyid: The ID of the key to lookup.
+    :return: A new :skier.keyinfo.KeyInfo: object for the key.
+    """
+    keys = gpg.list_keys(keys=[keyid])
+    if not keys:
+        return None
+    else:
+        key = keyinfo.KeyInfo.from_key_listing(keys[0])
+        return key
 
 def search_through_keys(search_str: str) -> list:
     """
