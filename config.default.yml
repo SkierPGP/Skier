@@ -15,4 +15,13 @@ redis:
   port: 6379
   db: 1
 
-abc: def
+# The hostname for the server.
+hostname: pgp.example.com
+
+# The SKS keyservers to allow importing from.
+sks_imports:
+  - pgp.mit.edu
+
+# The Skier keyservers to allow importing from.
+skier_imports:
+ - pgp.sundwarf.me
