@@ -1,14 +1,14 @@
 import redis
 
 from app import gpg
-
 from cfg import cfg
+from skier import keyinfo
 
 cache = redis.StrictRedis(host=cfg.config.redis.host,
                           port=cfg.config.redis.port,
                           db=cfg.config.redis.db)
 
-def add_pgp_key(keydata: str):
+def add_pgp_key(keydata: str) -> bool:
     """
     Adds a key to both the cache and the keyring.
     :param keyid: The armored key data to add to the keyring.
@@ -39,7 +39,7 @@ def add_pgp_key(keydata: str):
         return False
 
 
-def has_pgp_key(keyid: str):
+def has_pgp_key(keyid: str) -> bool:
     """
     Lookup an EXISTS on the Redis cache.
     :param keyid: The keyid to lookup.
@@ -47,7 +47,7 @@ def has_pgp_key(keyid: str):
     """
     return True if cache.exists(keyid) == 1 else False
 
-def get_pgp_key(keyid: str):
+def get_pgp_key(keyid: str) -> bytes:
     """
     Lookup a PGP key on the redis cache.
 
@@ -70,7 +70,7 @@ def get_pgp_key(keyid: str):
         else:
             return None
 
-def get_pgp_armor_key(keyid:str):
+def get_pgp_armor_key(keyid: str) -> str:
     """
     Lookup a PGP key.
 
@@ -79,11 +79,9 @@ def get_pgp_armor_key(keyid:str):
     :return: The armored version of the PGP key, or None if the key does not exist in either the cache or the keyring.
     """
     if has_pgp_key(keyid + "-armor"):
-        print("Cache hit")
         key = cache.get(keyid + "-armor")
         return key.decode()
     else:
-        print("Cache miss")
         # Try and look it up in the keyring.
         key = gpg.export_keys(keyid, armor=True)
         if key:
@@ -94,16 +92,30 @@ def get_pgp_armor_key(keyid:str):
         else:
             return None
 
-def invalidate_cache_key(keyid: str):
+def invalidate_cache_key(keyid: str) -> bool:
     """
     Invalidate a key on the cache (delete it) so it can be updated.
     :param keyid: The key to delete.
     :return: If the key was deleted or not.
     """
     if has_pgp_key(keyid):
-        print("Nuking cache for " + keyid)
         deleted = cache.delete(keyid)
         deleted_1 = cache.delete(keyid + "-armor")
         return deleted and deleted_1
     else:
         return False
+
+def search_through_keys(search_str: str) -> list:
+    """
+    Searches through the keys via ID or UID name.
+    :param search_str: The string to search for.
+    Examples: '0xBF864998CDEEC2D390162087EB4084E3BF0192D9' for a fingerprint search
+              '0x45407604' for a key ID search
+              'Smith' for a name search
+    :return: A list of :skier.keyinfo.KeyInfo: objects containing the specified keys.
+    """
+    keys = gpg.list_keys(keys=[search_str])
+    keyinfos = []
+    for key in keys:
+        keyinfos.append(keyinfo.KeyInfo.from_key_listing(key))
+    return keyinfos
