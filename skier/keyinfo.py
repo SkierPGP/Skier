@@ -59,6 +59,6 @@ class KeyInfo(object):
 
         key = KeyInfo(uid=listing["uids"][0], keyid=listing['keyid'], fingerprint=listing['fingerprint'],
                   algo=PGPAlgo(int(listing['algo'])), length=listing['length'], subkeys=[k[2] for k in listing['subkeys']],
-                  expires=int(listing['expires']), created=int(listing['date']))
+                  expires=int(listing['expires']) if listing['expires'] != '' else 0, created=int(listing['date']))
 
         return key
