@@ -14,3 +14,7 @@ def init(app):
     @app.route("/")
     def index():
         return redirect(url_for("frontend.about")), 301
+
+    @app.route("/skier")
+    def skier():
+        return "", 200

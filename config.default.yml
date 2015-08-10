@@ -3,6 +3,9 @@ flask_cfg:
   # Turn this on for debug mode.
   DEBUG: true
 
+# The base directory for Skier.
+base_directory: /var/skier
+
 # The path for the PGP keyring to be stored.
 pgp_keyring_path: /var/skier/keyring
 

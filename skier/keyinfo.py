@@ -30,6 +30,15 @@ class KeyInfo(object):
         return "<PGP Key {id} for {uid} using {algo}-{length}>".format(id=self.keyid,
             uid=self.uid, algo=PGPAlgo(self.algo).name, length=self.length)
 
+    def to_pks(self):
+        """
+        Formats a KeyInfo object into a PKS style string for GnuPG.
+        :return: Two strings, containing info about the key in GnuPG-compatible format.
+        """
+        s1 = "pub:{self.fingerprint}:{algo}:{self.length}:{self.created}:{self.expires}:".format(self=self, algo=PGPAlgo(self.algo).value)
+        s2 = "uid:{self.uid}:{self.created}::".format(self=self)
+        return s1, s2
+
     @classmethod
     def from_key_listing(cls, listing: dict):
         """
