@@ -54,6 +54,9 @@ class KeyInfo(object):
     def get_algo_name(self):
         return PGPAlgo(self.algo).name
 
+    def get_user_fingerprint(self):
+        return ' '.join([self.fingerprint[i:i+2] for i in range(0, len(self.fingerprint), 2)])
+
     @classmethod
     def from_key_listing(cls, listing: dict):
         """
