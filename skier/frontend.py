@@ -12,10 +12,20 @@ def about():
         search_link=url_for("frontend.search"))
         #currkeys=len(gpg.list_keys())) # This is commented out right now because I can't think of a fast way to implement it.
                                         # If you can think of a better way to do this than loading all keys into memory, go ahead.
-@frontend.route("/add")
+@frontend.route("/add", methods=["GET", "POST"])
 def add():
-    return "", 200
-
+    # Get the key from the form
+    key = request.form.get("enterkey")
+    if not key:
+        return render_template("submit.html")
+    else:
+        # Import the key
+        imported = pgp.add_pgp_key(key)
+        if not imported[0]:
+            return render_template("submit.html", success=False)
+        else:
+            keyinfo = pgp.get_pgp_keyinfo(imported[1])
+            return render_template("keyinfo.html", added=True, key=keyinfo, keydata=key)
 
 @frontend.route("/search")
 def search():

@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+
+{% block navbar %}
+<div class="container">
+    {% with curr = "add" %}
+        {% include "navbar.html" %}
+    {% endwith %}
+</div>
+{% endblock %}
+
+{% block content %}
+
+    {% if added is defined %}
+    {% if added %}
+    <h2>Key {{ key.shortid }} successfully added.</h2>
+    {% endif %}
+    {% endif %}
+    <ul>
+        <li><strong>pub:</strong> {{ key.get_algo_name()}}-{{ key.length }}/<a href="{{ url_for("user_display_keys.getkey", keyid=key.shortid) }}">0x{{ key.shortid }}</a> ({{ key.fingerprint }})
+            <ul>
+                <li>uid: {{ key.uid }}</li>
+                <li>created: {{ key.get_created_ymd() }} expires: {{ key.get_expired_ymd() }}</li>
+            </ul>
+        </li>
+        {% for sub in key.subkeys %}
+            <li><em>sub:</em> 0x{{ sub[-8:] }} ({{ sub }})</li>
+        {% endfor %}
+    </ul>
+    Raw key:
+    <pre><code>{{ keydata }}</code></pre>
+
+{% endblock %}

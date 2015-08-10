@@ -46,6 +46,8 @@ class KeyInfo(object):
         return s1, s2
 
     def get_expired_ymd(self):
+        if self.expires == 0:
+            return "never"
         return datetime.datetime.fromtimestamp(float(self.expires)).strftime("%Y-%m-%d")
 
     def get_created_ymd(self):
