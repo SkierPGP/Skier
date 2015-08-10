@@ -27,7 +27,7 @@ def add():
             return render_template("submit.html", success=False)
         else:
             keyinfo = pgp.get_pgp_keyinfo(imported[1])
-            return redirect(url_for("frontend.keyinfo_route", key=keyinfo.keyid, added=True)), 302
+            return redirect(url_for("frontend.getkeyinfo", key=keyinfo.keyid, added=True)), 302
             #return render_template("keyinfo.html", added=True, key=keyinfo, keydata=key)
 
 
