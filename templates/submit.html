@@ -1,5 +1,9 @@
 {% extends "base.html" %}
 
+{% block head %}
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.7.3/css/bootstrap-select.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.7.3/js/bootstrap-select.min.js"></script>
+{% endblock %}
 
 {% block navbar %}
 <div class="container">
@@ -12,7 +16,7 @@
 {% block content %}
     <div class="text-center">
         {% if success is defined %}{% if not success %}
-        <h4 style="color: red">Seems like an error happened importing your key. Double-check you copy/pasted it correctly.</h4>
+        <h4 style="color: red">{{ errormsg }}</h4>
         {% endif %}{% endif %}
 
         <form role="form" class="form" action="{{ url_for("frontend.add") }}" method="post">
@@ -22,6 +26,22 @@
                 <textarea name="enterkey" id="enterkey" class="form-control" rows="10" style="width: 50%; margin-left: auto; margin-right: auto"></textarea>
                 <button type="submit" class="btn btn-default btn-lg">Submit</button>
             </div>
-    </form>
+        </form>
+        <h2> OR </h2>
+        <h3>Import a PGP key</h3>
+        <form class="form-inline" role="form">
+          <div class="form-group">
+            <label for="keyserver">Keyserver:</label>
+            <select name="keyserver" class="selectpicker" id="keyserver" title="Choose Keyserver">
+                {% include "generated/_servers.html" %}
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="keyid">Key ID:</label>
+            <input name="keyid" type="text" class="form-control" id="keyid">
+          </div>
+          <button type="submit" class="btn btn-default">Submit</button>
+        </form>
+
     </div>
 {% endblock %}
