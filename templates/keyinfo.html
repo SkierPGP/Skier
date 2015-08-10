@@ -3,31 +3,40 @@
 
 {% block navbar %}
 <div class="container">
-    {% with curr = "add" %}
+    {% with curr = "keyinfo" %}
         {% include "navbar.html" %}
     {% endwith %}
 </div>
 {% endblock %}
 
 {% block content %}
-
-    {% if added is defined %}
-    {% if added %}
-    <h2>Key {{ key.shortid }} successfully added.</h2>
+    {% if found %}
+        {% if added is defined %}
+        {% if added %}
+        <h2>Key {{ key.shortid }} successfully added.</h2>
+        {% endif %}
+        {% endif %}
+        <h2>{{ key.shortid }}</h2>
+        <ul>
+            <li><strong>pub:</strong> {{ key.get_algo_name()}}-{{ key.length }}/<a href="{{ url_for("user_display_keys.getkey", keyid=key.shortid) }}">0x{{ key.shortid }}</a> ({{ key.fingerprint }})
+                <ul>
+                    <li>uid: {{ key.uid }}</li>
+                    <li>created: {{ key.get_created_ymd() }} expires: {{ key.get_expired_ymd() }}</li>
+                </ul>
+            </li>
+            {% for sub in key.subkeys %}
+                <li><em>sub:</em> 0x{{ sub[-8:] }} ({{ sub }})</li>
+            {% endfor %}
+        </ul>
+        Download key:
+        <ul>
+            <li><a href="{{ url_for("user_display_keys.getkey_dl_ascii", keyid=key.shortid) }}">ASCII</a></li>
+            <li><a href="{{ url_for("user_display_keys.getkey_dl_raw", keyid=key.shortid) }}">Raw</a></li>
+        </ul>
+        Raw key:
+        <pre><code>{{ keydata }}</code></pre>
+    {% else %}
+    <h3>Key not found.</h3>
+    Sorry, there is no such key as {{ keyid }} on this server.
     {% endif %}
-    {% endif %}
-    <ul>
-        <li><strong>pub:</strong> {{ key.get_algo_name()}}-{{ key.length }}/<a href="{{ url_for("user_display_keys.getkey", keyid=key.shortid) }}">0x{{ key.shortid }}</a> ({{ key.fingerprint }})
-            <ul>
-                <li>uid: {{ key.uid }}</li>
-                <li>created: {{ key.get_created_ymd() }} expires: {{ key.get_expired_ymd() }}</li>
-            </ul>
-        </li>
-        {% for sub in key.subkeys %}
-            <li><em>sub:</em> 0x{{ sub[-8:] }} ({{ sub }})</li>
-        {% endfor %}
-    </ul>
-    Raw key:
-    <pre><code>{{ keydata }}</code></pre>
-
 {% endblock %}
