@@ -1,4 +1,5 @@
 from enum import Enum
+import datetime
 
 
 class PGPAlgo(Enum):
@@ -44,6 +45,13 @@ class KeyInfo(object):
         s2 = "uid:{self.uid}:{self.created}::".format(self=self)
         return s1, s2
 
+    def get_expired_ymd(self):
+        return datetime.datetime.fromtimestamp(float(self.expires)).strftime("%Y-%m-%d")
+
+    def get_created_ymd(self):
+        return datetime.datetime.fromtimestamp(float(self.created)).strftime("%Y-%m-%d")
+
+
     @classmethod
     def from_key_listing(cls, listing: dict):
         """
@@ -67,3 +75,5 @@ class KeyInfo(object):
                   expires=int(listing['expires']) if listing['expires'] != '' else 0, created=int(listing['date']))
 
         return key
+
+
