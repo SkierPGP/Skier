@@ -1,5 +1,11 @@
 {% extends "base.html" %}
 
+{% if search is defined %}
+    {% set title = "Search Results for "  + search %}
+{% else %}
+    {% set title = "Search" %}
+{% endif %}
+
 {% block navbar %}
     <div class="container">
         {% with curr = "search" %}{% include "navbar.html" %}{% endwith %}
@@ -9,7 +15,7 @@
 {% block content %}
     <form role="form" class="form-inline text-center">
       <div class="form-group">
-        <label for="keyid"><h4>KeyID or Name: </h4></label>
+        <label for="keyid"><h4>Key ID or Name: </h4></label>
         <input type="text" style="width: 75%" class="form-control"
                id="keyid" name="keyid" placeholder="0x12345678" {% if search is defined %}value="{{ search }}"{% endif %}>
       <button type="submit" class="btn btn-default btn-sm">Submit</button>
@@ -27,7 +33,6 @@
                         <ul>
                             <li>uid: {{ key.uid }}</li>
                             <li>created: {{ key.get_created_ymd() }} expires: {{ key.get_expired_ymd() }}</li>
-
                         </ul>
                     </li>
                     {% for sub in key.subkeys %}
