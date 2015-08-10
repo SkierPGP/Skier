@@ -21,6 +21,7 @@ hostname: pgp.example.com
 # The SKS keyservers to allow importing from.
 sks_imports:
   - pgp.mit.edu
+  - sks.gpg.im
 
 # The Skier keyservers to allow importing from.
 skier_imports:

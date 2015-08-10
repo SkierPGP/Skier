@@ -11,7 +11,7 @@ cfg.apply_defaults(configmaster.YAMLConfigFile.YAMLConfigFile("config.default.ym
 
 
 count = 0
-base = "<optgroup label=\"PKS/SKS Servers\">\n"
+base = "<option value=\"all\">Search all configured keyservers</option>\n<optgroup label=\"PKS/SKS Servers\">\n"
 for server in cfg.config.sks_imports:
     print("Adding PKS/SKS server {}".format(server))
     base += "<option>{}</option>\n".format(server)
