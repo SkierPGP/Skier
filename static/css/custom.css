@@ -2,3 +2,6 @@ body {
     background-color: #D7E8CA;
     /*color: #FFFBF0*/
 }
+.keyinfo {
+    font-family: "courier new", monospace;
+}
