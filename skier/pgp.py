@@ -1,3 +1,5 @@
+import json
+
 import redis
 
 from app import gpg
@@ -17,27 +19,15 @@ def add_pgp_key(keydata: str) -> tuple:
     # First, add the key to the keyring.
     import_result = gpg.import_keys(keydata)
 
-    if import_result and import_result.results[0]['ok'] != 0:
+    if not import_result:
+        return False, -1
+    elif import_result.results[0]['ok'] == "0":
+        return False, -2
+    else:
         print("Good PGP key from key {}".format(import_result.fingerprints[0]))
-        # Good result, invalidate cache.
         keyid = import_result.fingerprints[0][-8:]
-        invalidate_cache_key(keyid)
-        invalidate_cache_key(import_result.fingerprints[0][-16:])
-        invalidate_cache_key(import_result.fingerprints[0])
-        # Invalidate cache for subkeys too.
-        # Get the key in the ring that refers to this key via key_map.
-        this_key = gpg.list_keys().key_map[import_result.fingerprints[0]]
-        # Then loop over the subkeys.
-        for subkey in this_key['subkeys']:
-            invalidate_cache_key(subkey[0])
-            invalidate_cache_key(subkey[2])
-            invalidate_cache_key(subkey[2][-8:])
-        # Empty get_pgp_key call to load the key into cache.
-        #get_pgp_key(keyid)
         # Return true.
         return True, keyid
-    else:
-        return False, None
 
 
 def has_pgp_key(keyid: str) -> bool:
@@ -66,7 +56,9 @@ def get_pgp_key(keyid: str) -> bytes:
         if key:
             # Add it to the cache.
             cache.set(keyid, key)
+            cache.expire(keyid, 600)
             cache.set(keyid + "-armor", gpg.export_keys(keyid, armor=True))
+            cache.expire(keyid + "-armor", 600)
             return key
         else:
             return None
@@ -88,7 +80,9 @@ def get_pgp_armor_key(keyid: str) -> str:
         if key:
             # Add it to the cache.
             cache.set(keyid + "-armor", key)
+            cache.expire(keyid + "-armor", 600)
             cache.set(keyid, gpg.export_keys(keyid, armor=False))
+            cache.expire(keyid, 600)
             return key
         else:
             return None
@@ -112,12 +106,22 @@ def get_pgp_keyinfo(keyid: str) -> keyinfo.KeyInfo:
     :param keyid: The ID of the key to lookup.
     :return: A new :skier.keyinfo.KeyInfo: object for the key.
     """
-    keys = gpg.list_keys(keys=[keyid])
-    if not keys:
-        return None
+
+    # Lookup keyinfo from the cache.
+    if cache.exists(keyid + "-keyinfo"):
+        return keyinfo.KeyInfo.from_key_listing(json.loads(cache.get(keyid + "-keyinfo").decode()))
     else:
-        key = keyinfo.KeyInfo.from_key_listing(keys[0])
-        return key
+        keys = gpg.list_keys(keys=[keyid])
+        if not keys:
+            return None
+        else:
+            # Set the keyinfo on the cache.
+            js = json.dumps(keys[0])
+            cache.set(keyid + "-keyinfo", js)
+            # Set expiration.
+            cache.expire(keyid + "-keyinfo", 300)
+            key = keyinfo.KeyInfo.from_key_listing(keys[0])
+            return key
 
 def search_through_keys(search_str: str) -> list:
     """
@@ -128,8 +132,20 @@ def search_through_keys(search_str: str) -> list:
               'Smith' for a name search
     :return: A list of :skier.keyinfo.KeyInfo: objects containing the specified keys.
     """
-    keys = gpg.list_keys(keys=[search_str])
-    keyinfos = []
-    for key in keys:
-        keyinfos.append(keyinfo.KeyInfo.from_key_listing(key))
-    return keyinfos
+    # Attempt to load data from cache.
+    if cache.exists("search-" + search_str):
+        data = json.loads(cache.get("search-" + search_str).decode())
+        keyinfos = []
+        for key in data['k']:
+            keyinfos.append(keyinfo.KeyInfo.from_key_listing(key))
+        return keyinfos
+    else:
+        keys = gpg.list_keys(keys=[search_str])
+        # Save onto the cache
+        js = json.dumps({"k": keys})
+        cache.set("search-" + search_str, js)
+        cache.expire("search-" + search_str, 300)
+        keyinfos = []
+        for key in keys:
+            keyinfos.append(keyinfo.KeyInfo.from_key_listing(key))
+        return keyinfos
