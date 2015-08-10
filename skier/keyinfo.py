@@ -51,6 +51,8 @@ class KeyInfo(object):
     def get_created_ymd(self):
         return datetime.datetime.fromtimestamp(float(self.created)).strftime("%Y-%m-%d")
 
+    def get_algo_name(self):
+        return PGPAlgo(self.algo).name
 
     @classmethod
     def from_key_listing(cls, listing: dict):
