@@ -12,11 +12,15 @@ cache = redis.StrictRedis(host=cfg.config.redis.host,
 
 def add_pgp_key(keydata: str) -> tuple:
     """
-    Adds a key to both the cache and the keyring.
+    Adds a key to the keyring.
     :param keyid: The armored key data to add to the keyring.
     :return: True and the keyid if the import succeeded, or:
-            False and -1 if it was invalid, False and -2 if it already existed.
+            False and -1 if it was invalid, False and -2 if it already existed or False and -3 if it's a private key.
     """
+
+    if 'PGP PRIVATE' in keydata:
+        return False, -3
+
     # First, add the key to the keyring.
     import_result = gpg.import_keys(keydata)
 
