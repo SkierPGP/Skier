@@ -3,19 +3,19 @@
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQIcBAABCAAGBQJVynxWAAoJELM7eGjErpPK/zoQAKewDeTmRHnG5qjGP85j0rBL
-9SjwQjrBJptI9PfsimmjCKMtK3AvdfaWM44o2pI/JH5RL8FiFWillt2P6RgG3Ei9
-YX0qO+XOJM0k+DiDM7Wp41rYTUlMZO6r0B3SrejN9XwCfjYawEfddRT8KwWBv+Ry
-IQ6knxtqN+Upiq5SMvj5UetqczvmYiXNan5xQ6oIe6FBrbmSWR9NjyDAdRg11sGp
-r0p7XkVVpyTTsD/MIvpWU/VEqFPVtF1p0EN8uS0VOThkbU6YMcmTLdHMYMNzWex8
-0jf/X7YdxpSoTit0iVMpHHV/SjJhvSMGpPSyGZi0EWTRFY9wtOSfQkJFda/HeJPk
-Obi4AD5GdH/H4ATfJ5LsrMnK4Ybn0quUCVgZOfW1QiJSu9sgdm2KxZ0ujs3Pdw/m
-1fdU8Zfg7/NvhVhT0VrAcuzrM+4XQIUQiywBIpHyLc+IJIrud57Af8RiLdwXX37M
-kTMFY+VWuubSLyk6VXHBBTx2GxNS1xStpcBrEwSJfn9IFaByh1yJgG8anRc862sk
-b4b8TXPA6msKcyzjINUmVxF8Y4Q8yK2ZuvL/4g2KAOFTMrQEl0K4EV+aCzFHiIZ2
-oUbjxWhFCOBJyuqH6nhOWQZKRp6PSFhN8h2Kj2iW/uLSdrI14aeYAKHLO+p+DfSO
-iPVYOA6rWipO+E7ipMQf
-=lxuW
+iQIcBAABCAAGBQJVyn2aAAoJELM7eGjErpPKMxgP/RUD/CG6PY88XqLwG6PKIvGa
+4gJTsFshdIi1fZnvPwy+sUKe86IulG81orFJnYrBGWh54B4UQlLLRiwSdEW8Qb80
+WJUK78JgAQLxDZeXAhFZdr7nr9ZSHxAE/VvIpbOgdLc24TkfwFNZbNfvPM3M1Jan
+iH6y4dRDkRMxjSxqaPzTdmSg1tG/o8dr3SK+gr1MmVtpJ/fj/b7W1JXiMAvIMXcg
+5hC5WQH5SOUHbbKQQkNV3NMy4Gc5NEziv94zr9l7goV4bY60Cj8e8rDAzwB0k4A4
+h29qGPkfEo3SFlLMAGu5UURZX3PE6WwWDFhoTAyuTnkqD8Hjmyc2ZV9nq9oI0TX/
+7I2azGmB9vLoULIIKXvFB1IvfJsKCE1iMIiRjkMDdwGePjTFOkjHdwaFahNkL7AN
+4XOf9A9R8I/KLkzwtTmTGIsHojSoqHqh8DKDIJQfQPt/3eR34dlLGExwUlbEuTAm
+piaqieOPUd0Kc8WUzrpMwF2EG0vHH7WLk/SlSGALMW8Ea19LqtBLxPlOGDOCVFVK
+eMUP4o2QKzZOsoNLGrkjeZk6xeIZbtmPohj+/50FvtJZyLZrRQReuVGbRjFhIS3P
+8NQ95hQmEYT/DMS/4MWmV+BfJXeHw72itkUJCBllilX14JUH/o7z3DiKNBkYWqZ4
+fwLOCzZJkY1iUUj/bmFU
+=xmVl
 -----END PGP SIGNATURE-----
 
 ```
@@ -41,7 +41,7 @@ size   exec  file                    contents
 607              _faq.md             07ee836276fdea15a57a0e2065e8aedccb2688b60163f6cc0c3132bee5d3d97e
 1807             _whatispgp.md       25ca157bc96baff2261c163ca0f9f25a9a1d089481aff3e916788f0206b33eb9
 203            requirements.txt      2e56dab29421ccae2ec64a90516cbfb5cbc07d661f037d0f92e2899836185db7
-457    x       setup.sh              1f6827e6501a03f4c0fceca54240438a6e947ea216e11590a17fc7e2e2a695d1
+488    x       setup.sh              f28b461e4d16c26ac9f3784cb395bf079fa9d2b48ff99a7855d78f515ecd662f
                skier/                                                                                
 0                __init__.py         e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
 3720             frontend.py         fceaba643e742b22fc8c2f2b685390e9e80bd0afb907b9fcfc4d05b4d364e7f2

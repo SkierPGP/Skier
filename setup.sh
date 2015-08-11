@@ -2,6 +2,8 @@
 
 cd $1
 
+mkdir -pf templates/generated
+
 echo "Converting markdown into HTML..."
 
 for f in markdown/*.md; do
