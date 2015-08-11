@@ -15,7 +15,8 @@ class PGPAlgo(Enum):
 
 class KeyInfo(object):
     def __init__(self, uid: str, keyid: str, fingerprint: str,
-                 length: int, algo: PGPAlgo, created: int, expires: int, subkeys: list, sigs: list=[]):
+                 length: int, algo: PGPAlgo, created: int, expires: int, subkeys: list, sigs: list=[],
+                 expired: bool=False, revoked: bool = False):
         self.uid = uid
         self.keyid = keyid
 
@@ -30,6 +31,9 @@ class KeyInfo(object):
         self.expires = expires
 
         self.signatures = sigs
+
+        self.expired = expired
+        self.revoked = revoked
 
     def __str__(self):
         return "<PGP Key {id} for {uid} using {algo}-{length}>".format(id=self.keyid,
@@ -100,7 +104,7 @@ class KeyInfo(object):
         key = KeyInfo(uid=listing["uids"][0], keyid=listing['keyid'], fingerprint=listing['fingerprint'],
             algo=PGPAlgo(int(listing['algo'])), length=listing['length'], subkeys=[k[2] for k in listing['subkeys']],
             expires=int(listing['expires']) if listing['expires'] != '' else 0, created=int(listing['date']),
-            sigs=listing['sig'] if 'sig' in listing else [])
+            sigs=listing['sig'] if 'sig' in listing else [], expired=listing['trust'] == 'e', revoked=listing['trust'] == 'r')
 
         return key
 

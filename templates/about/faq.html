@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block navbar %}
+<div class="container">
+    {% with curr = "about" %}
+        {% include "navbar.html" %}
+    {% endwith %}
+</div>
+{% endblock %}
+
+{% block content %}
+{% include "generated/_faq.html" %}
+{% endblock %}

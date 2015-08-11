@@ -1,5 +1,4 @@
-from flask import url_for, render_template
-from werkzeug.utils import redirect
+from flask import render_template
 
 
 def init(app):
@@ -19,10 +18,6 @@ def init(app):
     @app.errorhandler(403)
     def four_oh_three(error):
         return render_template("error/403.html"), 403
-
-    @app.route("/")
-    def index():
-        return redirect(url_for("frontend.about")), 301
 
     @app.route("/skier")
     def skier():
