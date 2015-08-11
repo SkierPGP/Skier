@@ -4,6 +4,18 @@ from skier import pgp
 from cfg import API_VERSION, SKIER_VERSION
 
 def import_key(keyserver: str, keyid: str):
+    """
+    Attempts to import a key from the keyserver.
+    :param keyserver: The keyserver to import from.
+    :param keyid: The Key ID to import.
+    :return:
+        One of many codes:
+        - 0: Success
+        - -1: key not found
+        - -2: Could not connect to keyserver
+        - -3: Invalid key
+        - -4: Already exists on server unchanged
+    """
     # Check to see if the server is a skier server.
     is_skier = False
     try:

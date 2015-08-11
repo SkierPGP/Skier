@@ -116,7 +116,7 @@ def get_pgp_keyinfo(keyid: str) -> keyinfo.KeyInfo:
     if cache.exists(keyid + "-keyinfo"):
         return keyinfo.KeyInfo.from_key_listing(json.loads(cache.get(keyid + "-keyinfo").decode()))
     else:
-        keys = gpg.list_keys(keys=[keyid])
+        keys = gpg.list_keys(keys=[keyid], sigs=True)
         if not keys:
             return None
         else:
@@ -145,7 +145,7 @@ def search_through_keys(search_str: str) -> list:
             keyinfos.append(keyinfo.KeyInfo.from_key_listing(key))
         return keyinfos
     else:
-        keys = gpg.list_keys(keys=[search_str])
+        keys = gpg.list_keys(keys=[search_str], sigs=True)
         # Save onto the cache
         js = json.dumps({"k": keys})
         cache.set("search-" + search_str, js)

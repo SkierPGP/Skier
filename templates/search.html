@@ -6,6 +6,7 @@
     {% set title = "Search" %}
 {% endif %}
 
+
 {% block navbar %}
     <div class="container">
         {% with curr = "search" %}{% include "navbar.html" %}{% endwith %}
@@ -38,6 +39,12 @@
                     {% for sub in key.subkeys %}
                         <li><em>sub:</em> 0x{{ sub[-8:] }} ({{ sub }})</li>
                     {% endfor %}
+                    <li>sigs:</li>
+                    <ul>
+                        {% for sig in key.signatures %}
+                        <li style="white-space: pre;">{{  key.translate(sig) }} <a href="{{ url_for(".getkeyinfo", key=sig[0][-8:]) }}">{{  sig[0] }}</a> ({{ sig[1] }})</li>
+                        {% endfor %}
+                    </ul>
                 </ul>
             {% endfor %}
             {% else %}

@@ -2,6 +2,9 @@ from enum import Enum
 import datetime
 
 
+def wrap(i):
+    return i + ((8 - len(i)) * " " if (8 - len(i) > 0) else "")
+
 class PGPAlgo(Enum):
     """
     These are the ones I know, and the ones I believe are in use.
@@ -12,7 +15,7 @@ class PGPAlgo(Enum):
 
 class KeyInfo(object):
     def __init__(self, uid: str, keyid: str, fingerprint: str,
-                 length: int, algo: PGPAlgo, created: int, expires: int, subkeys: list):
+                 length: int, algo: PGPAlgo, created: int, expires: int, subkeys: list, sigs: list=[]):
         self.uid = uid
         self.keyid = keyid
 
@@ -25,6 +28,8 @@ class KeyInfo(object):
 
         self.created = created
         self.expires = expires
+
+        self.signatures = sigs
 
     def __str__(self):
         return "<PGP Key {id} for {uid} using {algo}-{length}>".format(id=self.keyid,
@@ -59,6 +64,21 @@ class KeyInfo(object):
     def get_user_fingerprint(self):
         return ' '.join([self.fingerprint[i:i+2] for i in range(0, len(self.fingerprint), 2)])
 
+    def translate(self, sig):
+        if sig[2] == "18x":
+            return wrap("subsig")
+        else:
+            if sig[1] == self.uid:
+                return wrap("selfsig")
+            elif sig[2] == "13x":
+                return wrap("sig3")
+            elif sig[2] == "12x":
+                return wrap("sig2")
+            elif sig[2] == "11x":
+                return wrap("sig1")
+            elif sig[2] == "10x":
+                return wrap("sig")
+
     @classmethod
     def from_key_listing(cls, listing: dict):
         """
@@ -78,9 +98,11 @@ class KeyInfo(object):
 
 
         key = KeyInfo(uid=listing["uids"][0], keyid=listing['keyid'], fingerprint=listing['fingerprint'],
-                  algo=PGPAlgo(int(listing['algo'])), length=listing['length'], subkeys=[k[2] for k in listing['subkeys']],
-                  expires=int(listing['expires']) if listing['expires'] != '' else 0, created=int(listing['date']))
+            algo=PGPAlgo(int(listing['algo'])), length=listing['length'], subkeys=[k[2] for k in listing['subkeys']],
+            expires=int(listing['expires']) if listing['expires'] != '' else 0, created=int(listing['date']),
+            sigs=listing['sig'] if 'sig' in listing else [])
 
         return key
+
 
 
