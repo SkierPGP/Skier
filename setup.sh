@@ -2,7 +2,7 @@
 
 cd $1
 
-mkdir -pf templates/generated
+mkdir -p templates/generated
 
 echo "Converting markdown into HTML..."
 
