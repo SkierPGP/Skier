@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+cd $1
+
 echo "Converting markdown into HTML..."
 
 for f in markdown/*.md; do
