@@ -14,7 +14,8 @@ def add_pgp_key(keydata: str) -> tuple:
     """
     Adds a key to both the cache and the keyring.
     :param keyid: The armored key data to add to the keyring.
-    :return: True and the keyid if the import succeeded, or False and None if it failed.
+    :return: True and the keyid if the import succeeded, or:
+            False and -1 if it was invalid, False and -2 if it already existed.
     """
     # First, add the key to the keyring.
     import_result = gpg.import_keys(keydata)

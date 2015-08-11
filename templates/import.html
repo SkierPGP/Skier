@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block navbar %}
+<div class="container">
+    {% with curr = "add" %}
+        {% include "navbar.html" %}
+    {% endwith %}
+</div>
+{% endblock %}
+
+{% block content %}
+    Scanning keyservers, please hold...
+    <ul id="ks-scan">
+
+    </ul>
+    <script>
+    var getURLParam = (function() {
+        var paramStr = decodeURIComponent(window.location.search).substring(1);
+        var paramSegs = paramStr.split('&');
+        var params = [];
+        for(var i = 0; i < paramSegs.length; i++) {
+            var paramSeg = paramSegs[i].split('=');
+            params[paramSeg[0]] = paramSeg[1];
+        }
+        return function(key) {
+            return params[key];
+        }
+    })();
+
+    $.ajaxSetup({
+      async: false
+    });
+
+    keyservers = [];
+
+    var keyid = getURLParam("keyid");
+    var keyserver = getURLParam("keyserver");
+    if(keyserver == "all" || keyserver == "" || typeof keyserver == "undefined"){
+        $.get("{{ url_for("pgpapi.importers") }}", function(data){data = $.parseJSON(data); $.each(data, function(n, item){
+            console.log(data, item);
+            keyservers.push(item)})})
+    } else {
+        keyservers = [keyserver];
+    }
+
+    success = false;
+
+    $.ajaxSetup({
+      async: true
+    });
+
+    $.each(keyservers, function(n, item) {
+        console.log(item);
+        $.post("/api/v1/import/" + item + "/" + keyid).always(function(data){
+            /*console.log(data);
+            if(typeof data.responseText == "undefined") data = $.parseJSON(data);
+            else data = $.parseJSON(data.responseText);*/
+            if(typeof data.responseText != "undefined") data = $.parseJSON(data.responseText);
+            if(data['code'] === 0) {
+                $("#ks-scan").append("<li class=\"ks-success\">" + item + " - " + "✓</li>");
+                success = true;
+            } else if (data['code'] === 5 && success) {
+                $("#ks-scan").append("<li>" + item + " - skipped</li>" )
+            } else {
+                $("#ks-scan").append("<li class=\"ks-failure\">" + item + " - " + " " + data['err'] + "</li>");
+            }
+            if(n+1 == keyservers.length && success == true){
+                window.setTimeout(function(){
+                    window.location = "/keyinfo/" + keyid
+                }, 3000)
+            } else {
+
+            }
+        })
+    });
+    </script>
+
+{% endblock %}
+

@@ -1,11 +1,7 @@
-from app import gpg
-
 import requests
 
+from skier import pgp
 from cfg import API_VERSION, SKIER_VERSION
-
-def add_key(armored: str):
-    gpg.import_keys(armored)
 
 def import_key(keyserver: str, keyid: str):
     # Check to see if the server is a skier server.
@@ -35,6 +31,8 @@ def import_key(keyserver: str, keyid: str):
                 data = r.text
             elif r.status_code == 404:
                 return -1
+            elif r.status_code == 500:
+                return -2
     else:
         name = keyserver + "/api/{}/getkey/{}".format(API_VERSION, keyid)
         try:
@@ -46,7 +44,14 @@ def import_key(keyserver: str, keyid: str):
                 data = r.json()['key']
             else:
                 return -1
-
     if data:
-        add_key(data)
-        return 0
+        added = pgp.add_pgp_key(data)
+        if added[0]:
+            return 0
+        else:
+            if added[1] == -1:
+                # invalid
+                return -3
+            elif added[1] == -2:
+                # exists
+                return -4

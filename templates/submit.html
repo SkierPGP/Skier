@@ -29,7 +29,7 @@
         </form>
         <h2> OR </h2>
         <h3>Import a PGP key</h3>
-        <form class="form-inline" role="form">
+        <form class="form-inline" role="form" action="{{ url_for("frontend.import_key") }}">
           <div class="form-group">
             <label for="keyserver">Keyserver:</label>
             <select name="keyserver" class="selectpicker" id="keyserver" title="Choose Keyserver">
@@ -38,7 +38,7 @@
           </div>
           <div class="form-group">
             <label for="keyid">Key ID:</label>
-            <input name="keyid" type="text" class="form-control" id="keyid">
+            <input name="keyid" type="text" class="form-control" id="keyid" required="required">
           </div>
           <button type="submit" class="btn btn-default">Submit</button>
         </form>

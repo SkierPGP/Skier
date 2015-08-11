@@ -24,7 +24,10 @@ def add():
         # Import the key
         imported = pgp.add_pgp_key(key)
         if not imported[0]:
-            return render_template("submit.html", success=False)
+            if imported[1] == -1:
+                return render_template("submit.html", success=False, errormsg="Seems like an error happened importing your key. Double-check you copy/pasted it correctly.")
+            elif imported[1] == -2:
+                return render_template("submit.html", success=False, errormsg="Your key is already added on the server and is unchanged.")
         else:
             keyinfo = pgp.get_pgp_keyinfo(imported[1])
             return redirect(url_for("frontend.getkeyinfo", key=keyinfo.keyid, added=True)), 302
@@ -52,6 +55,11 @@ def search():
         return render_template("search.html", search=request.args.get('keyid'), keys=keys)
     else:
         return render_template("search.html")
+
+@frontend.route("/import")
+def import_key():
+    return render_template("import.html"), 200
+
 
 @frontend_keys.route("/<keyid>")
 def getkey(keyid):
