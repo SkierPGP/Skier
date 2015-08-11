@@ -11,3 +11,4 @@ Werkzeug>=0.10.4
 redis>=2.10.3
 gunicorn
 greenlet
+eventlet
