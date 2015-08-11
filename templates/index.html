@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+
+{% block navbar %}
+    <div class="container">
+        {% include "navbar.html" %}
+    </div>
+{% endblock %}
+
+{% block content %}
+    <div class="text-center">
+        <h1>Skier PGP server at <em>{{ host }}</em></h1>
+        <h2><a href="{{ url_for("frontend.whatispgp") }}">What is PGP?</a> / <a href="#">How do I use it?</a></h2>
+        <h2><a href="{{ url_for("frontend.add") }}">Add a public key</a></h2>
+        <h2><a href="{{ url_for("frontend.search") }}">Search for a key</a></h2>
+        <h2><a href="#">View my pool information</a></h2>
+        <hr>
+        <h4><a href="{{ url_for("frontend.about") }}">About Skier</a></h4>
+        <h4><a href={{ url_for("frontend.faq") }}>F.A.Q</a></h4>
+        <h4><a href="#">Run your own</a></h4>
+    </div>
+{% endblock %}
