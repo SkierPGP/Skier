@@ -30,7 +30,7 @@
             {% for key in keys %}
                 {# Loop over the list of KeyInfos #}
                 <ul>
-                    <li><strong>pub:</strong> {{ key.get_algo_name()}}-{{ key.length }}/<a href="{{ url_for(".getkeyinfo", key=key.shortid) }}">0x{{ key.shortid }}</a> ({{ key.fingerprint }})
+                    <li><strong>pub:</strong> {{ key.get_algo_name()}}-{{ key.length }}/<a href="{{ url_for("user_display_keys.getkey", keyid=key.shortid) }}">0x{{ key.shortid }}</a> ({{ key.fingerprint }}) {% if key.revoked %}<strong style="color: red">[REVOKED]</strong>{% elif key.expired %}<strong style="color: red">[EXPIRED]</strong>{% endif %}
                         <ul>
                             <li>uid: {{ key.uid }}</li>
                             <li>created: {{ key.get_created_ymd() }} expires: {{ key.get_expired_ymd() }}</li>
