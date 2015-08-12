@@ -22,5 +22,7 @@ for key in cfg.config.flask_cfg:
 import gnupg
 
 gpg = gnupg.GPG(gnupghome=cfg.config.pgp_keyring_path)
+# Disable strict encoding errors
+gpg.decode_errors = "ignore"
 
 init.init(app)
