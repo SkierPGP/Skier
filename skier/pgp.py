@@ -46,6 +46,7 @@ def _discovery(search_str: str) -> None:
         else:
             # Plop it on the cache.
             cache.set("search-" + search_str, js)
+            print("Discovery finished of {}".format(search_str))
     else:
         # Unconditionally put it on the cache.
         cache.set("search-" + search_str, js)
@@ -53,11 +54,11 @@ def _discovery(search_str: str) -> None:
         cache.set("search-" + search_str + "-timeout", "abc")
         # 5 minutes.
         cache.expire("search-" + search_str + "-timeout", 300)
+        print("Discovery finished of {}".format(search_str))
 
     cache.delete("search-" + search_str + "timeout-override")
     cache.delete("search-" + search_str + "-discovering")
 
-    print("Discovery finished of {}".format(search_str))
 
 # This is defined below _discovery so that the Pool can see the _discovery function.
 discovery_pool = multiprocessing.Pool((multiprocessing.cpu_count() *2) + 1)
