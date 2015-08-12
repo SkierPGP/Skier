@@ -1,4 +1,5 @@
 import json
+import multiprocessing
 
 import redis
 
@@ -9,6 +10,57 @@ from skier import keyinfo
 cache = redis.StrictRedis(host=redis_host,
                           port=cfg.config.redis.port,
                           db=cfg.config.redis.db)
+
+def _discovery(search_str: str) -> None:
+    """
+    Begin a discovery for new keys in a search.
+    :param search_str: The string to search for.
+    :return: None.
+    """
+
+    print("Beginning discovery of {}".format(search_str))
+
+    if cache.exists("search-" + search_str + "-timeout") and not cache.exists("search-" + search_str + "timeout-override"):
+        # Don't do any discovery until the timeout is up.
+        return
+
+    timeout = cfg.config.discovery.timeout
+
+    cache.set("search-" + search_str + "-discovering", "abc")
+
+    keys = gpg.list_keys(keys=[search_str], sigs=True)
+
+    js = json.dumps({"k": keys})
+    if cache.exists("search-" + search_str):
+        # Set a timeout.
+        cache.set("search-" + search_str + "-timeout", "abc")
+        # 5 minutes.
+        cache.expire("search-" + search_str + "-timeout", 300)
+        # Compare the two searches
+        if cache.get("search-" + search_str).decode() == js:
+            # Nevermind, drop it.
+            cache.delete("search-" + search_str + "timeout-override")
+            cache.delete("search-" + search_str + "-discovering")
+            print("Discovery finished of {}".format(search_str))
+            return
+        else:
+            # Plop it on the cache.
+            cache.set("search-" + search_str, js)
+    else:
+        # Unconditionally put it on the cache.
+        cache.set("search-" + search_str, js)
+        # Set a timeout.
+        cache.set("search-" + search_str + "-timeout", "abc")
+        # 5 minutes.
+        cache.expire("search-" + search_str + "-timeout", 300)
+
+    cache.delete("search-" + search_str + "timeout-override")
+    cache.delete("search-" + search_str + "-discovering")
+
+    print("Discovery finished of {}".format(search_str))
+
+# This is defined below _discovery so that the Pool can see the _discovery function.
+discovery_pool = multiprocessing.Pool((multiprocessing.cpu_count() *2) + 1)
 
 def add_pgp_key(keydata: str) -> tuple:
     """
@@ -137,20 +189,63 @@ def search_through_keys(search_str: str) -> list:
               'Smith' for a name search
     :return: A list of :skier.keyinfo.KeyInfo: objects containing the specified keys.
     """
+    # Old single-threaded bad cache code
     # Attempt to load data from cache.
+    #if cache.exists("search-" + search_str):
+    #    data = json.loads(cache.get("search-" + search_str).decode())
+    #    keyinfos = []
+    #    for key in data['k']:
+    #        keyinfos.append(keyinfo.KeyInfo.from_key_listing(key))
+    #    return keyinfos
+    #else:
+    #    keys = gpg.list_keys(keys=[search_str], sigs=True)
+    #    # Save onto the cache
+    #    js = json.dumps({"k": keys})
+    #    cache.set("search-" + search_str, js)
+    #    cache.expire("search-" + search_str, 300)
+    #    keyinfos = []
+    #    for key in keys:
+    #        keyinfos.append(keyinfo.KeyInfo.from_key_listing(key))
+    #    return keyinfos
+
+    # New multi-threaded good cache code
+    # What this does:
+    # 1) Attempts to load the key list off the cache
+    # If this was successful, it launches a 'discovery' thread, which searches for keys in the keyring and compares them against the current cache version.#
+    # 2) If it could not load the key list off the cache, it checks the length of the search string.
+    # If it's less than or equal to 4, it goes "fuck you" and sends back a reply saying "nice try but you're going to have to wait for your results"
+    # Then it launches a discovery anyway, unless it's already discovering.
+    # This prevents people from DoSing the server by searching for 'a' a bunch of times.
+    # If it's more than four, it does the discovery itself.
+    # This can be tuned in the config, under cfg.config.discovery.length_limit.
+    # The timeout between discoveries can also be tuned with cfg.config.discovery.timeout.
+
+    # Load off the cache
     if cache.exists("search-" + search_str):
         data = json.loads(cache.get("search-" + search_str).decode())
         keyinfos = []
         for key in data['k']:
             keyinfos.append(keyinfo.KeyInfo.from_key_listing(key))
-        return keyinfos
+
+        # Launch a discovery thread.
+        if not cache.exists("search-" + search_str + "-discovering"):
+            discovery_pool.apply_async(_discovery, args=(search_str,))
+
+        return keyinfos, 0
+    # Else, begin loading
     else:
-        keys = gpg.list_keys(keys=[search_str], sigs=True)
-        # Save onto the cache
-        js = json.dumps({"k": keys})
-        cache.set("search-" + search_str, js)
-        cache.expire("search-" + search_str, 300)
-        keyinfos = []
-        for key in keys:
-            keyinfos.append(keyinfo.KeyInfo.from_key_listing(key))
-        return keyinfos
+        if len(search_str) <= cfg.config.discovery.length_limit:
+            # Tough shit son, you're gonna have to wait.
+            if not cache.exists("search-" + search_str + "-discovering"):
+                discovery_pool.apply_async(_discovery, args=(search_str,))
+            return [], -1
+        else:
+            keys = gpg.list_keys(keys=[search_str], sigs=True)
+            # Save onto the cache
+            js = json.dumps({"k": keys})
+            cache.set("search-" + search_str, js)
+            cache.expire("search-" + search_str, 300)
+            keyinfos = []
+            for key in keys:
+                keyinfos.append(keyinfo.KeyInfo.from_key_listing(key))
+            return keyinfos, 0

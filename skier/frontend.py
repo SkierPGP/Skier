@@ -64,7 +64,10 @@ def search():
     if 'keyid' in request.args:
         # Pass a simple list of KeyInfos to the renderer, allowing the template to do the hard work.
         keys = pgp.search_through_keys(request.args.get("keyid", "0x12345678"))
-        return render_template("search.html", search=request.args.get('keyid'), keys=keys)
+        if keys[1] == -1:
+            return render_template("search.html", search=request.args.get('keyid'), loading=True)
+        else:
+            return render_template("search.html", search=request.args.get('keyid'), keys=keys[0])
     else:
         return render_template("search.html")
 

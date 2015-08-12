@@ -26,3 +26,10 @@ sks_imports:
 # The Skier keyservers to allow importing from.
 skier_imports:
  - pgp.sundwarf.me
+
+# Discovery section.
+discovery:
+  # The length of the string to stop single-thread discovering under (less-than equals).
+  length_limit: 4
+  # The timeout before a new discovery for the same string can be launched.
+  timeout: 300

@@ -28,6 +28,10 @@
         Your key isn't here? Searching can take up to five minutes to update due to search caching.
     </div>
 
+    {% if loading is defined %}
+    <hr>
+    <h4>You have entered a short query string - please wait whilst the keyring is searched. Refresh in a few minutes to see the results of your search.</h4>
+    {% endif %}
     {% if keys is defined %}
         <hr>
         <h3><em>Search results</em></h3><br>
