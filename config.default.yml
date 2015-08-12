@@ -1,7 +1,7 @@
 # Flask config values.
 flask_cfg:
   # Turn this on for debug mode.
-  DEBUG: true
+  DEBUG: false
 
 # The base directory for Skier.
 base_directory: /var/skier
