@@ -22,6 +22,12 @@
       <button type="submit" class="btn btn-default btn-sm">Submit</button>
       </div>
     </form>
+
+    <div class="text-center">
+    <br>
+        Your key isn't here? Searching can take up to five minutes to update due to search caching.
+    </div>
+
     {% if keys is defined %}
         <hr>
         <h3><em>Search results</em></h3><br>
@@ -30,7 +36,7 @@
             {% for key in keys %}
                 {# Loop over the list of KeyInfos #}
                 <ul>
-                    <li><strong>pub:</strong> {{ key.get_algo_name()}}-{{ key.length }}/<a href="{{ url_for("user_display_keys.getkey", keyid=key.shortid) }}">0x{{ key.shortid }}</a> ({{ key.fingerprint }}) {% if key.revoked %}<strong style="color: red">[REVOKED]</strong>{% elif key.expired %}<strong style="color: red">[EXPIRED]</strong>{% endif %}
+                    <li><strong>pub:</strong> {{ key.get_algo_name()}}-{{ key.length }}/<a href="{{ url_for("frontend.getkeyinfo", keyid=key.shortid) }}">0x{{ key.shortid }}</a> ({{ key.fingerprint }}) {% if key.revoked %}<strong style="color: red">[REVOKED]</strong>{% elif key.expired %}<strong style="color: red">[EXPIRED]</strong>{% endif %}
                         <ul>
                             <li>uid: {{ key.uid }}</li>
                             <li>created: {{ key.get_created_ymd() }} expires: {{ key.get_expired_ymd() }}</li>
@@ -46,14 +52,11 @@
                         {% endfor %}
                     </ul>
                 </ul>
+                <hr>
             {% endfor %}
             {% else %}
             No keys found.
             {% endif %}
         </div>
     {% endif %}
-    <div class="text-center">
-    <br>
-        Your key isn't here? Searching can take up to five minutes to update due to search caching.
-    </div>
 {% endblock %}
