@@ -1,4 +1,8 @@
-#### FAQ
+### FAQ
+
+* Q: How do I upload/recieve a key from within GnuPG?
+
+* A: Simple! Just use `gpg --keyserver hkp://pgp.example.com --send-keys/--recv-keys <keyid>` for it to download the key. 
 
 * Q: Does this verify that the person actually owns the key?  
 

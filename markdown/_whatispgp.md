@@ -18,6 +18,9 @@ If somebody managed to find your private key, they could decrypt and read any me
 These public keys are stored on 'keyservers'; a list of keys and their owners. These key servers allow anybody to look up your name, download your public key, and use it to send you a message.
 Your private key must never go on a key server - if it does, your data that you are protecting with these keys will be compromised.
 
+More information about PGP can found at the following links:
+ - [http://www.faqs.org/faqs/pgp-faq/part1/]
+
 <div class="text-center">
 <button type="button" class="btn btn-default" onclick="javascript:history.go(-1)">Back</button>
 </div>
