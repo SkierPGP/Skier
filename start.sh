@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-gunicorn -c config_gunicorn.py app:app
+gunicorn -c gunicorn_config.py app:app
