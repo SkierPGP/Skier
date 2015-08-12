@@ -5,8 +5,9 @@ workers = multiprocessing.cpu_count() * 2 + 1
 
 # Choose one as appropriate.
 # worker_class = "sync"
-worker_class = "eventlet" # Most appropriate for a PGP server.
+worker_class = "gthread" # Python 3 only.
 # worker_class = "gevent"
+# worker_class = "eventlet"
 # worker_class = "tornado"
 
 # Change to false to disable daemonising.
