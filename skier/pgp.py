@@ -3,10 +3,10 @@ import json
 import redis
 
 from app import gpg
-from cfg import cfg
+from cfg import cfg, redis_host
 from skier import keyinfo
 
-cache = redis.StrictRedis(host=cfg.config.redis.host,
+cache = redis.StrictRedis(host=redis_host,
                           port=cfg.config.redis.port,
                           db=cfg.config.redis.db)
 

@@ -3,19 +3,19 @@
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQIcBAABCAAGBQJVyoy5AAoJELM7eGjErpPKv9sP/iuWsSnw7rgPEmJAdLsJOfJp
-ToKoDysqb//9lzHdkYa+N3hxO3ltvGij2SyMOTbUDS1EuCAeA/cDcckpyv36JdkD
-1wBZq5BIb1DNFO7kfD17togka+VQ/JdYcJn2Y9YiXcCSE8eDpeioZ9NfTWuoF1/D
-BPHUBnbInGsduibE8bJzzQbXchuu18JxtIam3yezL73bmLJy+FFC3bC/eJ4LNc2B
-b6jBIH8+z7DZTDUsMBnPaFCLM9DyTQ8sRhJBCtUX2nNadwKBtXYxDAwz7QEtPS36
-BwZ1dfoqyw+CpHxuqpKyjuFBMKmVfeevLkXJTatSE7O8ugUvb44IjmgfaWxC82Vb
-MUjHhkkgCu3Q5aewGKdEjXdqor6eZ8F/u4V/T4oiXxzWs40VD88jOII/l4mM5zl0
-LLqfJbAtmUCQfFV74Gq9XIgRiv9UAU6g5CObG+a863ERU15I+u4P/1aMIdLqcPq6
-T6/kBII1cWMNfQAjncbJFmd9kAS9pZP0s28Ie5CCKIv2RKecDKFw4QYVpf6w2RVy
-MQW0I+hpuItkIoqeLYemJQ0vi4BmVnvkX8G8I98koZU622cUVlP7e/aof9EEyXoh
-4Nw26kj1Th1amxi1sxgE0zKHCYI5sA5U+0xFTfZsz+pHJVt+v17PGfSYGhJxGYis
-A7ORH8JorkhP+YJZU/wg
-=/SsC
+iQIcBAABCAAGBQJVywfxAAoJELM7eGjErpPK52EP/jSl+KGoQ05K+YfP22IU0sl2
++zRuVlKgkSdzTR6LF36FsAjJEVEzjRZA/AE2LPIZw4NMHtaSvaBStybZjJQpaVQL
+0EbYqWUfybAhyfyO6gbycBC4DxXuKBrLZfupzMjx50nVb0m61LbBnpSJJojAe4e2
+KhvXTog76EA1bLYC/yfX5KEG6xE5XRdDdHlsQTN/aeYD5oFb0cYV7+KQrxizl1HE
+pNr32PZ7Z/LRlYDk4mHvBzFx5vdcju/f68ppfWojIy4DUpwpMtsXLjtofY1ZoD4q
+ohvnQKvFDCfnv44k91usT4Fn0prD0bdUbXBlYB4fDNlSo/htgNhgjlKK0qC95vb2
+ibBdz0M2hhtc4lzKHuSaYDZRhgcOsQ9VnN/RAyWs/AYtDbmNJlzRjXn5EalFtvU5
+FV5QJ1VHx+M8M26+qIXeUw30q03VhK40fsE5rlTE5PJ+TMIjU5PEG44ceCLhAR9C
+IIPqk8jlmgzlcODd+UFCQwV1ZTzSdOzIv7K7AWGeFG8vNLBc2iQSxMT3qa0Yw16Q
+ZJLRHh/QV+aQY3GLowwjuhaGMnAmf7ng7SpRmOw+0jqcok3YIx4Ngp5tqAJ/zu6i
+A0uOLOitMBZnhYWjWfOFf4d8sk/LvuB9Heb1dsBmSwHrOrh+6s4o43CgD2JmjJpa
+Mvk6CnOGoyBngmFEt0Oe
+=dA8z
 -----END PGP SIGNATURE-----
 
 ```
@@ -46,7 +46,7 @@ size   exec  file                    contents
 0                __init__.py         e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
 3720             frontend.py         fceaba643e742b22fc8c2f2b685390e9e80bd0afb907b9fcfc4d05b4d364e7f2
 4108             keyinfo.py          5992efddd834529622db0306a599d214613f833dadba9795776f8157500122c4
-5292             pgp.py              f737da87e90074266efe6eecc8c787fce2192a6f256ed265a7d5ebf217030577
+5293             pgp.py              a089735e9df032f2ca3dbed1522500dc2e07516fda0fce5e8733f42331d0940a
 2133             pgpactions.py       c62af9d65aa94602b74ec082f4af6f10b3a46f044fe160e35be0902f983954b2
 2144             pgpapi.py           41f5bf79e4219158bb8cd02895889f16407b4c2c091bcd03ac13668053c15ba3
 1546             pks.py              fd3acf7a866088495b2805914060d2700d8b925b5226ad718c292efc164da9f3
