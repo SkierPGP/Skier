@@ -9,6 +9,6 @@ hg+https://bitbucket.org/SunDwarf/python-gnupg
 PyYAML>=3.11
 Werkzeug>=0.10.4
 redis>=2.10.3
-gunicorn
+git+https://github.com/benoitc/gunicorn.git
 greenlet
 eventlet
