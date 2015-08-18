@@ -83,6 +83,7 @@ def search_through_keys(search_str: str, page: int=1, count: int=10):
     :return: A list of :skier.keyinfo.KeyInfo: objects containing the specified keys.
     """
     if search_str.startswith("0x"):
+        search_str = search_str.replace("0x", "")
         results = db.Key.query.options(FromCache(cache)).filter(db.Key.key_fp_id == search_str).paginate(page, per_page=count)
     else:
         results = db.Key.query.options(FromCache(cache)).filter(db.Key.uid.ilike("%{}%".format(search_str))).paginate(page, per_page=count)

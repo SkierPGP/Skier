@@ -25,13 +25,9 @@
 
     <div class="text-center">
     <br>
-        Your key isn't here? Searching can take up to five minutes to update due to search caching.
+        Tip: Add 0x to your search string to search for a specific key ID.
     </div>
 
-    {% if loading is defined %}
-    <hr>
-    <h4>You have entered a short query string - please wait whilst the keyring is searched. Refresh in a few minutes to see the results of your search.</h4>
-    {% endif %}
     {% if keys is defined %}
         <hr>
         <h2><em>Search results</em></h2>
@@ -44,7 +40,7 @@
             </li>
             <li><a href="#">{{ page }} of {{ maxpages }}</a></li>
             <li {% if page == maxpages %}class="disabled"{% endif %}>
-              <a href="#" aria-label="Next">
+              <a href="{{ url_for("frontend.search", keyid=search, page=page + 1) }}" aria-label="Next">
                 <span aria-hidden="true">&raquo;</span>
               </a>
             </li>
