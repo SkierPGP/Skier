@@ -8,6 +8,7 @@ Skier makes no guarantee to work with other PGP implementations such as Enigmail
 #### Why not SKS?
 
 A better question is why SKS?
+
 - SKS is slow
 - SKS is written in ML, which is a functional language from *1973*
 - SKS frontends are ugly
