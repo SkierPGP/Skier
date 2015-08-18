@@ -1,6 +1,7 @@
 import logging
 
 from flask import Flask
+from flask.ext.cache import Cache
 
 import init
 
@@ -19,10 +20,14 @@ from cfg import cfg
 for key in cfg.config.flask_cfg:
     app.config[key] = cfg.config.flask_cfg[key]
 
-import gnupg
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = True
 
-gpg = gnupg.GPG(gnupghome=cfg.config.pgp_keyring_path)
+#import gnupg
+
+#gpg = gnupg.GPG(gnupghome=cfg.config.pgp_keyring_path)
 # Disable strict encoding errors
-gpg.decode_errors = "ignore"
+#gpg.decode_errors = "ignore"
 
-init.init(app)
+cache = Cache(config={'CACHE_TYPE': 'redis'})
+
+init.init(app, cache)

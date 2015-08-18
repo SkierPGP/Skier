@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, url_for, request, redirect
 
 from skier import pgp
 from cfg import cfg
+from skier.keyinfo import KeyInfo
 
 frontend = Blueprint("frontend", __name__)
 frontend_keys = Blueprint("user_display_keys", __name__)
@@ -42,7 +43,8 @@ def add():
                 return render_template("submit.html", success=False, errormsg="Your key is already added on the server and is unchanged.")
         else:
             keyinfo = pgp.get_pgp_keyinfo(imported[1])
-            return redirect(url_for("frontend.getkeyinfo", key=keyinfo.keyid, added=True)), 302
+            print(imported[1])
+            return redirect(url_for("frontend.getkeyinfo", key=keyinfo.shortid, added=True)), 302
             #return render_template("keyinfo.html", added=True, key=keyinfo, keydata=key)
 
 
@@ -62,12 +64,15 @@ def getkeyinfo(key):
 @frontend.route("/search")
 def search():
     if 'keyid' in request.args:
+        page = request.args.get("page", 1)
+        try:
+            page = int(page)
+        except:
+            page = 1
         # Pass a simple list of KeyInfos to the renderer, allowing the template to do the hard work.
-        keys = pgp.search_through_keys(request.args.get("keyid", "0x12345678"))
-        if keys[1] == -1:
-            return render_template("search.html", search=request.args.get('keyid'), loading=True)
-        else:
-            return render_template("search.html", search=request.args.get('keyid'), keys=keys[0])
+        keys = pgp.search_through_keys(request.args.get("keyid", "0x12345678"), page=page)
+        return render_template("search.html", search=request.args.get('keyid'), keys=keys.items, keyinfo=KeyInfo,
+                               page=page, maxpages=keys.pages)
     else:
         return render_template("search.html")
 
@@ -93,10 +98,10 @@ def getkey_dl_ascii(keyid):
     else:
         return "No such key", 404, {"Content-Type": "text/plain"}
 
-@frontend_keys.route("/<keyid>/dl/raw")
-def getkey_dl_raw(keyid):
-    key = pgp.get_pgp_armor_key(keyid)
-    if key:
-        return key, 200, {"Content-Type": "application/octet-stream", "Content-Disposition": "attachment; filename={}.gpg".format(keyid)}
-    else:
-        return "No such key", 404, {"Content-Type": "text/plain"}
+#@frontend_keys.route("/<keyid>/dl/raw")
+#def getkey_dl_raw(keyid):
+#    key = pgp.get_pgp_armor_key(keyid)
+#    if key:
+#        return key, 200, {"Content-Type": "application/octet-stream", "Content-Disposition": "attachment; filename={}.gpg".format(keyid)}
+#    else:
+#        return "No such key", 404, {"Content-Type": "text/plain"}

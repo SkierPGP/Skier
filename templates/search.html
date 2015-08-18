@@ -34,10 +34,26 @@
     {% endif %}
     {% if keys is defined %}
         <hr>
-        <h3><em>Search results</em></h3><br>
+        <h2><em>Search results</em></h2>
+        <nav>
+          <ul class="pagination">
+            <li {% if page <= 1 %}class="disabled"{% endif %}>
+              <a href="{{ url_for("frontend.search", keyid=search, page=page-1) }}" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+              </a>
+            </li>
+            <li><a href="#">{{ page }} of {{ maxpages }}</a></li>
+            <li {% if page == maxpages %}class="disabled"{% endif %}>
+              <a href="#" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
         <div class="keyinfo">
             {% if keys != [] %}
-            {% for key in keys %}
+            {% for keydb in keys %}
+                {% set key = keyinfo.pgp_dump(keydb.armored) %}
                 {# Loop over the list of KeyInfos #}
                 <ul>
                     <li><strong>pub:</strong> {{ key.get_algo_name()}}-{{ key.length }}/<a href="{{ url_for("frontend.getkeyinfo", key=key.shortid) }}">0x{{ key.shortid }}</a> ({{ key.fingerprint }}) {% if key.revoked %}<strong style="color: red">[REVOKED]</strong>{% elif key.expired %}<strong style="color: red">[EXPIRED]</strong>{% endif %}
@@ -47,14 +63,16 @@
                         </ul>
                     </li>
                     {% for sub in key.subkeys %}
-                        <li><em>sub:</em> 0x{{ sub[-8:] }} ({{ sub }})</li>
+                        <li><em>sub:</em> 0x{{ sub[-8:] }} ({{ sub }})
+                            <ul><li>{% if sub[-8:] in key.signatures %}subsig: 0x{{ key.signatures[sub[-8:]][0][0] }} ({{ key.signatures[sub[-8:]][0][1] }}){% else %}<strong style="color: red">UNVERIFIED</strong>{% endif %}</li></ul>
+                        </li>
                     {% endfor %}
                     <li>sigs:</li>
-                    <ul>
-                        {% for sig in key.signatures %}
-                        <li style="white-space: pre;">{{  key.translate(sig) }} <a href="{{ url_for(".getkeyinfo", key=sig[0][-8:]) }}">{{  sig[0] }}</a> ({{ sig[1] }})</li>
-                        {% endfor %}
-                    </ul>
+                        <ul>
+                            {% for sig in key.signatures[key.shortid] %}
+                            <li style="white-space: pre;">{{  key.translate(sig) }} <a href="{{ url_for(".getkeyinfo", key=sig[0]) }}">{{  sig[0] }}</a> ({{ sig[1] }})</li>
+                            {% endfor %}
+                        </ul>
                 </ul>
                 <hr>
             {% endfor %}

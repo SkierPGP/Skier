@@ -8,7 +8,7 @@ legacypks = Blueprint("pks", __name__)
 def pksadd():
     keytext = request.form["keytext"]
     result = pgp.add_pgp_key(keytext)
-    if result:
+    if result[0]:
         return "", 200, {"X-HKP-Results-Count": "1"}
     else:
         return "Key add failed", 400, {"X-HKP-Results-Count": "1"}

@@ -2,18 +2,29 @@
 flask_cfg:
   # Turn this on for debug mode.
   DEBUG: false
+  # I don't know
+  SQLALCHEMY_TRACK_MODIFICATIONS: true
 
 # The base directory for Skier.
 base_directory: /var/skier
 
 # The path for the PGP keyring to be stored.
-pgp_keyring_path: /var/skier/keyring
+# Disabled due to migration to PostgreSQL.
+#pgp_keyring_path: /var/skier/keyring
 
 # The redis database info.
 redis:
   host: localhost
   port: 6379
   db: 1
+
+# The PostgreSQL database info.
+db:
+  host: localhost
+  port: 5432
+  user: skier
+  password: hunter2
+  database: skier
 
 # The hostname for the server.
 hostname: pgp.example.com

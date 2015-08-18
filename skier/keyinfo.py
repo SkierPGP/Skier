@@ -1,5 +1,14 @@
 from enum import Enum
 import datetime
+import time
+
+from flask.ext.sqlalchemy_cache import FromCache
+import pgpdump.packet
+from pgpdump import AsciiData
+from pgpdump.utils import PgpdumpException
+
+from app import cache
+import db
 
 
 def wrap(i):
@@ -10,8 +19,16 @@ class PGPAlgo(Enum):
     These are the ones I know, and the ones I believe are in use.
     """
     RSA = 1
+    RSA_E = 2
+    RSA_S = 3
+    ELGAMAL = 16
     DSA = 17
-    ECC = 19
+    ECC = 18
+    ECDSA = 19
+    DH = 21
+
+    unknown = 999
+
 
 class KeyInfo(object):
     def __init__(self, uid: str, keyid: str, fingerprint: str,
@@ -55,7 +72,7 @@ class KeyInfo(object):
         return s1, s2
 
     def get_expired_ymd(self):
-        if self.expires == 0:
+        if self.expires in [0, None]:
             return "never"
         return datetime.datetime.fromtimestamp(float(self.expires)).strftime("%Y-%m-%d")
 
@@ -65,23 +82,32 @@ class KeyInfo(object):
     def get_algo_name(self):
         return PGPAlgo(self.algo).name
 
+    def get_algo_id(self):
+        return PGPAlgo(self.algo).value
+
     def get_user_fingerprint(self):
         return ' '.join([self.fingerprint[i:i+2] for i in range(0, len(self.fingerprint), 2)])
 
     def translate(self, sig):
-        if sig[2] == "18x":
+        if sig[2] == 32:
+            return wrap("revoke")
+        elif sig[2] == 24:
             return wrap("subsig")
+        elif sig[1] == self.uid:
+            return wrap("selfsig")
+        elif sig[2] == 19:
+            return wrap("sig-3")
+        elif sig[2] == 18:
+            return wrap("sig-2")
+        elif sig[2] == 17:
+            return wrap("sig-1")
+        elif sig[2] == 16:
+            return wrap("sig")
         else:
-            if sig[1] == self.uid:
-                return wrap("selfsig")
-            elif sig[2] == "13x":
-                return wrap("sig3")
-            elif sig[2] == "12x":
-                return wrap("sig2")
-            elif sig[2] == "11x":
-                return wrap("sig1")
-            elif sig[2] == "10x":
-                return wrap("sig")
+            return wrap("sig??")
+
+    def get_length(self):
+        return self.length if self.length != -1 else "U"
 
     @classmethod
     def from_key_listing(cls, listing: dict):
@@ -108,5 +134,90 @@ class KeyInfo(object):
 
         return key
 
+    @classmethod
+    def pgp_dump(cls, armored: str):
+        """
+        Generates a key using pgpdump.
+        :param armored: The armored data to output.
+        :return: A new :KeyInfo: object.
+        """
 
+        armored = armored.split("-----END PGP PUBLIC KEY BLOCK-----")[0] + "-----END PGP PUBLIC KEY BLOCK-----"
+
+        try:
+            data = AsciiData(armored.encode())
+        except PgpdumpException as e:
+            return None, e.args
+        try:
+            packets = [pack for pack in data.packets()]
+        except PgpdumpException as e:
+            return None, e.args
+
+        # Set initial values
+        uid = ""
+        keyid, fingerprint = "", ""
+        length = 0
+        algo = ""
+        created, expires = 0, 0
+        revoked = False
+
+        signatures = {}
+        subkeys = []
+
+        most_recent_packet = None
+
+        for packet in packets:
+            # Public key packet, main body.
+            # But NOT a subkey.
+            if isinstance(packet, pgpdump.packet.PublicKeyPacket) and not isinstance(packet, pgpdump.packet.PublicSubkeyPacket):
+                # Set data
+                created = packet.creation_time.replace(tzinfo=datetime.timezone.utc).timestamp()
+                expires = packet.expiration_time.replace(tzinfo=datetime.timezone.utc).timestamp() if packet.expiration_time is not None else None
+
+                try:
+                    algo = PGPAlgo(packet.raw_pub_algorithm)
+                except KeyError:
+                    algo = PGPAlgo.unknown
+                # Check if the length is known for ECC keys.
+                length = packet.modulus_bitlen if packet.modulus_bitlen else -1
+                keyid = packet.key_id.decode()
+                fingerprint = packet.fingerprint.decode()
+            elif isinstance(packet, pgpdump.packet.SignaturePacket):
+                # Self-signed signature
+                if packet.raw_sig_type == 24:
+                    sig_uid = uid
+                # Revocation, mark as such
+                elif packet.raw_sig_type == 32:
+                    sig_uid = "Revocation signature from primary key"
+                    revoked = True
+                # Lookup the UserID
+                else:
+                    sig_uid = db.Key.query.options(FromCache(cache)).filter(db.Key.key_fp_id == packet.key_id.decode()[-8:]).first()
+                    # Check if we know it
+                    if not sig_uid:
+                        sig_uid = "[User ID Unknown]"
+                    else:
+                        sig_uid = sig_uid.uid
+                # Check if the most recent packet is a subkey packet.
+                # If it is, we place the signature under the subkey, as opposed to the the main key.
+                # This allows us to apply a signature to the subkey.
+                if isinstance(most_recent_packet, pgpdump.packet.PublicSubkeyPacket):
+                    key_for = most_recent_packet.key_id.decode()[-8:]
+                else:
+                    key_for = keyid[-8:]
+                if key_for not in signatures:
+                    signatures[key_for] = []
+                signatures[key_for].append([packet.key_id.decode()[-8:], sig_uid, packet.raw_sig_type])
+
+            elif isinstance(packet, pgpdump.packet.PublicSubkeyPacket):
+                subkeys.append(
+                    packet.fingerprint.decode()
+                )
+            elif isinstance(packet, pgpdump.packet.UserIDPacket):
+                uid = packet.user
+            most_recent_packet = packet
+
+        return KeyInfo(uid=uid, keyid=keyid, fingerprint=fingerprint, length=length, algo=algo,
+                       created=created, expires=expires, revoked=revoked, expired=(time.time() - expires if expires else 1) < 0,
+                       subkeys=subkeys, sigs=signatures)
 

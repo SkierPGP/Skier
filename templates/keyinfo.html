@@ -18,26 +18,30 @@
         {% endif %}
         <h2>{{ key.shortid }}</h2>
         <ul>
-            <li><strong>pub:</strong> {{ key.get_algo_name()}}-{{ key.length }}/<a href="{{ url_for("user_display_keys.getkey", keyid=key.shortid) }}">0x{{ key.shortid }}</a> ({{ key.fingerprint }}) {% if key.revoked %}<strong style="color: red">[REVOKED]</strong>{% elif key.expired %}<strong style="color: red">[EXPIRED]</strong>{% endif %}
+            <li><strong>pub:</strong> {{ key.get_algo_name()}}-{{ key.get_length() }} / <a href="{{ url_for("user_display_keys.getkey", keyid=key.shortid) }}">0x{{ key.shortid }}</a> ({{ key.fingerprint }}) {% if key.revoked %}<strong style="color: red">[REVOKED]</strong>{% elif key.expired %}<strong style="color: red">[EXPIRED]</strong>{% endif %}
                 <ul>
                     <li>uid: {{ key.uid }}</li>
                     <li>created: {{ key.get_created_ymd() }} expires: {{ key.get_expired_ymd() }}</li>
                 </ul>
             </li>
+            <br>
             {% for sub in key.subkeys %}
-                <li><em>sub:</em> 0x{{ sub[-8:] }} ({{ sub }})</li>
+                <li><em>sub:</em> 0x{{ sub[-8:] }} ({{ sub }})
+                    <ul><li>{% if sub[-8:] in key.signatures %}subsig: 0x{{ key.signatures[sub[-8:]][0][0] }} ({{ key.signatures[sub[-8:]][0][1] }}){% else %}<strong style="color: red">UNVERIFIED</strong>{% endif %}</li></ul>
+                </li>
             {% endfor %}
+            <br>
             <li>sigs:</li>
             <ul>
-                {% for sig in key.signatures %}
-                <li style="white-space: pre;">{{  key.translate(sig) }} <a href="{{ url_for(".getkeyinfo", key=sig[0][-8:]) }}">{{  sig[0] }}</a> ({{ sig[1] }})</li>
+                {% for sig in key.signatures[key.shortid] %}
+                <li style="white-space: pre;">{{  key.translate(sig) }} <a href="{{ url_for(".getkeyinfo", key=sig[0]) }}">{{  sig[0] }}</a> ({{ sig[1] }})</li>
                 {% endfor %}
             </ul>
         </ul>
         Download key:
         <ul>
             <li><a href="{{ url_for("user_display_keys.getkey_dl_ascii", keyid=key.shortid) }}">ASCII</a></li>
-            <li><a href="{{ url_for("user_display_keys.getkey_dl_raw", keyid=key.shortid) }}">Raw</a></li>
+            {#<li><a href="{{ url_for("user_display_keys.getkey_dl_raw", keyid=key.shortid) }}">Raw</a></li>#}
         </ul>
         Raw key:
         <pre><code>{{ keydata }}</code></pre>
