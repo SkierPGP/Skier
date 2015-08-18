@@ -49,7 +49,9 @@ def add():
 
 
 @frontend.route("/keyinfo/<key>", methods=["GET", "POST"])
-def getkeyinfo(key):
+def getkeyinfo(key: str):
+    if key.startswith("0x"):
+        key = key.replace("0x", "")
     # Keyinfo route.
     keydata = pgp.get_pgp_keyinfo(key)
     if request.args.get("added", False): added = True
