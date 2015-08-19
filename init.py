@@ -22,8 +22,10 @@ def init(app, cache):
     app.config["CACHE_REDIS_PORT"] = cfg.cfg.config.redis.port
     app.config["CACHE_REDIS_DB"] = cfg.cfg.config.redis.db
 
-    if cfg.cfg.config.pool_enabled.autosync:
-        threading.Thread(target=pgpactions.synch_keys).start()
+    @app.before_first_request
+    def f():
+        if cfg.cfg.config.pool_enabled.autosync:
+            threading.Thread(target=pgpactions.synch_keys).start()
 
     @app.errorhandler(404)
     def four_oh_four(error):
