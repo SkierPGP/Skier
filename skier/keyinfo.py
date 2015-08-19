@@ -110,6 +110,10 @@ class KeyInfo(object):
         return self.length if self.length != -1 else "U"
 
     @classmethod
+    def from_database_object(cls, obj: db.Key):
+        pass
+
+    @classmethod
     def from_key_listing(cls, listing: dict):
         """
         Generates a key from a gpg.list_keys key.

@@ -2,7 +2,6 @@ import datetime
 
 from flask.ext.sqlalchemy import SQLAlchemy, Model
 from flask.ext.sqlalchemy_cache import CachingQuery
-from sqlalchemy.dialects.postgres import ARRAY
 
 
 #from skier.keyinfo import KeyInfo
@@ -34,8 +33,8 @@ class Key(db.Model):
 
     armored = db.Column(db.Text, nullable=False)
 
-    signatures = db.relationship("Signature", backref="key")
-    subkeys = db.Column(ARRAY(db.String(255)), nullable=False)
+    added_time = db.Column(db.DateTime, default=datetime.datetime.utcnow())
+
 
     @classmethod
     def from_keyinfo(cls, obj):
@@ -47,21 +46,16 @@ class Key(db.Model):
         k.fingerprint = obj.fingerprint
         k.key_fp_id = obj.shortid
         k.keyalgo = obj.get_algo_id()
-        k.subkeys = obj.subkeys
+
+        k.added_time = datetime.datetime.utcnow()
+
         return k
 
     def __repr__(self):
         return "<Key for {uid}>".format(uid=self.uid)
 
 
-class Signature(db.Model):
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-
-    pgp_keyid = db.Column(db.String(16), nullable=False)
-    sigtype = db.Column(db.String(16))
-
-    key_id = db.Column(db.Integer, db.ForeignKey("key.id"))
-
-
-
-
+class Synch(db.Model):
+    id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    synch_time = db.Column(db.DateTime, nullable=False)
+    synch_count = db.Column(db.Integer, default=0)

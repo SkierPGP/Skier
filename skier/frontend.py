@@ -3,6 +3,7 @@ from flask import Blueprint, render_template, url_for, request, redirect
 from skier import pgp
 from cfg import cfg
 from skier.keyinfo import KeyInfo
+from skier.pgpactions import broadcast_add
 
 frontend = Blueprint("frontend", __name__)
 frontend_keys = Blueprint("user_display_keys", __name__)
@@ -43,6 +44,7 @@ def add():
                 return render_template("submit.html", success=False, errormsg="Your key is already added on the server and is unchanged.")
         else:
             keyinfo = pgp.get_pgp_keyinfo(imported[1])
+            broadcast_add(imported[2])
             return redirect(url_for("frontend.getkeyinfo", key=keyinfo.shortid, added=True)), 302
             #return render_template("keyinfo.html", added=True, key=keyinfo, keydata=key)
 

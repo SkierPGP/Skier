@@ -1,13 +1,15 @@
+import threading
+
 from flask import render_template
 
 import cfg
-
 
 def init(app, cache):
     from skier import frontend
     from skier import pgpapi
     from skier import pks
     from cfg import API_VERSION
+    from skier import pgpactions
 
     app.register_blueprint(frontend.frontend)
     app.register_blueprint(frontend.frontend_keys, url_prefix="/keys")
@@ -19,6 +21,9 @@ def init(app, cache):
     app.config["CACHE_REDIS_HOST"] = cfg.redis_host
     app.config["CACHE_REDIS_PORT"] = cfg.cfg.config.redis.port
     app.config["CACHE_REDIS_DB"] = cfg.cfg.config.redis.db
+
+    if cfg.cfg.config.pool_enabled.autosync:
+        threading.Thread(target=pgpactions.synch_keys).start()
 
     @app.errorhandler(404)
     def four_oh_four(error):

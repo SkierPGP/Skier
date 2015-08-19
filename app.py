@@ -2,6 +2,7 @@ import logging
 
 from flask import Flask
 from flask.ext.cache import Cache
+from flask.ext.compress import Compress
 
 import init
 
@@ -29,5 +30,7 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = True
 #gpg.decode_errors = "ignore"
 
 cache = Cache(config={'CACHE_TYPE': 'redis'})
+
+compress = Compress(app) # yay!
 
 init.init(app, cache)

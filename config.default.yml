@@ -38,9 +38,12 @@ sks_imports:
 skier_imports:
  - pgp.sundwarf.me
 
-# Discovery section.
-discovery:
-  # The length of the string to stop single-thread discovering under (less-than equals).
-  length_limit: 4
-  # The timeout before a new discovery for the same string can be launched.
-  timeout: 300
+# Turn on or disable pool functionality.
+pool_enabled:
+  autosync: false
+  syncactions: true
+
+# Keyservers to synchronize with.
+keyservers_synch:
+  - pgp.sundwarf.me
+

@@ -24,20 +24,20 @@ def add_pgp_key(armored: str) -> tuple:
             False and -1 if it was invalid, False and -2 if it already existed or False and -3 if it's a private key.
     """
     if "PGP PRIVATE" in armored:
-        return False, -3
+        return False, -3, None
 
     # Dump the key data.
     newkey = keyinfo.KeyInfo.pgp_dump(armored)
     # You tried, pgpdump. And that's more than we could ever ask of you.
     if not newkey:
-        return False, -1
+        return False, -1, None
 
     # Put the data into the database.
     # Show me on the doll where redis touched you.
     exists = db.Key.query.filter(db.Key.key_fp_id == newkey.shortid).first()
     if exists:
         if exists.armored == armored:
-            return False, -2
+            return False, -2, None
         else:
             use_id = exists.id
     else:
@@ -49,7 +49,7 @@ def add_pgp_key(armored: str) -> tuple:
         key.id = use_id
     db.db.session.merge(key)
     db.db.session.commit()
-    return True, newkey.shortid
+    return True, newkey.shortid, key
 
 
 def get_pgp_armor_key(keyid: str):
