@@ -67,3 +67,7 @@ def import_key(keyserver: str, keyid: str):
             elif added[1] == -2:
                 # exists
                 return -4
+
+
+def sync_key(keyid: str):
+    pass

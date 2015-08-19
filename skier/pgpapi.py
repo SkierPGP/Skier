@@ -1,6 +1,6 @@
 import json
 
-from flask import Blueprint
+from flask import Blueprint, request
 
 from cfg import cfg
 from skier import pgp, pgpactions
@@ -26,6 +26,24 @@ def getkey_raw(keyid):
         return key, 200, {"Content-Type": "application/octet-stream",
                           "Content-Disposition": "attachment; filename=gpgkey.asc",
                           "Cache-Control": "no-cache", "Pragma": "no-cache"}
+
+
+@pgpapi.route("/addkey")
+def addkey():
+    # Read in the key data from the form.
+    try:
+        keydata = request.form["keydata"]
+    except KeyError:
+        return json.dumps({"error": 1, "msg": "no-key"}), 401, {"Content-Type": "application/json"}
+    # Attempt to add the key.
+    key = pgp.add_pgp_key(keydata)
+    if key[0]:
+        return json.dumps({"error": 0, "msg": key[1]}), 200, {"Content-Type": "application/json"}
+    else:
+        return json.dumps({"error": key[1], "msg": "invalid-key-data"}), 401, {"Content-Type": "application/json"}
+
+
+
 
 @pgpapi.route("/import/<keyserver>/<keyid>", methods=["POST"])
 def importkey(keyserver, keyid):
