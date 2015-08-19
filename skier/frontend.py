@@ -43,7 +43,6 @@ def add():
                 return render_template("submit.html", success=False, errormsg="Your key is already added on the server and is unchanged.")
         else:
             keyinfo = pgp.get_pgp_keyinfo(imported[1])
-            print(imported[1])
             return redirect(url_for("frontend.getkeyinfo", key=keyinfo.shortid, added=True)), 302
             #return render_template("keyinfo.html", added=True, key=keyinfo, keydata=key)
 

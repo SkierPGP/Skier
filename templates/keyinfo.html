@@ -48,5 +48,6 @@
     {% else %}
     <h3>Key not found.</h3>
     Sorry, there is no such key as {{ keyid }} on this server.
+    Do you wish to <a href="{{ url_for("frontend.import_key", keyserver="", keyid=keyid) }}">import</a> it?
     {% endif %}
 {% endblock %}
