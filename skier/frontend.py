@@ -72,6 +72,8 @@ def search():
             page = 1
         # Pass a simple list of KeyInfos to the renderer, allowing the template to do the hard work.
         keys = pgp.search_through_keys(request.args.get("keyid", "0x12345678"), page=page)
+        if not keys.total:
+            page = 0
         return render_template("search.html", search=request.args.get('keyid'), keys=keys.items, keyinfo=KeyInfo,
                                page=page, maxpages=keys.pages)
     else:
