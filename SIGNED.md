@@ -3,19 +3,19 @@
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQIcBAABCAAGBQJV1IoYAAoJELM7eGjErpPKC3QQAJ4rcfXDSD9R+Mz5asMrqluZ
-pLydxpqkU6s5PtLD6REDXKwHE2HZcXMPyKxy4QXgPFvT+HWnyBVi/OBXH9y0nG6d
-N3rm8OL+j0fggIKyrR+orC65326LAT7G2BU0VjQDl7URDX0CmewMi3RMcmBGv0Kz
-PjHNfbksB6/LbpvPVaVeeUBdE0pGh4WIatlcowC/q7TlzsMzhQdpr6OcsietbMF+
-2ee3MAdjnqtUjIvjkf4chRyfsuNoMQXFnSZcBl9KrNWCB8zj7GPv/JLZ23WjH3To
-Fl8+KC+If9ZQuGRm0dPZWtHuqYZiG3yDdruXEkJtWjJyXorUbGg1Bau8uI2935nn
-j0sf7Wu1Iqfljn7iJYJrW9+LfsYG1E6aSeK2M+hzCjCDWffRu1w6qUvv+CHChEUw
-oEg7V7tnuPW0KswyOz6+CFOELGTYFm4sK1Ckvui0J/BrC0DoGA5FKqs6nRBTV3nu
-siwtqvC0+yw6hN3SpPgBOnwKDD5uyN7xtECp7XyE6qXzN6vOBD6QvBKwMRG0sRx0
-KR01q3oh0ZAZbCqbxoJ0m+lYi69wOCv//tBEkrVxMjDLdTEPcFeZhDYcGKoWdBT/
-lo2/hA6g1EOMaL65bfzQvsg+La4glXJYl1NH1xjfdEjHCjYDKBGEWuICQYWx5BJe
-/JA+gzOZdfRyahnVrmX7
-=/gf0
+iQIcBAABCAAGBQJV1K3uAAoJELM7eGjErpPKToEQAI+6zb6VMvaUmQNR9T6suC6j
+LEafrRGk4bMPWlj5+hWTLsMuSSHNpfMhC8Ou4bazW8D27rAplQtt9Xg1rUl6nNyu
+/vHT8P9wuz4hMsqZnkJ0T/tZDBOHdCrbdVqDMKK/f33bXSVOfs64QPof3hPsf25+
+QJtc194dsrhsi4ZRpWc3ekVZHX0lLteBCeOHxk1k+Jmbc2CPVL/Zzlo724ksK9AI
+Ium4O4Ji4bgDed7ru8ils2QqCnmm9pWmF4QDKMLvTwdwd2J7zbrVmF8PemJ/kFQZ
+n7SS1iqjxlmDr605bsTKZSiborzXoBzNfD+m8fvIh56ceRdqD1YQRFd9+SrEoN0Z
+Xy/wPKieZ1W22j4tguC16qr5a/RMDuQxtczJPlFe7BHmznzfgcwjrB+AC4pEkUTX
+uSsIAUDuLjM/KLLlsuQOwXJKu6AgmkOEYxnAoUSz5yfLvZNz5YsP/ZktkiPvUoiY
+C2IfVYkgpJTELSY383uZJV9+OfzL+mDZWt4cVOXU39w9v8crVIO2xIwJJ5uv+x03
+S0KB3045UHpJ2qf1unEJ92nq/tZENIApgVFHu2Md+THMV/I1txXKXdwkpxO8UEks
+9aVprjHso+3uGWEi0MCPoO73f4K35SRvBJVCal4LJidR+RRnPKI5CT/ABVaGDaA6
+a3CjD/VjFj20iDGHwsgq
+=VU/V
 -----END PGP SIGNATURE-----
 
 ```
@@ -30,12 +30,12 @@ lo2/hA6g1EOMaL65bfzQvsg+La4glXJYl1NH1xjfdEjHCjYDKBGEWuICQYWx5BJe
 size   exec  file                                         contents                                                        
              ./                                                                                                           
 884            .gitignore                                 c91a7b164cd4e40d78394d5b6b65847fa957d01af2c0489636bf2445696493a3
-725            app.py                                     6dbc0a5c49cac19d5023bacd4c14935a29b9f20be3e11a7b32f2c8755fcecce4
-685            cfg.py                                     e4ec776b6c441bcb631f0859409427e75982ccf747c51975f90b2420405747af
-982            config.default.yml                         0ef37049d912027b1ae52f0f13dd3c6a873e58d751696600be8d1479350e5e45
-1827           db.py                                      9cc194398f47daa2d5a0f37040d7855f0a0a1437da816ef951831f5257c823a3
+798            app.py                                     5592b9bea7a5e986d06b350cc01e796612d3fd4689106e66405f6946dceaac41
+685            cfg.py                                     cc08635352c9cf77e4db1c69ed9073d974fb0f21932426a812ebcb8dbb71b849
+919            config.default.yml                         0709923d8eadb84495e3f0acfb01a11a5b78f24bc66cf8a42d223bccd819fbf5
+1693           db.py                                      a233460967755a66f93ce706d8c5633da9b01b174e143baf150337f8b1ce4ee5
 744            gunicorn_config.py                         dd000a4fd02a9b424c7b3a4b49b39efbac346d8f13ac25199779ad8a7bfee6a8
-979            init.py                                    6ee48782778a76c6da4cedb6860d4219a6e8df6825f57e3c0c3201847dd82903
+1138           init.py                                    58bf1237a11b5b308198fac7e3977344306b0b74cb0cc1429079a8716a8f4d1f
 34519          LICENCE                                    91b65277959ec273763d28ef002e83a6b3fba57c7a35436c9e5b66536333d720
 294    x       manager.py                                 9cd86afdea07ec0a0a77f8adc5f106a49e5921b464f7171f9eaaa66f9041ba8d
                markdown/                                                                                                  
@@ -48,20 +48,22 @@ size   exec  file                                         contents
 38     x         README                                   31595cf53626af9ed16e15c44fa43183209cc163fbc3ebcb904b22ac436a8884
 412    x         script.py.mako                           0fc905238e3ff6f04966b0184a46710d35f6f92e58fa811eb4477d04a968f52f
                  versions/                                                                                                
+1319               skier_migrate_add_added_time_field.py  51342ed11b81e9ac4fcd2887648eee864a61ca1b078bd18cde2c4a50a7bb01e9
+753                skier_migrate_add_synch_field.py       1e836a7b0eda998be193dd5192c53ff5e3afb383bb751b68fb645da48fba4922
 1609               skier_migrate_initial_db_migration.py  2e656bf3a40b9801f3245f41ab85b414ee3e6878172c3610d80d326b9ec1014e
-396            requirements.txt                           a44cf9e94c543bf431dc32bebe35999e844b3bf6ddc8b0f567b1458d66c42e5a
+411            requirements.txt                           c561a87aa7a5d2fbdd1067fed6a629b526de4ae0b11c1eb3fdcd7073e4ee5589
 487    x       setup.sh                                   eee44f8efd2e9430cb999ddcc9c4720bb8a7914b69ca394908357c071837f903
                skier/                                                                                                     
 0                __init__.py                              e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
-4121             frontend.py                              5d020c0e4ec627f16900e9140619d04dc2253b56f05c2685ddce6c1cc02f8b35
-8384             keyinfo.py                               39b6d7963459469463350d3507fc7977c281dd6baf1daf88de7b0260ff709fbf
+4203             frontend.py                              aa3699a48943fc0cdb3e5292ffd85da38974cbff9071606fe005ac0b62cae6af
+8463             keyinfo.py                               8c8d1f56b7318f0e28f9f444e995663dafa04284e005b8ac13e26b4b1075ccd2
                  old/                                                                                                     
 9524               pgp.py                                 827d4eae7c604b9db3023caf84e9bb8836f17f05c394c0c58be569a3ff02ca06
-3717             pgp.py                                   b90a38c2332d29be42847c04201fa0d2f0114368fd64607dc75f85772f0db8c9
-2169             pgpactions.py                            ec349c4a84fbd79f6bc6a00d2b1a56f72ebcf5a8ca03aacd79da0f2f96eb8a8c
-2714             pgpapi.py                                b07019339abb3f2084f4ca62c709ec8e314d628ea61d6924ca9c53af3097e015
+3740             pgp.py                                   4d6dd9db407cbe7f8f7501af4daaec4ae06742e758c49de56940794fa726f43a
+5513             pgpactions.py                            a204e4da0ce5fdecd197441f77f439d03f3ecd90d304869d42e9124f816b2ae6
+4183             pgpapi.py                                9bb59d93660ad8ae49fd722e2910123b258b8d86679d2de977602f1dfb85fc14
 1671             pks.py                                   e6badff7e521e7dbea32393b0dfa6c0ae0c1553b5943f0b8e6992457918d08fd
-76             skier.py                                   9d578dafe84ba95e39ec299feb9d6bf3834c242dd4a8970bd26b8fe13931a6aa
+194            skier.py                                   70b4b1032e676e72dca0ce4de161b9f8bcb441e6670930e713e5c1d92310c824
 59     x       start.sh                                   0d36f57edb7b4917be091124c6fcefdfe14727e0c68535e72605d74b74a913e0
                static/                                                                                                    
                  css/                                                                                                     
