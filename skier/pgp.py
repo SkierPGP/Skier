@@ -58,7 +58,14 @@ def get_pgp_armor_key(keyid: str):
     :param keyid: The key ID to lookup.
     :return: The armored version of the PGP key, or None if the key does not exist in the DB.
     """
-    key = db.Key.query.options(FromCache(cache)).filter(db.Key.key_fp_id == keyid).first()
+    if keyid.startswith("0x"):
+        keyid = keyid.replace("0x", "")
+    if len(keyid) == 40:
+        key = db.Key.query.options(FromCache(cache)).filter(db.Key.fingerprint == keyid).first()
+    elif len(keyid) == 8:
+        key = db.Key.query.options(FromCache(cache)).filter(db.Key.key_fp_id == keyid).first()
+    else:
+        key = db.Key.query.options(FromCache(cache)).filter(db.Key.uid.ilike("%{}%".format(keyid))).first()
     if key: return key.armored
     else: return None
 
@@ -84,7 +91,12 @@ def search_through_keys(search_str: str, page: int=1, count: int=10):
     """
     if search_str.startswith("0x"):
         search_str = search_str.replace("0x", "")
-        results = db.Key.query.options(FromCache(cache)).filter(db.Key.key_fp_id == search_str).paginate(page, per_page=count)
+        if len(search_str) == 40:
+            results = db.Key.query.options(FromCache(cache)).filter(db.Key.fingerprint == search_str).paginate(page, per_page=count)
+        elif len(search_str) == 8:
+            results = db.Key.query.options(FromCache(cache)).filter(db.Key.key_fp_id == search_str).paginate(page, per_page=count)
+        else:
+            results = db.Key.query.options(FromCache(cache)).filter(db.Key.uid.ilike("%{}%".format(search_str))).paginate(page, per_page=count)
     else:
         results = db.Key.query.options(FromCache(cache)).filter(db.Key.uid.ilike("%{}%".format(search_str))).paginate(page, per_page=count)
     return results

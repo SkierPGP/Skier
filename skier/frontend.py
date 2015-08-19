@@ -75,7 +75,7 @@ def search():
         if not keys.total:
             page = 0
         return render_template("search.html", search=request.args.get('keyid'), keys=keys.items, keyinfo=KeyInfo,
-                               page=page, maxpages=keys.pages)
+                               page=page, maxpages=keys.pages, num_keys=keys.total)
     else:
         return render_template("search.html")
 

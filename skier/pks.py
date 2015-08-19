@@ -1,6 +1,7 @@
 from flask import Blueprint, request
 
 from skier import pgp
+from skier.keyinfo import KeyInfo
 
 legacypks = Blueprint("pks", __name__)
 
@@ -29,20 +30,22 @@ def pksgetkey():
     else:
         return "Invalid request", 400
 
-def format_pks(keys: list):
+def format_pks(keys):
     # First, add header.
     # This comes in the format of "info:1:{number-of-keys}"
     data = ""
-    data += "info:1:{}\n".format(len(keys))
+    data += "info:1:{}\n".format(keys.total)
     # Then, add the strings for each key.
-    for key in keys:
-        s1, s2 = key.to_pks()
+    for key in keys.query.all():
+        # Load keyinfo.
+        newkey = KeyInfo.pgp_dump(key.armored)
+        s1, s2 = newkey.to_pks()
         data += s1 + '\n' + s2 + '\n'
     return data
 
 def pkssearch(rargs):
     keys = pgp.search_through_keys(rargs.get("search"))
-    if not keys:
+    if not keys.total:
         return "No keys found", 404
     else:
-        return format_pks(keys), 200, {"X-HKP-Results-Count": len(keys)}
+        return format_pks(keys), 200, {"X-HKP-Results-Count": keys.total}
