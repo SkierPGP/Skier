@@ -2,17 +2,29 @@
 <nav class="navbar navbar-default">
   <div class="container-fluid">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#main-navbar" aria-expanded="false">
         <span class="sr-only">Toggle navigation</span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="{{ url_for("frontend.index") }}">Skier</a>
+      <a class="navbar-brand" style="background-color: #080808" href="{{ url_for("frontend.index") }}">Skier</a>
     </div>
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+    <div class="collapse navbar-collapse" id="main-navbar">
       <ul class="nav navbar-nav">
-        <li {% if curr == "about" %}class="active"{% endif %}><a href="{{ url_for("frontend.about") }}">About</a></li>
+        <li class="{% if curr == "about" %}active {% endif %}dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">About <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="{{ url_for("frontend.whatispgp") }}">PGP</a></li>
+            <li><a href="{{ url_for("frontend.skier_vs_sks") }}">Skier vs SKS</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a href="#">Pool information</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a href="#">Running Skier</a></li>
+          </ul>
+        </li>
+
+
         <li {% if curr == "add" %}class="active"{% endif %}><a href="{{ url_for("frontend.add") }}">Add a key</a></li>
         <li {% if curr == "search" %}class="active"{% endif %}><a href="{{ url_for("frontend.search") }}">Search</a></li>
       </ul>

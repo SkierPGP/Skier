@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block navbar %}
+<div class="container">
+    {% with curr = "about" %}
+        {% include "navbar.html" %}
+    {% endwith %}
+</div>
+{% endblock %}
+
+{% block content %}
+    <div class="keyinfo">
+        This server has the following pool features enabled:
+        <ul>
+            <li>Autosynch: {{ autosynch }}</li>
+            <li>Upload synching: {{ autoupload }}</li>
+        </ul>
+        My pool name is {{ poolname }}<br>
+        My pool servers are:
+        <ul>
+        {% for server in pool_servers %}
+            <li>{{ server }}</li>
+        {% endfor %}
+        </ul>
+    </div>
+
+{% endblock %}
