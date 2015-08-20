@@ -1,6 +1,7 @@
 from enum import Enum
 import datetime
 import time
+from math import ceil, log
 
 from flask.ext.sqlalchemy_cache import FromCache
 import pgpdump.packet
@@ -29,15 +30,14 @@ class PGPAlgo(Enum):
 
     unknown = 999
 
-
 class KeyInfo(object):
-    def __init__(self, uid: str, keyid: str, fingerprint: str,
-                 length: int, algo: PGPAlgo, created: int, expires: int, subkeys: list, sigs: list=[],
-                 expired: bool=False, revoked: bool = False):
+    def __init__(self, uid: str=None, keyid: str=None, fingerprint: str=None,
+                 length: int=None, algo: PGPAlgo=None, created: int=None, expires: int=None, subkeys: list=[], sigs: dict={},
+                 expired: bool=False, revoked: bool = False, armored: str=""):
         self.uid = uid
         self.keyid = keyid
 
-        self.shortid = fingerprint[-8:]
+        self.shortid = fingerprint[-8:] if fingerprint else None
 
         self.fingerprint = fingerprint
         self.length = length
@@ -52,13 +52,7 @@ class KeyInfo(object):
         self.expired = expired
         self.revoked = revoked
 
-    def __str__(self):
-        return "<PGP Key {id} for {uid} using {algo}-{length}>".format(id=self.keyid,
-            uid=self.uid, algo=PGPAlgo(self.algo).name, length=self.length)
-
-    def __repr__(self):
-        return "<PGP Key {id} for {uid} using {algo}-{length}>".format(id=self.keyid,
-            uid=self.uid, algo=PGPAlgo(self.algo).name, length=self.length)
+        self.armored = armored
 
     def to_pks(self):
         """
@@ -74,10 +68,10 @@ class KeyInfo(object):
     def get_expired_ymd(self):
         if self.expires in [0, None]:
             return "never"
-        return datetime.datetime.fromtimestamp(float(self.expires)).strftime("%Y-%m-%d")
+        return self.expires.strftime("%Y-%m-%d")
 
     def get_created_ymd(self):
-        return datetime.datetime.fromtimestamp(float(self.created)).strftime("%Y-%m-%d")
+        return self.created.strftime("%Y-%m-%d")
 
     def get_algo_name(self):
         return PGPAlgo(self.algo).name
@@ -93,7 +87,7 @@ class KeyInfo(object):
             return wrap("revoke")
         elif sig[2] == 24:
             return wrap("subsig")
-        elif sig[1] == self.uid:
+        elif sig[2] == 19 and sig[1] == self.uid:
             return wrap("selfsig")
         elif sig[2] == 19:
             return wrap("sig-3")
@@ -109,9 +103,6 @@ class KeyInfo(object):
     def get_length(self):
         return self.length if self.length != -1 else "U"
 
-    @classmethod
-    def from_database_object(cls, obj: db.Key):
-        pass
 
     @classmethod
     def from_key_listing(cls, listing: dict):
@@ -139,29 +130,30 @@ class KeyInfo(object):
         return key
 
     @classmethod
-    def pgp_dump(cls, armored: str):
+    def pgp_dump(cls, armored: str, packets: list=None):
         """
         Generates a key using pgpdump.
         :param armored: The armored data to output.
+        :param packets: Optional: A packets list to use instead of the armored data.
         :return: A new :KeyInfo: object.
         """
+        if packets is None:
+            armored = armored.split("-----END PGP PUBLIC KEY BLOCK-----")[0] + "-----END PGP PUBLIC KEY BLOCK-----"
 
-        armored = armored.split("-----END PGP PUBLIC KEY BLOCK-----")[0] + "-----END PGP PUBLIC KEY BLOCK-----"
-
-        try:
-            data = AsciiData(armored.encode())
-        except PgpdumpException as e:
-            return None, e.args
-        try:
-            packets = [pack for pack in data.packets()]
-        except PgpdumpException as e:
-            return None, e.args
+            try:
+                data = AsciiData(armored.encode())
+            except PgpdumpException as e:
+                return None, e.args
+            try:
+                packets = [pack for pack in data.packets()]
+            except PgpdumpException as e:
+                return None, e.args
 
         # Set initial values
         uid = ""
         keyid, fingerprint = "", ""
         length = 0
-        algo = ""
+        algo = 999
         created, expires = 0, 0
         revoked = False
 
@@ -183,7 +175,14 @@ class KeyInfo(object):
                 except KeyError:
                     algo = PGPAlgo.unknown
                 # Check if the length is known for ECC keys.
-                length = packet.modulus_bitlen if packet.modulus_bitlen else -1
+                if packet.modulus_bitlen:
+                    length = packet.modulus_bitlen
+                else:
+                    if packet.key_value:
+                        length = ceil(log(packet.key_value, 2))
+                        length += 1 if length % 2 else 0
+                    else:
+                        length = -1
                 keyid = packet.key_id.decode()
                 fingerprint = packet.fingerprint.decode()
             elif isinstance(packet, pgpdump.packet.SignaturePacket):
@@ -219,9 +218,56 @@ class KeyInfo(object):
                 )
             elif isinstance(packet, pgpdump.packet.UserIDPacket):
                 uid = packet.user
+            elif isinstance(packet, str):
+                armored = packet
             most_recent_packet = packet
+
 
         return KeyInfo(uid=uid, keyid=keyid, fingerprint=fingerprint, length=length, algo=algo,
                        created=created, expires=expires, revoked=revoked, expired=(time.time() - expires if expires else 1) < 0,
-                       subkeys=subkeys, sigs=signatures)
+                       subkeys=subkeys, sigs=signatures, armored=armored)
 
+    @classmethod
+    def from_database_object(cls, keyob: db.Key):
+        k = KeyInfo()
+        k.uid = keyob.uid
+        k.length = keyob.length
+        k.created = keyob.created
+        k.expires = keyob.expires if keyob.expires else datetime.datetime(1970, 1, 1, 0, 0, 0)
+        k.fingerprint = keyob.fingerprint
+        k.keyid = keyob.fingerprint[-16:]
+        k.shortid = keyob.key_fp_id
+        k.algo = PGPAlgo(keyob.keyalgo)
+
+        k.added_time = datetime.datetime.utcnow()
+
+        # Work around a CPython bug, nullify sigs and subkeys.
+        k.signatures = {}
+        k.subkeys = []
+
+        k.armored = keyob.armored
+
+        for sig in keyob.signatures:
+            assert isinstance(sig, db.Signature)
+            if not sig.key_sfp_for in k.signatures:
+                k.signatures[sig.key_sfp_for] = []
+            tmpd = []
+            tmpd.append(sig.pgp_keyid)
+
+            sig_uid = db.Key.query.options(FromCache(cache)).filter(db.Key.key_fp_id == sig.pgp_keyid).first()
+            # Check if we know it
+            if not sig_uid:
+                sig_uid = "[User ID Unknown]"
+            else:
+                sig_uid = sig_uid.uid
+
+            tmpd.append(sig_uid)
+            tmpd.append(sig.sigtype)
+            k.signatures[sig.key_sfp_for].append(tmpd)
+            del tmpd
+
+        if keyob.subkeys:
+            for sub in keyob.subkeys:
+                k.subkeys.append(sub)
+
+        return k

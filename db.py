@@ -5,6 +5,7 @@ from flask.ext.sqlalchemy_cache import CachingQuery
 
 
 #from skier.keyinfo import KeyInfo
+from sqlalchemy.dialects.postgresql import ARRAY
 
 from app import app
 
@@ -31,10 +32,12 @@ class Key(db.Model):
 
     length = db.Column(db.Integer, nullable=False)
 
-    armored = db.Column(db.Text, nullable=False)
+    armored = db.Column(db.Text, nullable=True)
 
     added_time = db.Column(db.DateTime, default=datetime.datetime.utcnow())
 
+    signatures = db.relationship("Signature", backref="key")
+    subkeys = db.Column(ARRAY(db.String(255)), nullable=True)
 
     @classmethod
     def from_keyinfo(cls, obj):
@@ -49,10 +52,36 @@ class Key(db.Model):
 
         k.added_time = datetime.datetime.utcnow()
 
+        k.armored = obj.armored
+
+        for key, v in obj.signatures.items():
+            for sig in v:
+                sigob = Signature()
+                sigob.sigtype = sig[2]
+                sigob.pgp_keyid = sig[0]
+                sigob.key_sfp_for = key
+                k.signatures.append(sigob)
+
+        if k.subkeys is None:
+            k.subkeys = []
+        for sub in obj.subkeys:
+            k.subkeys.append(sub)
+
         return k
 
     def __repr__(self):
-        return "<Key for {uid}>".format(uid=self.uid)
+        return "<Key {fp} for {uid}>".format(uid=self.uid, fp=self.fingerprint)
+
+
+class Signature(db.Model):
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+
+    pgp_keyid = db.Column(db.String(16), nullable=False)
+    sigtype = db.Column(db.Integer)
+
+    key_sfp_for = db.Column(db.String(16))
+
+    key_id = db.Column(db.Integer, db.ForeignKey("key.id"))
 
 
 class Synch(db.Model):

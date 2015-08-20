@@ -14,11 +14,15 @@ def index():
 
 @frontend.route("/about")
 def about():
-    return render_template("about.html",
-        add_link=url_for("frontend.add"),
-        search_link=url_for("frontend.search"))
-        #currkeys=len(gpg.list_keys())) # This is commented out right now because I can't think of a fast way to implement it.
-                                        # If you can think of a better way to do this than loading all keys into memory, go ahead.
+    return render_template("generated/_about_skier.html")
+
+
+
+@frontend.route("/about/pool")
+def pool():
+    return render_template("about/pool.html",
+            autosynch=cfg.config.pool_enabled.autosync, autoupload=cfg.config.pool_enabled.syncactions,
+            pool_servers=cfg.config.keyservers_synch, poolname=cfg.config.pool_name)
 
 @frontend.route("/about/faq")
 def faq():
@@ -27,6 +31,10 @@ def faq():
 @frontend.route("/about/pgp")
 def whatispgp():
     return render_template("about/pgp.html")
+
+@frontend.route("/about/skier-vs-sks")
+def skier_vs_sks():
+    return render_template("about/skier_vs_sks.html")
 
 @frontend.route("/add", methods=["GET", "POST"])
 def add():

@@ -43,6 +43,8 @@ pool_enabled:
   autosync: false
   syncactions: true
 
+pool_name: skier-core
+
 # Keyservers to synchronize with.
 keyservers_synch:
   - pgp.sundwarf.me

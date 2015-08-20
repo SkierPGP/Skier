@@ -36,7 +36,7 @@ def add_pgp_key(armored: str) -> tuple:
     # Show me on the doll where redis touched you.
     exists = db.Key.query.filter(db.Key.key_fp_id == newkey.shortid).first()
     if exists:
-        if exists.armored == armored:
+        if keyinfo.KeyInfo.from_database_object(exists).compare(newkey):
             return False, -2, None
         else:
             use_id = exists.id
@@ -44,7 +44,8 @@ def add_pgp_key(armored: str) -> tuple:
         use_id = None
 
     key = db.Key.from_keyinfo(newkey)
-    key.armored = armored
+    if not newkey.armored:
+        key.armored = armored
     if use_id:
         key.id = use_id
     db.db.session.merge(key)
@@ -66,7 +67,11 @@ def get_pgp_armor_key(keyid: str):
         key = db.Key.query.options(FromCache(cache)).filter(db.Key.key_fp_id == keyid).first()
     else:
         key = db.Key.query.options(FromCache(cache)).filter(db.Key.uid.ilike("%{}%".format(keyid))).first()
-    if key: return key.armored
+    if key:
+        if key.armored:
+            return key.armored
+        else:
+            return ""
     else: return None
 
 def get_pgp_keyinfo(keyid: str):
@@ -75,9 +80,9 @@ def get_pgp_keyinfo(keyid: str):
     :param keyid: The ID of the key to lookup.
     :return: A new :skier.keyinfo.KeyInfo: object for the key.
     """
-    key = db.Key.query.options(FromCache(cache)).filter(db.Key.key_fp_id == keyid).first()
+    key = db.Key.query.filter(db.Key.key_fp_id == keyid).first()
     if key:
-        return keyinfo.KeyInfo.pgp_dump(armored=key.armored)
+        return keyinfo.KeyInfo.from_database_object(key)
 
 
 def search_through_keys(search_str: str, page: int=1, count: int=10):

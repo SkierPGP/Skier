@@ -23,7 +23,7 @@ def init(app, cache):
     app.config["CACHE_REDIS_DB"] = cfg.cfg.config.redis.db
 
     @app.before_first_request
-    def f():
+    def f(*args, **kwargs):
         if cfg.cfg.config.pool_enabled.autosync:
             threading.Thread(target=pgpactions.synch_keys).start()
 
