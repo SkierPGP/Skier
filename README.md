@@ -7,7 +7,7 @@ Skier is a PGP public key keyserver, built on top of the Flask microframework, d
 
 See Skier in action: [https://pgp.sundwarf.me](https://pgp.sundwarf.me/)
 
-[Contributing](CONTRIBUTING.md)
+[Contributing](CONTRIBUTING.md)  
 [Todo](TODO.md)
 
 
@@ -71,10 +71,10 @@ Skier is written in Python, using Flask. This makes getting a server up very eas
         ./setup.sh $(cwd)
  
  6. **Import some sample data.**  
-    There are three ways to go about this:
-        - Add your own PGP keys, or generate some fake ones. 
-        - Import keys from an SKS dump.
-        - Synch your server with the official skier servers.
+    There are three ways to go about this:  
+        - Add your own PGP keys, or generate some fake ones.  
+        - Import keys from an SKS dump.  
+        - Synch your server with the official skier servers.  
         
     The first one is the best, as you can control exactly what keys you want to put on there, and what data.
     If you import keys from an SKS dump, you get a more diverse range of keys, but you may not get exactly what you want.
