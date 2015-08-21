@@ -3,19 +3,19 @@
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQIcBAABCAAGBQJV1wO1AAoJELM7eGjErpPKR5UP/RVTAigwrNefWM+30sDzcq5L
-FSFSepMWhcsaSEtSMh5bk76vBPMj2XjuzAnsUVomtR6vtSf1mOMeEhFHEY+gs+7h
-h3FD1qeSfShJ/S7G25SYvKnu8BtqHYPC1bKjt256MIHGaCSJ7WOQCVyqLMiPTKMc
-CWKbyhotOZWbp3zRDjhpOJiDvlSONlZ/rN/fsSk1crjbneSS09+Ri/KsWh0qCxWp
-oooOaKYsBCSrRcgn1Xeul7iLUPrWZcOU87g7rWsOf52YerwTNqv8azoR+2u56HzF
-aj6gyOCaWGlpY6ZN32vzkGgwdOhuZa742GFsOD6uVZHFyL5utlVuKOONP7RNU5BT
-G79mMvGAqhw2RFMjnERx5e/0BTj0Wi/kqIps6PVKQ7Yi2XWWfrZYPugTdG/ZqBYM
-FzDEG1JVEHeXt8bYL5V4OwVptRj55Sfg/IP3IUQI2/RToXpczIA1+imaQZcaAZeS
-Ns/nqoHapTz5WZ+zvYjFfM0cfd+DLZLi9zTGWR3j8AFOeFR54AqWqKUAv/G98xWm
-wzAC5O7gQBDPB4/Usn37mDCPLTkfzrhyAvJDhh7KoDy0Rj1pHZc7XzNWoZ/IrkNv
-86TpImee+shKElSNdVwBrPMlwKXpby7cNmFw6KvsPgjZT+Cm5GLiRs8krn7lHTQb
-SWMQzMMQUCgLUb+rM71/
-=Bm3/
+iQIcBAABCAAGBQJV13uPAAoJELM7eGjErpPKQIkP/ijaDA3OpBGuTXG5/LFNS7oh
+H94y11s/0L+zY6FoDzoY0nkkyv5ny/6CynU3XRlBFDndmYUULNlj/M20R5c00wy1
+Cw/S/XWfCCxhiFaJ3uLPb5fqvItSeOY18ecN8/lb9efOr5Re4uAxB5QCrQLA+Mfy
+pLyDm+uswjK6GhMp8X2RothYLtSSbL2F9CS3j/hqLPtPhDa9yis6eRK5O1hR+VBl
+Lbm9UWHs6o4tEJirwENwfnFwF/Vr/Nh9cJtiS1OYq5WqkCWZie5sfXKFawEfg2u2
+jRkzgIZmMr2qeQ/rSPF8PIK+BICXyXD9AAoKiAd83MHP50LQ3FhmlmByVZ5DFzOT
+zUi0jZBYJAUk7GjEhk+rlsZVWKjMHYqBrybzVoy0JkVDds5oB5ziL/t/ul6EsppS
+kfH+LufSt+CLcgmq68X2G6mRZQSrzhn///zUAaO/PdjShCMd6N1Hz+G5IBPGp6dU
+N2uvFM2PqWfDEeeTs4UoKy2KjaLkhUnaTj/wPz3FQy8vcCfcUNpJePf+F8De1UvT
+nmcLV1qMMNpiGAbugf6PfgaVhLVEUntajcai5a7f04YT7lHHr0okuA0fPqZ17yWz
+D+46b8PVoDrP1mmMcA8OSH1yWV3KcnYo2H2/OdigIHsjkBSN3pMUf8kxiHjUFshU
+szD/ADW9dSjrFF9FG7Re
+=51gd
 -----END PGP SIGNATURE-----
 
 ```
@@ -31,8 +31,9 @@ size   exec  file                                         contents
              ./                                                                                                           
 884            .gitignore                                 c91a7b164cd4e40d78394d5b6b65847fa957d01af2c0489636bf2445696493a3
 798            app.py                                     5592b9bea7a5e986d06b350cc01e796612d3fd4689106e66405f6946dceaac41
-685            cfg.py                                     cc08635352c9cf77e4db1c69ed9073d974fb0f21932426a812ebcb8dbb71b849
+685            cfg.py                                     72b69662ba0db3e3b80b6d4e66874a28f3ceebf53eb1bb7cd7a4bb5c9538e5ba
 942            config.default.yml                         f9e53baf75d66ee8af9e67e7443ea0afc1f90412a00d13d9248feb1ef8a1a923
+1378           CONTRIBUTING.md                            c4fab7e295a2d1022781c218330c69e9f9ed968e5aaa296d6e51a3a28236d165
 2616           db.py                                      5b128370584a7f566c0e9e08a5a867f0903b3affb63f0cfbb6c5d41be3659a78
 744            gunicorn_config.py                         dd000a4fd02a9b424c7b3a4b49b39efbac346d8f13ac25199779ad8a7bfee6a8
 1204           init.py                                    4f7b4a0f3966f0e54cb8ba9ef43765fc54df3939067a5504bbc2dcfa64fbeede
@@ -53,6 +54,7 @@ size   exec  file                                         contents
 753                skier_migrate_add_synch_field.py       1e836a7b0eda998be193dd5192c53ff5e3afb383bb751b68fb645da48fba4922
 1335               skier_migrate_database_stuff.py        867cc2cf4df95948dc4c0eecc520ca4264d8ef27aa41a3d146f998b335e8dd9a
 1609               skier_migrate_initial_db_migration.py  2e656bf3a40b9801f3245f41ab85b414ee3e6878172c3610d80d326b9ec1014e
+3727           README.md                                  feb71d0d7d999eadd90d8a76201b91c15c9427503c21942963d500190e37f645
 440            requirements.txt                           e354528fb6f6aae6cbc71df44942881d365684e6e92d0b5f3006d4298939ebcd
 487    x       setup.sh                                   eee44f8efd2e9430cb999ddcc9c4720bb8a7914b69ca394908357c071837f903
                skier/                                                                                                     
@@ -86,6 +88,7 @@ size   exec  file                                         contents
 1776             navbar.html                              7560344f7e4b7e0b70da73533498e383385fec0643194731b10066809a213182
 3485             search.html                              e177a8855496754b463a3a0f0a384de037d07309dd8b60c21365b506e2151723
 1946             submit.html                              5200d8b6b68ae0429c0d59aa505bcc20563e53004d8af8070e8172cbed17b217
+128            TODO.md                                    af181f287ce1ca3097dc9ad5af4de78cb3dc9fe0552d364e8293492ba5a045c3
                tools/                                                                                                     
 317              fix_md.py                                c45d9010fff238275adaf02c04286558ec68afe64d5e4071cde2fd07d87267eb
 1078             gen_server_list.py                       1879264ef92dc34bf0a6705b645301cc7f0bf01c6b726f00f792f3863fdb626a
