@@ -36,7 +36,7 @@ def add_pgp_key(armored: str) -> tuple:
     # Show me on the doll where redis touched you.
     exists = db.Key.query.filter(db.Key.key_fp_id == newkey.shortid).first()
     if exists:
-        if keyinfo.KeyInfo.from_database_object(exists).compare(newkey):
+        if keyinfo.KeyInfo.from_database_object(exists) == newkey:
             return False, -2, None
         else:
             use_id = exists.id

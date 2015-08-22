@@ -9,7 +9,7 @@ Skier is compatible with any PGP client that uses the PKS endpoints used in SKS.
 A better question is why SKS?
 
 - SKS is slow
-- SKS is written in ML. What's ML? Exactly.
+- SKS is written for OCaml.
 - SKS frontends are ugly
 - SKS is monolithic
 - SKS raises an error if you look at it funny
@@ -19,7 +19,7 @@ Skier uses a PostgreSQL database and a Redis cache, both modern technologies, de
 Skier's backend is designed to fetch results quickly, and only the ones needed, rather than crashing because it tries to search a file for 10,000 entries.
 
 - SKS is slow; Skier is designed for speed, with caching and special workers.
-- SKS is written in ML; Skier is written in Python, which is well-known, with many devs, and on a stable web ecosystem.
+- SKS is written for OCaml; Skier is written in Python, which is well-known, with many devs, and on a stable web ecosystem.
 - SKS frontends are ugly; Skier uses Bootstrap 3, which fits the modern standards of a pretty website.
 - SKS is monolithic; Skier is minimal, designed to glue many faster specially-designed applications together to get a working keyserver.
 - SKS is error-prone; Skier will always attempt to get your result. 500 errors can and will happen, but only under exceptional circumstances.

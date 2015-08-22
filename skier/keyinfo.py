@@ -103,6 +103,23 @@ class KeyInfo(object):
     def get_length(self):
         return self.length if self.length != -1 else "U"
 
+    # Magic methods
+    def __eq__(self, other):
+        if not isinstance(other, self.__class__):
+            return False
+        else:
+            return all((other.fingerprint == self.fingerprint,
+                       other.algo == self.algo,
+                       other.created == self.created,
+                       other.expires == self.expires,
+                       other.keyid == self.keyid,
+                       other.length == self.length,
+                       other.shortid == self.shortid,
+                       other.signatures == self.signatures,
+                       other.uid == self.uid,
+                       other.subkeys == self.uid))
+
+
 
     @classmethod
     def from_key_listing(cls, listing: dict):
