@@ -50,6 +50,8 @@ def add():
                 return render_template("submit.html", success=False, errormsg="Seems like an error happened importing your key. Double-check you copy/pasted it correctly.")
             elif imported[1] == -2:
                 return render_template("submit.html", success=False, errormsg="Your key is already added on the server and is unchanged.")
+            elif imported[1] == -3:
+                return render_template("submit.html", success=False, errormsg="Your key was invalid and could not be imported.")
         else:
             keyinfo = pgp.get_pgp_keyinfo(imported[1])
             broadcast_add(imported[2])
