@@ -16,6 +16,6 @@ Flask-SQLAlchemy>=2.0
 Flask-SQLAlchemy-Cache>=0.1.2
 Flask-Compress
 psycopg2
-git+https://github.com/SunDwarf/python-pgpdump.git@suport-ecc # Not a typo
+git+https://github.com/SkierPGP/python-pgpdump.git
 # For importing
 python-gnupg
