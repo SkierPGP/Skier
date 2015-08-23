@@ -1,7 +1,7 @@
 # Skier - Security Key servIER
 
 [![GitHub version](https://badge.fury.io/gh/SkierPGP%2FSkier.svg)](http://badge.fury.io/gh/SkierPGP%2FSkier)
-[![Skier version](https://img.shields.io/badge/Skier-1.3-green.svg)](https://img.shields.io/badge/Skier-1.3-green.svg)
+[![Skier version](https://img.shields.io/badge/Skier-1.4-green.svg)](https://img.shields.io/badge/Skier-1.4-green.svg)
 
 Skier is a PGP public key keyserver, built on top of the Flask microframework, designed a direct replacement for SKS.  
 
