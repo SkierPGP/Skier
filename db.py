@@ -39,6 +39,8 @@ class Key(db.Model):
     signatures = db.relationship("Signature", backref="key")
     subkeys = db.Column(ARRAY(db.String(255)), nullable=True)
 
+    oid = db.Column(db.String(255), nullable=True)
+
     @classmethod
     def from_keyinfo(cls, obj):
         k = Key()
@@ -66,6 +68,8 @@ class Key(db.Model):
             k.subkeys = []
         for sub in obj.subkeys:
             k.subkeys.append(sub)
+
+        k.oid = obj.oid
 
         return k
 

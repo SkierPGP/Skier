@@ -33,7 +33,7 @@ class PGPAlgo(Enum):
 class KeyInfo(object):
     def __init__(self, uid: str=None, keyid: str=None, fingerprint: str=None,
                  length: int=None, algo: PGPAlgo=None, created: int=None, expires: int=None, subkeys: list=[], sigs: dict={},
-                 expired: bool=False, revoked: bool = False, armored: str=""):
+                 expired: bool=False, revoked: bool = False, armored: str="", oid=None):
         self.uid = uid
         self.keyid = keyid
 
@@ -53,6 +53,8 @@ class KeyInfo(object):
         self.revoked = revoked
 
         self.armored = armored
+
+        self.oid = oid
 
     def to_pks(self):
         """
@@ -182,6 +184,8 @@ class KeyInfo(object):
 
         most_recent_packet = None
 
+        oid = None
+
         for packet in packets:
             # Public key packet, main body.
             # But NOT a subkey.
@@ -201,6 +205,8 @@ class KeyInfo(object):
                     length = -1
                 keyid = packet.key_id.decode()
                 fingerprint = packet.fingerprint.decode()
+                if packet.oid:
+                    oid = packet.oid
             elif isinstance(packet, pgpdump.packet.SignaturePacket):
                 # Self-signed signature
                 if packet.raw_sig_type == 24:
@@ -250,7 +256,7 @@ class KeyInfo(object):
 
         return KeyInfo(uid=uid, keyid=keyid, fingerprint=fingerprint, length=length, algo=algo,
                        created=created, expires=expires, revoked=revoked, expired=(time.time() - expires if expires else 1) < 0,
-                       subkeys=subkeys, sigs=signatures, armored=armored)
+                       subkeys=subkeys, sigs=signatures, armored=armored, oid=oid)
 
     @classmethod
     def from_database_object(cls, keyob: db.Key):
@@ -294,5 +300,7 @@ class KeyInfo(object):
         if keyob.subkeys:
             for sub in keyob.subkeys:
                 k.subkeys.append(sub)
+
+        k.oid = keyob.oid
 
         return k

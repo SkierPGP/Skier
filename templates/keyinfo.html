@@ -23,6 +23,7 @@
                     <ul>
                         <li>uid: {{ key.uid }}</li>
                         <li>created: {{ key.get_created_ymd() }} expires: {{ key.get_expired_ymd() }}</li>
+                        {% if key.oid %}<li>curve: {{ key.oid }}</li>{% endif %}
                     </ul>
                 </li>
                 <br>

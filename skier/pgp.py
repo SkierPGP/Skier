@@ -53,7 +53,7 @@ def add_pgp_key(armored: str) -> tuple:
     db.db.session.commit()
     return True, newkey.shortid, key
 
-@cache.memoize(timeout=300)
+#@cache.memoize(timeout=300)
 def get_pgp_armor_key(keyid: str) -> str:
     """
     Lookup a PGP key.
