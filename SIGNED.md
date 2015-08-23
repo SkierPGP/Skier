@@ -3,19 +3,19 @@
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQIcBAABCAAGBQJV2GqsAAoJELM7eGjErpPKCFcP/j0U6na41mcR+Cp22PuCk0/r
-HbgI9ltQsjcS7OQ27IfJ0ECkPXFmjGqn6u7cJyzAhgHFm0e/pPZpSVxDOFQQ70Y3
-jiAxWuIbm9gGw0cLs7O9HDkPDzz1LWSZ2bWPBTl9/osR1I1I+gL2rGh368SLXEAO
-xfVFXZE17IfS38PU510zZo4wxi6Rg+7SBkN9rXUYzisbyA5SXdRhr2/DkBrfmebO
-rKApaa5/HFqADc2hBgJaYrXh7Npxi1OdK6Qo0bjKNelMoWCw05RmTTXcDxHwsLeL
-XfhDKi3HKPUjDEsJxOKp/BWfEh4yDJP3EUTGpfUWSzw6mNuMoQCKdOHNa4FO3RxK
-bl04lrZV/Ttkm6/81gG7ODKYN42WAvX/qZQtP4WZVoSMoe9HZHD9PNnooCxjSWPv
-5KxHJJPxw89LmAblFpIPj1nBZyIZ4AK0o0ME+FhQoAV9CsT3qri9A50pl7eO1xUq
-QvlUNMpIEN8Vqm3LpzhQhi408dInjxD7RA0sCF8I/EAZIZBmTF78lWjUVBWafAZB
-XYaM5S3NzCfw45m6vCD3YfiktWIHsRB7ySPkexle/CE3h/IjWrTfeykY/PrCTgq8
-31lhy8HvX1au0kAXIWCGItIm0v9TYE5esKaAQ81PgD3z2wyVi28QOHFaeINL2SWv
-f6LbrQaXz6HFhjXJfiKY
-=j+C/
+iQIcBAABCAAGBQJV2aoJAAoJELM7eGjErpPKLLwP/iTa90x3+Cj0SKFStDuBHa98
+xgkK0WSI7FjV8xkE5YyjeZS2CERFH6tksWFI/X/7pI4bPj+tD2+Q7tLt/CyftBK2
+4d+YvGx1Dp+TXTGI79IWuXQMCCxjc6VV0tNRM94AJGmveVzfUTHf32//MpCp66su
+8Rk1n5fhRHRfkvxO3JYiIwmgo3FeaCQS19YCedhiaUKocJp2MQ/r99OBnMNLOutY
+WVebHvFmAy9tSTDc38aAe5lYaNvpBFFDxyqDq7951JRHX91/trd03e5jrnEryJZB
+a8bGcszbAvtIF5CjAUgFW0hlHYW/5Xw3xeZJ2Ke0oSObsDYg+RJYLIRtJCOV1qb8
+67yJpnb15ar9DMOcndC5sQJRDb9q6dkSiVYVC8kNQ7h791Z060X9T+cHO1oXjVVF
+ZfBQ4ios8FOkZkJxtdXPas5Z5+v3FaPqb+U8R9zorxLNE+kWX0t8z5h4hmckePUo
+PgpcFptLMoG3C3wRozW2FmPUf6YLj1iKpBUXMLYhdjhdGQo6LVdMAuQFU3gWdvOu
+jVLiVytS35r8LyEUXKoTTO64EPfmu/ygOUzgYgghlrF1rAadXYRSIB9xbmHPP05U
+tsU54NNR5+0iTIXMprfdph4XJkZ67FWQpnNQlpHtPbWH1aZBfm0QLMgfYFqY6XaF
+uTqVidC29Mz0iMIuvAiT
+=9zx3
 -----END PGP SIGNATURE-----
 
 ```
@@ -60,10 +60,10 @@ size   exec  file                                         contents
                skier/                                                                                                     
 0                __init__.py                              e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
 4267             frontend.py                              c79a721009f1bfc16e1344ede1cbfb74117904a9983d6c0d69d7ebb909e090ae
-10710            keyinfo.py                               2e9a5e5defc290bfc46d4bab3f090576f538853dfeeaecf6243b473c25dc3601
+10865            keyinfo.py                               6bbd9a46e1de4be44d2f39134953dbb051b261f2154d71f387d7b2354b8067ab
                  old/                                                                                                     
 9524               pgp.py                                 827d4eae7c604b9db3023caf84e9bb8836f17f05c394c0c58be569a3ff02ca06
-3842             pgp.py                                   75b19f25ec2fa2a84122ee0799f9bedabfe9364cd412d0508d10028f06a2fc1a
+3866             pgp.py                                   5134bb9d777e623bff62958f6a6197dfae87130515a13871ab5cd2aa38eef76d
 5513             pgpactions.py                            a204e4da0ce5fdecd197441f77f439d03f3ecd90d304869d42e9124f816b2ae6
 4183             pgpapi.py                                9bb59d93660ad8ae49fd722e2910123b258b8d86679d2de977602f1dfb85fc14
 1671             pks.py                                   e6badff7e521e7dbea32393b0dfa6c0ae0c1553b5943f0b8e6992457918d08fd
