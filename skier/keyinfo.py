@@ -2,6 +2,7 @@ from enum import Enum
 import datetime
 import time
 from math import ceil, log
+import binascii
 
 from flask.ext.sqlalchemy_cache import FromCache
 import pgpdump.packet
@@ -155,11 +156,14 @@ class KeyInfo(object):
         :return: A new :KeyInfo: object.
         """
         if packets is None:
-            armored = armored.split("-----END PGP PUBLIC KEY BLOCK-----")[0] + "-----END PGP PUBLIC KEY BLOCK-----"
-
+            armored_l = armored.split("-----END PGP PUBLIC KEY BLOCK-----")
+            if armored_l:
+                armored = armored_l[0] + "-----END PGP PUBLIC KEY BLOCK-----"
             try:
                 data = AsciiData(armored.encode())
             except PgpdumpException as e:
+                return None, e.args
+            except binascii.Error as e:
                 return None, e.args
             try:
                 packets = [pack for pack in data.packets()]
