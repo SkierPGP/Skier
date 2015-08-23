@@ -11,6 +11,7 @@ from skier import keyinfo
 from app import cache
 import db
 
+
 #cache = redis.StrictRedis(host=redis_host,
 #                          port=cfg.config.redis.port,
 #                          db=cfg.config.redis.db)
@@ -23,7 +24,7 @@ def add_pgp_key(armored: str) -> tuple:
     :return: True and the keyid if the import succeeded, or:
             False and -1 if it was invalid, False and -2 if it already existed or False and -3 if it's a private key.
     """
-    if not '-----BEGIN PGP PUBLIC KEY BLOCK------' in armored:
+    if not '-----BEGIN PGP PUBLIC KEY BLOCK-----' in armored:
         return False, -3
 
     # Dump the key data.
