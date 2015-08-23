@@ -3,19 +3,19 @@
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQIcBAABCAAGBQJV2huAAAoJELM7eGjErpPKPH4QAIKu1ayVUDeWZXe/7jr4YxTl
-OAiHsI2RLyI3zUJuTSk9XvzXn12LuQl6yOLBTQingDFOxYnelOfcZj0RSPUtFZ+W
-KFY2RXzYkwifVfc/rqBjFODxzSQtZ0RHeDP5CN2Ot5a7q3Prgcpkk/wB/ZtQWsuR
-IQIYywCeoHIDybN8DS1MPhCdV42DG6Yus13HwtpVH16IvUgPvZHoeFEdsa68X4ly
-UCpYO+hi9bSFoW7jAAAfX+SiVqcdiVEEcuhKOY4+ojbA5buxj5Z7F0pGmeqsjDHo
-yjh/njl91bHA8Zorro4HFIh0XIv7xCq5RBfB+k099LgEwJq1cree8EJ55QQuApra
-Acz6XJ85KQ+EfE5IlYUYZOycUsRPx3ul1hftn8BzyfFDOLP3SE02aeUCZIwhNYtY
-o+dR3SD+AZ5eVfXHqOsrP01df8hpGxzEKND1RvGNmCBwttMePSIWw7k7nVrja8Dr
-f4kW3KtDindOrEKJzDRkkzzF3W+vcYHLhumaxNWEkwSMgTb8j39qsCZf6Hxqkdgs
-hh45PAcUjO3W+Rsj3E/HP3vSZTNPsioFBVJEB8ihnbcFm5c95TamZjld9rDAueBP
-1ZoXdJeXsOL382bWLp6mY5wB/xztZ5pndZF093dm3saohQqGwJRqvWJiHgIQymbb
-kEOMvyCVHyI0wztewoHV
-=8k6T
+iQIcBAABCAAGBQJV2iBRAAoJELM7eGjErpPK+5cQAIJbFKjUzqaCPdRblNvJ4/Nh
+j0Cp+srSAAL1R384yAkJkvuz/NCFmV2ZGaYcY2iTxz3IYZm2GQQgnxMPyyoXz2qD
+MblNimFSMcLK6xyyG6eUindc6rm47RW7r82BvAQ8qlz5K/Tpios8OgwSOWwKQNzr
+QGr0204GJNig4E17oTXkVW4K94m15hGeIdMMJOYeOTKKh4q0hGsQh620NgtDksuP
+6IOLak8OahZoajmOK+8P9Cv9YTCBcgMoy0peqiXKZNBW20WYw7BHKb3BVhZeVSbw
+KHt5vcukU0p8WS4F5YQ1gAASd9vk64fX4pzO4UVbDDeiW30mCOGceq+Ejf1VoFgP
+PpWn3fFaNcbCmHPHpLULjpWzngt2PGg0bLULMnfSdSXkA85YZU/wOtI2ehwLMR46
+XPM/ZEVdQEgD8K5xnnqdojnW6PI70NbjnaVmkqRjuj0bfTO8uKU/gyzkayME2P6Y
+o4hNL3FFrQQVFzrn2xYuxK1xvwuAKkHsdXjzW5W21HnPf1K39a8xUyEBsHsZhE5U
+lLjQb0fpRAqyfYd1zcYBRZ7OAiH+4760Jkpx2Yb9Kjob+08ZAVetv6/cohPZQTCT
+YedhP/srb0v1Dj7hBWPykGQQGWPe3c6Cr/CVeec0YjiBl0SFObzmgPhDWjP0md5s
+E/y3o2TUnWBQ6aPicuEV
+=cIpx
 -----END PGP SIGNATURE-----
 
 ```
@@ -31,11 +31,11 @@ size   exec  file                                         contents
              ./                                                                                                           
 884            .gitignore                                 c91a7b164cd4e40d78394d5b6b65847fa957d01af2c0489636bf2445696493a3
 798            app.py                                     5592b9bea7a5e986d06b350cc01e796612d3fd4689106e66405f6946dceaac41
-685            cfg.py                                     72b69662ba0db3e3b80b6d4e66874a28f3ceebf53eb1bb7cd7a4bb5c9538e5ba
+685            cfg.py                                     a7f05e37808bcb155637acb3f9e956a40159f5a67865d68aa4f59d5eb4a1af49
 942            config.default.yml                         f9e53baf75d66ee8af9e67e7443ea0afc1f90412a00d13d9248feb1ef8a1a923
 1378           CONTRIBUTING.md                            c4fab7e295a2d1022781c218330c69e9f9ed968e5aaa296d6e51a3a28236d165
 2693           db.py                                      8890eb2246fa8bddf964000b5a6d61cbc92dd156fb14419bae320f8ff19e7650
-744            gunicorn_config.py                         dd000a4fd02a9b424c7b3a4b49b39efbac346d8f13ac25199779ad8a7bfee6a8
+823            gunicorn_config.py                         086842346acc7c5c3ed37e23948f91efd959219b4614842e9a46c41ad67b5595
 1204           init.py                                    4f7b4a0f3966f0e54cb8ba9ef43765fc54df3939067a5504bbc2dcfa64fbeede
 34519          LICENCE                                    91b65277959ec273763d28ef002e83a6b3fba57c7a35436c9e5b66536333d720
 3211   x       manager.py                                 ee09629c347454b69da9ee1971958ac9fcc52c9f960a9402116a55039dc375ac
@@ -55,7 +55,7 @@ size   exec  file                                         contents
 753                skier_migrate_add_synch_field.py       1e836a7b0eda998be193dd5192c53ff5e3afb383bb751b68fb645da48fba4922
 1335               skier_migrate_database_stuff.py        867cc2cf4df95948dc4c0eecc520ca4264d8ef27aa41a3d146f998b335e8dd9a
 1609               skier_migrate_initial_db_migration.py  2e656bf3a40b9801f3245f41ab85b414ee3e6878172c3610d80d326b9ec1014e
-3727           README.md                                  feb71d0d7d999eadd90d8a76201b91c15c9427503c21942963d500190e37f645
+3727           README.md                                  935873d1762b3ef026f84015e7afb6176f1afd526e9de6b9bb1b1477af0089de
 416            requirements.txt                           deb0c030bab87f5eafd04b90178862775a465e513f74fdac74fd3e4203e4e8f3
 487    x       setup.sh                                   eee44f8efd2e9430cb999ddcc9c4720bb8a7914b69ca394908357c071837f903
                skier/                                                                                                     

@@ -25,6 +25,9 @@ daemon = False
 # keyfile = "ssl/server.key"
 # certfile = "ssl/server.crt"
 
+accesslog = "/var/skier/log/access.log"
+errorlog = "/var/skier/log/error.log"
+
 
 def when_ready(server):
     print("Server ready on address {}.".format(bind))
