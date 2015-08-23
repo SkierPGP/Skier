@@ -91,6 +91,23 @@ def import_from_dump(file):
 
     shutil.rmtree("/tmp/skier-import")
 
+@manager.command
+def force_reevaluate_all_keys():
+    """Force the database to re-calculate all details from the armored key data. Useful if pgpdump has an update, or the internal calculations change."""
+    # Query the database for keys.
+    for key in db.Key.query.all():
+        print("Re-calculating {}".format(key.key_fp_id))
+        # Re-calculate key.
+        kin = KeyInfo.pgp_dump(key.armored)
+        # Create a new database object.
+        newkey = db.Key.from_keyinfo(kin)
+        # Re-set the ID.
+        newkey.id = key.id
+        # Add the key.
+        db.db.session.merge(newkey)
+
+    # Commit.
+    db.db.session.commit()
 
 if __name__ == "__main__":
     manager.run()

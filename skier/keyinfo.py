@@ -1,7 +1,6 @@
 from enum import Enum
 import datetime
 import time
-from math import ceil, log
 import binascii
 
 from flask.ext.sqlalchemy_cache import FromCache
@@ -67,7 +66,7 @@ class KeyInfo(object):
         return s1, s2
 
     def get_expired_ymd(self):
-        if self.expires in [0, None]:
+        if self.expires in [0, None, datetime.datetime(1970, 1, 1, 0, 0, 0)]:
             return "never"
         return self.expires.strftime("%Y-%m-%d")
 
@@ -120,15 +119,14 @@ class KeyInfo(object):
                        other.uid == self.uid,
                        other.subkeys == self.uid))
 
-
-
+    """
     @classmethod
     def from_key_listing(cls, listing: dict):
-        """
+        \"""
         Generates a key from a gpg.list_keys key.
         :param listing: The dict outputted by gpg.list_keys.
         :return: A new :KeyInfo: object.
-        """
+        \"""
 
         # Nevermind this bit, GPG returns the primary key for looking up subkeys.
         # Loop over the subkeys, and pick up one, looking it up in the GPG keyring.
@@ -146,6 +144,7 @@ class KeyInfo(object):
             sigs=listing['sig'] if 'sig' in listing else [], expired=listing['trust'] == 'e', revoked=listing['trust'] == 'r')
 
         return key
+    """
 
     @classmethod
     def pgp_dump(cls, armored: str, packets: list=None):
@@ -189,21 +188,17 @@ class KeyInfo(object):
             if isinstance(packet, pgpdump.packet.PublicKeyPacket) and not isinstance(packet, pgpdump.packet.PublicSubkeyPacket):
                 # Set data
                 created = packet.creation_time.replace(tzinfo=datetime.timezone.utc).timestamp()
-                expires = packet.expiration_time.replace(tzinfo=datetime.timezone.utc).timestamp() if packet.expiration_time is not None else None
+                expires = packet.expiration_time.replace(tzinfo=datetime.timezone.utc).timestamp() if packet.expiration_time is not None else None if not expires else expires
 
                 try:
                     algo = PGPAlgo(packet.raw_pub_algorithm)
                 except KeyError:
                     algo = PGPAlgo.unknown
                 # Check if the length is known for ECC keys.
-                if packet.modulus_bitlen:
-                    length = packet.modulus_bitlen
+                if packet.bitlen:
+                    length = packet.bitlen
                 else:
-                    if packet.key_value:
-                        length = ceil(log(packet.key_value, 2))
-                        length += 1 if length % 2 else 0
-                    else:
-                        length = -1
+                    length = -1
                 keyid = packet.key_id.decode()
                 fingerprint = packet.fingerprint.decode()
             elif isinstance(packet, pgpdump.packet.SignaturePacket):
@@ -232,6 +227,15 @@ class KeyInfo(object):
                 if key_for not in signatures:
                     signatures[key_for] = []
                 signatures[key_for].append([packet.key_id.decode()[-8:], sig_uid, packet.raw_sig_type])
+
+                # Scan the subsignatures.
+                for subpacket in packet.subpackets:
+                    if subpacket.subtype == 9:
+                        # EXPIRATION DATE!
+                        # I have been doing nothing but teleport bread for the last three days.
+                        seconds = int.from_bytes(subpacket.data, byteorder="big")
+                        delta = datetime.timedelta(seconds=seconds)
+                        expires = (datetime.datetime.utcfromtimestamp(created) + delta).timestamp()
 
             elif isinstance(packet, pgpdump.packet.PublicSubkeyPacket):
                 subkeys.append(
