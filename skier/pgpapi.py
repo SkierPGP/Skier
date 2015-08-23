@@ -31,13 +31,28 @@ def getkey(keyid):
 #                          "Cache-Control": "no-cache", "Pragma": "no-cache"}
 
 
+@pgpapi.route("/search/<search_str>", methods=["GET", "POST"])
+def searchkeys(search_str: str):
+    # Get the count.
+    count = request.args.get("count", 999)
+    # Get the page
+    page = request.args.get("page", 1)
+    # Pass the search string to the database.
+    results = pgp.search_through_keys(search_str, page=page, count=count)
+    # Serialize the data into a JSON list of key ids.
+    # Yes, this can hammer the server on shitty clients when they search.
+    # But redis can pick up a lot of that slack.
+    return json.dumps(
+        {"count": results.total,
+         "ids": [item.key_fp_id for item in results.items]}
+    ), 200 if results.total else 404, {"Content-Type": "application/json"}
 
 
-@pgpapi.route("/addkey")
+@pgpapi.route("/addkey", methods=["POST", "PUT"])
 def addkey():
     # Read in the key data from the form.
     try:
-        keydata = request.form["keydata"]
+        keydata = request.args.get("keydata")
     except KeyError:
         return json.dumps({"error": 1, "msg": "no-key"}), 401, {"Content-Type": "application/json"}
     # Attempt to add the key.

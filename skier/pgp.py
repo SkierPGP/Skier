@@ -5,11 +5,11 @@
 
 #from cfg import cfg, redis_host
 from flask.ext.sqlalchemy_cache import FromCache
+from flask.ext.sqlalchemy import Pagination
 
 from skier import keyinfo
 from app import cache
 import db
-
 
 #cache = redis.StrictRedis(host=redis_host,
 #                          port=cfg.config.redis.port,
@@ -52,8 +52,8 @@ def add_pgp_key(armored: str) -> tuple:
     db.db.session.commit()
     return True, newkey.shortid, key
 
-
-def get_pgp_armor_key(keyid: str):
+@cache.memoize(timeout=300)
+def get_pgp_armor_key(keyid: str) -> str:
     """
     Lookup a PGP key.
     :param keyid: The key ID to lookup.
@@ -74,7 +74,7 @@ def get_pgp_armor_key(keyid: str):
             return ""
     else: return None
 
-def get_pgp_keyinfo(keyid: str):
+def get_pgp_keyinfo(keyid: str) -> keyinfo.KeyInfo:
     """
     Gets a :skier.keyinfo.KeyInfo: object for the specified key.
     :param keyid: The ID of the key to lookup.
@@ -85,7 +85,7 @@ def get_pgp_keyinfo(keyid: str):
         return keyinfo.KeyInfo.from_database_object(key)
 
 
-def search_through_keys(search_str: str, page: int=1, count: int=10):
+def search_through_keys(search_str: str, page: int=1, count: int=10) -> Pagination:
     """
     Searches through the keys via ID or UID name.
     :param search_str: The string to search for.
