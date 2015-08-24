@@ -30,9 +30,18 @@ class PGPAlgo(Enum):
 
     unknown = 999
 
+
+class UID(object):
+    def __init__(self, name=None, email=None, comment=None):
+        self.name = name
+        self.email = email
+        self.comment = comment
+        self.full_name = None
+
 class KeyInfo(object):
-    def __init__(self, uid: str=None, keyid: str=None, fingerprint: str=None,
-                 length: int=None, algo: PGPAlgo=None, created: int=None, expires: int=None, subkeys: list=[], sigs: dict={},
+    def __init__(self, uid: list=None, keyid: str=None, fingerprint: str=None,
+                 length: int=None, algo: PGPAlgo=None, created: int=None, expires: int=None, subkeys: list=None,
+                 sigs: dict=None,
                  expired: bool=False, revoked: bool = False, armored: str="", oid=None):
         self.uid = uid
         self.keyid = keyid
@@ -47,7 +56,15 @@ class KeyInfo(object):
         self.created = created
         self.expires = expires
 
-        self.signatures = sigs
+        if sigs:
+            self.signatures = sigs
+        else:
+            self.signatures = dict()
+
+        if subkeys:
+            self.subkeys = subkeys
+        else:
+            self.subkeys = list()
 
         self.expired = expired
         self.revoked = revoked
@@ -172,7 +189,7 @@ class KeyInfo(object):
                 return None, e.args
 
         # Set initial values
-        uid = ""
+        uid = []
         keyid, fingerprint = "", ""
         length = 0
         algo = 999
@@ -248,7 +265,12 @@ class KeyInfo(object):
                     packet.fingerprint.decode()
                 )
             elif isinstance(packet, pgpdump.packet.UserIDPacket):
-                uid = packet.user
+                # Load in the UIDs
+                u = UID()
+                u.name = packet.user_name
+                u.email = packet.user_email
+                u.full_name = packet.user
+                uid.append(u)
             elif isinstance(packet, str):
                 armored = packet
             most_recent_packet = packet
@@ -272,9 +294,6 @@ class KeyInfo(object):
 
         k.added_time = datetime.datetime.utcnow()
 
-        # Work around a CPython bug, nullify sigs and subkeys.
-        k.signatures = {}
-        k.subkeys = []
 
         k.armored = keyob.armored
 

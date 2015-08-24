@@ -4,7 +4,7 @@ from flask.ext.sqlalchemy import SQLAlchemy, Model
 from flask.ext.sqlalchemy_cache import CachingQuery
 
 
-#from skier.keyinfo import KeyInfo
+# from skier.keyinfo import UID as KUID
 from sqlalchemy.dialects.postgresql import ARRAY
 
 from app import app
@@ -20,7 +20,7 @@ class Key(db.Model):
     The model for a PGP key.
     """
     id = db.Column(db.Integer, primary_key=True)
-    uid = db.Column(db.String(255), nullable=False)
+    uid = db.relationship("UID", backref="key")
 
     fingerprint = db.Column(db.String(40), nullable=False)
     key_fp_id = db.Column(db.String(8), nullable=False)
@@ -44,7 +44,14 @@ class Key(db.Model):
     @classmethod
     def from_keyinfo(cls, obj):
         k = Key()
-        k.uid = obj.uid
+        for uid in obj.uid:
+            nuid = UID()
+            nuid.full_uid = uid.full_name
+            nuid.uid_email = uid.email
+            nuid.uid_name = uid.name
+            nuid.uid_comment = uid.comment
+            k.uid.append(nuid)
+
         k.length = obj.length
         k.created = datetime.datetime.fromtimestamp(obj.created)
         k.expires = datetime.datetime.fromtimestamp(obj.expires) if obj.expires else datetime.datetime(1970, 1, 1, 0, 0, 0)
@@ -75,6 +82,21 @@ class Key(db.Model):
 
     def __repr__(self):
         return "<Key {fp} for {uid}>".format(uid=self.uid, fp=self.fingerprint)
+
+
+class UID(db.Model):
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+
+    full_uid = db.Column(db.String())
+
+    uid_name = db.Column(db.String())
+    uid_email = db.Column(db.String())
+    uid_comment = db.Column(db.String(), nullable=True)
+
+    key_id = db.Column(db.Integer, db.ForeignKey("key.id"))
+
+    def __repr__(self):
+        return "{}".format(self.full_uid)
 
 
 class Signature(db.Model):
