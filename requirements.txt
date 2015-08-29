@@ -19,3 +19,5 @@ psycopg2
 git+https://github.com/SkierPGP/python-pgpdump.git
 # For importing
 python-gnupg
+# For keybase
+keybase-api

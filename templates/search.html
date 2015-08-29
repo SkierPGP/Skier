@@ -64,22 +64,21 @@
                             {% if key.oid %}<li>curve: {{ key.oid }}</li>{% endif %}
                         </ul>
                     </li>
+                    {% if key.keybase %}
+                    {% for proof in key.keybase.proofs %}
+                    {% endfor %}
+                    {% endif %}
                     {% for sub in key.subkeys %}
                         <li><em>sub:</em> 0x{{ sub[-8:] }} ({{ sub }})
                             <ul>
-                                <li>{% if sub[-8:] in key.signatures %}subsig: 0x{{ key.signatures[sub[-8:]][0][0] }} (
-                                    {{ key.signatures[sub[-8:]][0][1][0] if key.signatures[sub[-8:]][0][1][0] != "[" else key.signatures[sub[-8:]][0][1] }}
-                                    ){% else %}<strong style="color: red">UNVERIFIED</strong>{% endif %}</li>
+                                <li>{% if sub[-8:] in key.signatures %}subsig: 0x{{ key.signatures[sub[-8:]][0][0] }} ({{ key.signatures[sub[-8:]][0][1][0] if key.signatures[sub[-8:]][0][1][0] != "[" else key.signatures[sub[-8:]][0][1] }}){% else %}<strong style="color: red">UNVERIFIED</strong>{% endif %}</li>
                             </ul>
                         </li>
                     {% endfor %}
                     <li>sigs:</li>
                         <ul>
                             {% for sig in key.signatures[key.shortid] %}
-                                <li style="white-space: pre;">{{ key.translate(sig) }} <a
-                                        href="{{ url_for(".getkeyinfo", key=sig[0]) }}">{{ sig[0] }}</a>
-                                    ({{ sig[1][0] if sig[1][0] != "[" else sig[1] }})
-                                </li>
+                            <li style="white-space: pre;">{{ key.translate(sig) }} <a href="{{ url_for(".getkeyinfo", key=sig[0]) }}">{{ sig[0] }}</a>({{ sig[1][0] if sig[1][0] != "[" else sig[1] }})</li>
                             {% endfor %}
                         </ul>
                 </ul>

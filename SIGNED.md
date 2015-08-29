@@ -3,19 +3,19 @@
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQIcBAABCAAGBQJV2v7uAAoJELM7eGjErpPKudEP/AmcrAMUaSqfzYp0B2m4+dJN
-PLQwoBOiqw7o6OrQ5diB9okym5WVQMGpvvVR/8vlBtJhcKaJx48vrzXXwVdb5mBb
-JEofBzC7yIBarQrfS7pDTR+RMkiKaN6TyETwvTi6FXw3kciTsiKZCWkuDBoHrmqo
-3C6K44teE1mD0rVDx8WpX2y51bHMPu+0rW1U1+SBx+q1Z8XflrRolJY3a47qA+tV
-eNqKkSrjiYxNZ3VoqlryokZSfq7+dVCDGcFPMOsIO06IxC03grvcYJysHQBhXIca
-wu6lVbjqPga7Sfmc8I+ZN0cUGlqiOwd8KYQjzkdHQiMqB33OxWfkBi0hR6S45Tz7
-km92VUcsdqO160j3XmYEM3wio1+39BCjT686elzVWOUFKrCckkSRBTsxocxPYwRq
-jkezkprS2597gwK5WGVdNuEEW8fb0vP6eS7Cx2a2Kf6u0UdajJYs7A4L0mMV1Ysy
-y2u7xEDNOjCGp9RlNR0xYR3jG1E2z4cPBlXcLZS6VZgPzVyWM/+KMWYu/25PHCWZ
-IwDQLRUWyZVWsnUbgHoMvWrETklXCfsnolCXwvdrkaTq+1M09cVN+WtjszCsKVPc
-s/fmGaM9onQXSJjsNlAbpDbCggxwnCUg8wosH9GRC7VTff15IiUkxSXHfWjNWxC4
-SmZ/7nNmxKIklje4EHxK
-=2cxI
+iQIcBAABCAAGBQJV4Yj9AAoJELM7eGjErpPKPWwP/08AmX9ymKIR+SOXDPpH8kZu
+jlMxMwrl5xXJRSX6JhJ1U5UPcCJvIMGUDKsHjbCpsiqr6R7m0fXts0hOOgMSlT4f
+akSogEpcahoXiaUZW+j3hvnBKUKAcFvBP+KcMhykOGhGKjgTGzo/a7G8hQKXBEKI
+kW2D7hgqAPDVeLcnnpfQ6bDOTOX4pIXIxupeuXjZ7fwGfB8b3D9LVsetbQWlnHlY
+gkxi0/STVCeCfvpLNHh2sg/HIzCf73FN4qJKgfc2RCMtse09KDHnK11Xdlvstzaz
+69J+MZ2SMrb+S/Qk2Jjk4CVJPZGpCF5rceXguj46U6mU6l1YL6jZMWzhXGZ2diKz
+m+fLgkp3BJHRDR40RpWoN2iNYExThQln90s7B2JYkTQ8YkKSEY4fsisLGbo0mmAt
+b0I+yKvIASu9WHDj22b/aGnVVIF7yfUPR1jtUfHmpt3OYGrDcOVb/M+4Eu81h+L+
+7159uBBoiG3dEQivkDxsAr/GVUlyE6grvuVT9h1hT89xOpsf97A2TvHgnNulXeox
++s3sWA6cQof89dkS3dyDApwIkboqCxPVfgeSG3P/2op1Cur3bqqm0w/uJIZl+cLW
+hRND1NG5bW1NmrpucP8Pyeim2jkIk4M0JIusY4c/v1e4rdvHVy1eTkOlQ8bb++xk
+SnO7RK+SpXM4Yd0XpgN+
+=88LY
 -----END PGP SIGNATURE-----
 
 ```
@@ -56,12 +56,13 @@ size   exec  file                                             contents
 1335               skier_migrate_database_stuff.py            867cc2cf4df95948dc4c0eecc520ca4264d8ef27aa41a3d146f998b335e8dd9a
 1609               skier_migrate_initial_db_migration.py      2e656bf3a40b9801f3245f41ab85b414ee3e6878172c3610d80d326b9ec1014e
 1252               skier_migrate_use_a_new_table_for_uids.py  281610c1a388bae285edcfd6979afd27209e0965548b2600f82bbca3e02da9ac
-3727           README.md                                      da56948f3ee1b9046fa681ec1c644c825bc8c4dee291e21893121cc74f8eaa27
-416            requirements.txt                               deb0c030bab87f5eafd04b90178862775a465e513f74fdac74fd3e4203e4e8f3
+3855           README.md                                      dda9f12288a31efbda493e6af42781b89bc8b48a19c72ca49d26d151e00440a0
+442            requirements.txt                               cda605fc9573c30492b5b276b1d7d348955e5f2502d976b421097872e9cc1dd4
 487    x       setup.sh                                       eee44f8efd2e9430cb999ddcc9c4720bb8a7914b69ca394908357c071837f903
                skier/                                                                                                         
 0                __init__.py                                  e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
 4432             frontend.py                                  f4dae780355e664074011bf51c23bc59bcfea7c75eeb348ab3377975f3128074
+43               keybase.py                                   a7bdb33972a8ac0ebfe2ec0341dab461a8f3d5dcdcce89639b4173b174c259fc
 11869            keyinfo.py                                   2de0772a7a8f6cf9d1077fec659f2213fd59d39f39018d55f926f2b86b7c05f9
                  old/                                                                                                         
 9524               pgp.py                                     827d4eae7c604b9db3023caf84e9bb8836f17f05c394c0c58be569a3ff02ca06
@@ -88,7 +89,7 @@ size   exec  file                                             contents
 831              index.html                                   11cd33023e7a31d2272063deac206c85d617344bef3761b23ba16fb3344bbe89
 3476             keyinfo.html                                 9728a8a63d0ce8f7938daade78295d4b3ecfc724b1b4ed89513a1cc1206e35ca
 1776             navbar.html                                  7560344f7e4b7e0b70da73533498e383385fec0643194731b10066809a213182
-4156             search.html                                  4b939159fa92ad214b0898474c2b7e7d82a16df35418cb9bf283cf574dc5fdc2
+4132             search.html                                  370a817dc5115caa3c0bf521ee673fb4736afce4e35f86e694b183df461c1316
 1946             submit.html                                  5200d8b6b68ae0429c0d59aa505bcc20563e53004d8af8070e8172cbed17b217
 128            TODO.md                                        af181f287ce1ca3097dc9ad5af4de78cb3dc9fe0552d364e8293492ba5a045c3
                tools/                                                                                                         
