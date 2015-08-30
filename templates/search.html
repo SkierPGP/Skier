@@ -70,7 +70,7 @@
                         {% for proof in kb.proofs.values() %}
                             {# This is the worst line written by a human ever. #}
                             {# todo make nicer and/or explain #}
-                            <li><a href="{{ proof["proof_url"] }}">{{ proof["presentation_group"] if proof["presentation_group"] != proof["nametag"] else proof["presentation_tag"] }} / {{ proof["nametag"] }}</a><strong style="color: {% if key.keybase[1] %}green"> ✔{% else %}red"> ✖{% endif %}</strong></li>
+                            <li><a href="{{ proof["proof_url"] }}">{{ proof["presentation_group"] if proof["presentation_group"] != proof["nametag"] else proof["presentation_tag"] }} / {{ proof["nametag"] }}</a><strong style="color: {% if key.keybase[1] %}green"> ✔{% else %}red"> ✖{% endif %}</strong> ({{ proof["proof_id"] }})</li>
                         {% endfor %}
                         </ul></li>
                     {% endif %}

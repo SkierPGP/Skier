@@ -7,6 +7,7 @@ import traceback
 from flask.ext.sqlalchemy_cache import FromCache
 import pgpdump.packet
 from pgpdump import AsciiData
+
 from pgpdump.utils import PgpdumpException
 import keybaseapi
 
@@ -327,8 +328,7 @@ class KeyInfo(object):
             assert isinstance(sig, db.Signature)
             if not sig.key_sfp_for in k.signatures:
                 k.signatures[sig.key_sfp_for] = []
-            tmpd = []
-            tmpd.append(sig.pgp_keyid)
+            tmpd = [sig.pgp_keyid]
 
             sig_uid = db.Key.query.options(FromCache(cache)).filter(db.Key.key_fp_id == sig.pgp_keyid).first()
             # Check if we know it
@@ -336,6 +336,9 @@ class KeyInfo(object):
                 sig_uid = "[User ID Unknown]"
             else:
                 sig_uid = sig_uid.uid
+
+            if sig.sigtype == 32:
+                k.revoked = True
 
             tmpd.append(sig_uid)
             tmpd.append(sig.sigtype)

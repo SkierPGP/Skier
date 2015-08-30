@@ -36,7 +36,7 @@
                     <li>Keybase:<ul>
                     {% set kb = key.keybase[0] %}
                     {% for proof in kb.proofs.values() %}
-                        <li><a href="{{ proof["proof_url"] }}">{{ proof["presentation_group"] if proof["presentation_group"] != proof["nametag"] else proof["presentation_tag"] }} / {{ proof["nametag"] }}</a><strong style="color: {% if key.keybase[1] %}green"> ✔{% else %}red"> ✖{% endif %}</strong></li>
+                        <li><a href="{{ proof["proof_url"] }}">{{ proof["presentation_group"] if proof["presentation_group"] != proof["nametag"] else proof["presentation_tag"] }} / {{ proof["nametag"] }}</a><strong style="color: {% if key.keybase[1] %}green"> ✔{% else %}red"> ✖{% endif %}</strong> ({{ proof["proof_id"] }})</li>
                     {% endfor %}
                     </ul></li>
                 {% endif %}
