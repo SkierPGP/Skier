@@ -20,4 +20,4 @@ git+https://github.com/SkierPGP/python-pgpdump.git
 # For importing
 python-gnupg
 # For keybase
-keybase-api
+keybaseio-api>=1.0.2

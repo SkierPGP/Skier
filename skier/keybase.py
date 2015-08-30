@@ -1,2 +1,0 @@
-"""Keybase integration helper methods."""
-

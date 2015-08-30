@@ -65,8 +65,14 @@
                         </ul>
                     </li>
                     {% if key.keybase %}
-                    {% for proof in key.keybase.proofs %}
-                    {% endfor %}
+                        <li>Keybase:<ul>
+                        {% set kb = key.keybase[0] %}
+                        {% for proof in kb.proofs.values() %}
+                            {# This is the worst line written by a human ever. #}
+                            {# todo make nicer and/or explain #}
+                            <li><a href="{{ proof["proof_url"] }}">{{ proof["presentation_group"] if proof["presentation_group"] != proof["nametag"] else proof["presentation_tag"] }} / {{ proof["nametag"] }}</a><strong style="color: {% if key.keybase[1] %}green"> ✔{% else %}red"> ✖{% endif %}</strong></li>
+                        {% endfor %}
+                        </ul></li>
                     {% endif %}
                     {% for sub in key.subkeys %}
                         <li><em>sub:</em> 0x{{ sub[-8:] }} ({{ sub }})
@@ -78,7 +84,7 @@
                     <li>sigs:</li>
                         <ul>
                             {% for sig in key.signatures[key.shortid] %}
-                            <li style="white-space: pre;">{{ key.translate(sig) }} <a href="{{ url_for(".getkeyinfo", key=sig[0]) }}">{{ sig[0] }}</a>({{ sig[1][0] if sig[1][0] != "[" else sig[1] }})</li>
+                            <li style="white-space: pre;">{{ key.translate(sig) }} <a href="{{ url_for(".getkeyinfo", key=sig[0]) }}">{{ sig[0] }}</a> ({{ sig[1][0] if sig[1][0] != "[" else sig[1] }})</li>
                             {% endfor %}
                         </ul>
                 </ul>

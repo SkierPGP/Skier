@@ -32,7 +32,14 @@
                         {% if key.oid %}<li>curve: {{ key.oid }}</li>{% endif %}
                     </ul>
                 </li>
-                <br>
+                {% if key.keybase %}
+                    <li>Keybase:<ul>
+                    {% set kb = key.keybase[0] %}
+                    {% for proof in kb.proofs.values() %}
+                        <li><a href="{{ proof["proof_url"] }}">{{ proof["presentation_group"] if proof["presentation_group"] != proof["nametag"] else proof["presentation_tag"] }} / {{ proof["nametag"] }}</a><strong style="color: {% if key.keybase[1] %}green"> ✔{% else %}red"> ✖{% endif %}</strong></li>
+                    {% endfor %}
+                    </ul></li>
+                {% endif %}
                 {% for sub in key.subkeys %}
                     <li><em>sub:</em> 0x{{ sub[-8:] }} ({{ sub }})
                         {# key.signatures[sub[-8:]][0][1]
@@ -42,9 +49,7 @@
                            3) take the first UID if applicable, else the [User ID not found] message
                      #}
                         <ul>
-                            <li>{% if sub[-8:] in key.signatures %}subsig: 0x{{ key.signatures[sub[-8:]][0][0] }} (
-                                {{ key.signatures[sub[-8:]][0][1][0] if key.signatures[sub[-8:]][0][1][0] != "[" else key.signatures[sub[-8:]][0][1] }}
-                                ){% else %}<strong style="color: red">UNVERIFIED</strong>{% endif %}</li>
+                            <li>{% if sub[-8:] in key.signatures %}subsig: 0x{{ key.signatures[sub[-8:]][0][0] }} ({{ key.signatures[sub[-8:]][0][1][0] if key.signatures[sub[-8:]][0][1][0] != "[" else key.signatures[sub[-8:]][0][1] }}){% else %}<strong style="color: red">UNVERIFIED</strong>{% endif %}</li>
                         </ul>
                     </li>
                 {% endfor %}
@@ -52,10 +57,7 @@
                 <li>sigs:</li>
                 <ul>
                     {% for sig in key.signatures[key.shortid] %}
-                        <li style="white-space: pre;">{{ key.translate(sig) }} <a
-                                href="{{ url_for(".getkeyinfo", key=sig[0]) }}">{{ sig[0] }}</a>
-                            ({{ sig[1][0] if sig[1][0] != "[" else sig[1] }})
-                        </li>
+                        <li style="white-space: pre;">{{ key.translate(sig) }} <a href="{{ url_for(".getkeyinfo", key=sig[0]) }}">{{ sig[0] }}</a>({{ sig[1][0] if sig[1][0] != "[" else sig[1] }})</li>
                     {% endfor %}
                 </ul>
             </ul>

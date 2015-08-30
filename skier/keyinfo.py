@@ -2,11 +2,13 @@ from enum import Enum
 import datetime
 import time
 import binascii
+import traceback
 
 from flask.ext.sqlalchemy_cache import FromCache
 import pgpdump.packet
 from pgpdump import AsciiData
 from pgpdump.utils import PgpdumpException
+import keybaseapi
 
 from app import cache
 import db
@@ -73,6 +75,8 @@ class KeyInfo(object):
 
         self.oid = oid
 
+        self.keybase = None
+
     def to_pks(self):
         """
         Formats a KeyInfo object into a PKS style string for GnuPG.
@@ -83,6 +87,20 @@ class KeyInfo(object):
         # String two gives the user ID, and another date, which I believe is the date uploaded, which we don't save.
         s2 = "uid:{self.uid}:{self.created}::".format(self=self)
         return s1, s2
+
+    def _setup_keybase(self, username):
+        print(username)
+        k = keybaseapi.User(username)
+        try:
+            k.verify_proofs()
+        except keybaseapi.VerificationError:
+            traceback.print_exc()
+            verified = False
+        else:
+            verified = True
+        self.keybase = (k, verified)
+
+
 
     def get_expired_ymd(self):
         if self.expires in [0, None, datetime.datetime(1970, 1, 1, 0, 0, 0)]:
@@ -284,6 +302,14 @@ class KeyInfo(object):
     def from_database_object(cls, keyob: db.Key):
         k = KeyInfo()
         k.uid = keyob.uid
+        for uid in keyob.uid:
+            if 'keybase.io' in uid.full_uid:
+                # split uid
+                u = uid.full_uid.split()
+                kb = [_ for _ in u if "keybase.io" in _][0].split('/')[-1]
+
+                k._setup_keybase(kb)
+
         k.length = keyob.length
         k.created = keyob.created
         k.expires = keyob.expires if keyob.expires else datetime.datetime(1970, 1, 1, 0, 0, 0)
