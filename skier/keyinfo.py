@@ -1,13 +1,12 @@
 from enum import Enum
 import datetime
+import json
 import time
 import binascii
-import traceback
 
 from flask.ext.sqlalchemy_cache import FromCache
 import pgpdump.packet
 from pgpdump import AsciiData
-
 from pgpdump.utils import PgpdumpException
 import keybaseapi
 
@@ -78,6 +77,9 @@ class KeyInfo(object):
 
         self.keybase = None
 
+    def __repr__(self):
+        return "<KeyInfo 0x{fp}>".format(fp=self.fingerprint)
+
     def to_pks(self):
         """
         Formats a KeyInfo object into a PKS style string for GnuPG.
@@ -90,15 +92,39 @@ class KeyInfo(object):
         return s1, s2
 
     def _setup_keybase(self, username):
-        print(username)
-        k = keybaseapi.User(username)
-        try:
-            k.verify_proofs()
-        except keybaseapi.VerificationError:
-            traceback.print_exc()
-            verified = False
+        if cache.exists("keybase_" + username):
+            miss = False
+            # Load it without autofetching.
+            k = keybaseapi.User(username, autofetch=False)
+            # JSON load the data from the cache.
+            data = json.loads(cache.get("keybase_" + username).decode())
+            # Load the raw keybase data in.
+            k.raw_keybase_data = k._translate_into_configkey(data)
+            # Map the data structure.
+            k._map_data()
         else:
-            verified = True
+            miss = True
+            # Load it with autofetching.
+            k = keybaseapi.User(username)
+            # JSON dump the key structure.
+            data = json.dumps(k.raw_keybase_data.dump())
+            # Set it on the cache and set it to expire in a day.
+            # Note: StrictRedis uses name,time,value. Normal redis uses name,value,time.
+            cache.setex("keybase_" + username, 60*60*24, data)
+
+        # Second cache pass, check if it was verified.
+        if miss:
+            try:
+                k.verify_proofs()
+            except keybaseapi.VerificationError:
+                verified = False
+            else:
+                verified = True
+            # Set it on cache.
+            cache.setex("keybase_" + username + "_ver", 60*60*24*3, "1" if verified else "0")
+        else:
+            # Load it from cache.
+            verified = bool(int(cache.get("keybase_" + username + "_ver")))
         self.keybase = (k, verified)
 
 

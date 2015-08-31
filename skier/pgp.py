@@ -4,11 +4,9 @@
 #import redis
 
 #from cfg import cfg, redis_host
-from flask.ext.sqlalchemy_cache import FromCache
 from flask.ext.sqlalchemy import Pagination
 
 from skier import keyinfo
-from app import cache
 import db
 
 
@@ -63,11 +61,11 @@ def get_pgp_armor_key(keyid: str) -> str:
     if keyid.startswith("0x"):
         keyid = keyid.replace("0x", "")
     if len(keyid) == 40:
-        key = db.Key.query.options(FromCache(cache)).filter(db.Key.fingerprint == keyid).first()
+        key = db.Key.query.filter(db.Key.fingerprint == keyid).first()
     elif len(keyid) == 8:
-        key = db.Key.query.options(FromCache(cache)).filter(db.Key.key_fp_id == keyid).first()
+        key = db.Key.query.filter(db.Key.key_fp_id == keyid).first()
     else:
-        key = db.Key.query.options(FromCache(cache)).filter(db.Key.uid.ilike("%{}%".format(keyid))).first()
+        key = db.Key.query.filter(db.Key.uid.ilike("%{}%".format(keyid))).first()
     if key:
         if key.armored:
             return key.armored
@@ -98,11 +96,11 @@ def search_through_keys(search_str: str, page: int=1, count: int=10) -> Paginati
     if search_str.startswith("0x"):
         search_str = search_str.replace("0x", "")
         if len(search_str) == 40:
-            results = db.Key.query.options(FromCache(cache)).filter(db.Key.fingerprint == search_str).paginate(page, per_page=count)
+            results = db.Key.query.filter(db.Key.fingerprint == search_str).paginate(page, per_page=count)
         elif len(search_str) == 8:
-            results = db.Key.query.options(FromCache(cache)).filter(db.Key.key_fp_id == search_str).paginate(page, per_page=count)
+            results = db.Key.query.filter(db.Key.key_fp_id == search_str).paginate(page, per_page=count)
         else:
-            results = db.Key.query.options(FromCache(cache)) \
+            results = db.Key.query \
                 .join(db.Key.uid) \
                 .filter(db.UID.uid_name.ilike("%{}%".format(search_str))) \
                 .paginate(page, per_page=count)
@@ -112,7 +110,7 @@ def search_through_keys(search_str: str, page: int=1, count: int=10) -> Paginati
         # Then, it joins the db.Key.uid rows associated with the key to it.
         # Next, it filters by the the uid_name with an ilike.
         # Then it paginates it.
-        results = db.Key.query.options(FromCache(cache)) \
+        results = db.Key.query \
             .join(db.Key.uid) \
             .filter(db.UID.uid_name.ilike("%{}%".format(search_str))) \
             .paginate(page, per_page=count)

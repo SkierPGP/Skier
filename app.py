@@ -1,8 +1,8 @@
 import logging
 
 from flask import Flask
-from flask.ext.cache import Cache
 from flask.ext.compress import Compress
+import redis
 
 import init
 
@@ -15,11 +15,11 @@ def setup_logging():
         app.logger.addHandler(logging.StreamHandler())
         app.logger.setLevel(logging.ERROR)
 
-from cfg import cfg
+import cfg
 
 # Set flask config files
-for key in cfg.config.flask_cfg:
-    app.config[key] = cfg.config.flask_cfg[key]
+for key in cfg.cfg.config.flask_cfg:
+    app.config[key] = cfg.cfg.config.flask_cfg[key]
 
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = True
 
@@ -29,8 +29,10 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = True
 # Disable strict encoding errors
 #gpg.decode_errors = "ignore"
 
-cache = Cache(config={'CACHE_TYPE': 'redis'})
+cache = redis.StrictRedis(host=cfg.redis_host,
+                          port=cfg.cfg.config.redis.port,
+                          db=cfg.cfg.config.redis.db)
 
 compress = Compress(app) # yay!
 
-init.init(app, cache)
+init.init(app)

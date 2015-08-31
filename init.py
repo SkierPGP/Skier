@@ -4,7 +4,7 @@ from flask import render_template
 
 import cfg
 
-def init(app, cache):
+def init(app):
     from skier import frontend
     from skier import pgpapi
     from skier import pks
@@ -18,9 +18,6 @@ def init(app, cache):
 
     app.config["SQLALCHEMY_DATABASE_URI"] = cfg.sqlalchemy_uri
 
-    app.config["CACHE_REDIS_HOST"] = cfg.redis_host
-    app.config["CACHE_REDIS_PORT"] = cfg.cfg.config.redis.port
-    app.config["CACHE_REDIS_DB"] = cfg.cfg.config.redis.db
 
     @app.before_first_request
     def f(*args, **kwargs):

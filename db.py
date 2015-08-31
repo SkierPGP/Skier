@@ -1,7 +1,6 @@
 import datetime
 
-from flask.ext.sqlalchemy import SQLAlchemy, Model
-from flask.ext.sqlalchemy_cache import CachingQuery
+from flask.ext.sqlalchemy import SQLAlchemy
 
 
 # from skier.keyinfo import UID as KUID
@@ -11,8 +10,7 @@ from app import app
 
 # Setup caching.
 
-Model.query_class == CachingQuery
-db = SQLAlchemy(app, session_options={'query_cls': CachingQuery})
+db = SQLAlchemy(app)
 
 
 class Key(db.Model):
