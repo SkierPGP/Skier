@@ -5,6 +5,8 @@
 [![Code Climate](https://codeclimate.com/github/SkierPGP/Skier/badges/gpa.svg)](https://codeclimate.com/github/SkierPGP/Skier)
 [![Requirements Status](https://requires.io/github/SkierPGP/Skier/requirements.svg?branch=master)](https://requires.io/github/SkierPGP/Skier/requirements/?branch=master)
 
+![Skier](static/skier.png)
+
 Skier is a PGP public key keyserver, built on top of the Flask microframework, designed a direct replacement for SKS.  
 
 See Skier in action: [https://pgp.sundwarf.me](https://pgp.sundwarf.me/)
