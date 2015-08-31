@@ -3,19 +3,19 @@
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQIcBAABCAAGBQJV5JsQAAoJELM7eGjErpPKOokP/AurXLn/VHAG/+C++UvtB4Kj
-oCdzD9SCm33zG+g8QtV0R4jAMG5YP+6FEnfHB1fMRzilwOy3/dPxp+f28DBR1x1P
-+tRCQG/e8Mvt0V6ZofX7192gXLp+/tZhnj/9mf2NU+4jQ2fzMW/BMrb3TCdI78bb
-aZ/bNzeLpeJhuij2LpLDeYIxV66jCN85DDnyzavaMbHrM5kvspWhZIV/4muUu+/R
-wyqEhpZQCKBbgAuG2F+DWnDFv4GSPSF6Oc/+B7HOCqZ6uvTrVrwQaFbvI5hLNI8c
-nqcHRWOWxLc/qcr3ex2yZKhZEfXcAllAoiC/yYYfl6Ch/wWIPD558QH58Gtd/hy7
-5FsGiI0wk88EIr2Hkh80zcucBfVLDFs3bi78AEVM6PjE0j77goXIslSQuaaydeCx
-ojH6vvrmgmFWMZRuu8Tqei2lH8p9COtbMfc5cghLf1dqj4z2tIRjW+RcqL1B/nRK
-PxlPyzQm8gFz9mVRN5j5JH4/GvM+H80JFAcV3UhM2vJMIoPZUpPyPlIo8cB69x4h
-6DRlWCaUW+wCveNBTyg3cRWiCR3Ukk4NXcLkm4Z7/HxxSsC/TthptsuTNE7RKCJ7
-VSEaWPSBgrAGrinlpfMWFh8iRpqKY7dbmK03UuedFbA9nFpGIaszUqNJNFKeuYQ+
-BoShpOMaqw+lkYmJDcB+
-=tG6c
+iQIcBAABCAAGBQJV5J32AAoJELM7eGjErpPKgiYP/RvHqE/fq8rVHGm0Mihgopp6
+73/Envvz8fRiZHouQbugw62MKvTEuz3Nx3/qMDYeP4Fts1fx5umnNu2q5Yofuhwq
+XR3yZgnhejtZhNQ/JY857wodQh4iLrs0iA/6sE1sCYz9btREvsr5+/RTZMlWRwqV
+cMcHWknXEo1T+P/hJXJHwwhMKvzga5KO5/0lbJQVwZij+wRoF71bsRG8DjhT62RS
+dBAUM9noO+pV1W7g62Z0+I787m+TO7nXSd0vmAs035apSz7PiegHbhn5S5KeisY3
+vcRP/kIXDyVlK/ImV5nEU6m7LwfmrD6Xi0+EaqN9e8+sZMKJvFitHj1GlEchweMV
+JwEEgDCKprC/cQsVmG6tkE8nsjkqrwryQMnoyMrqjICIhjJHerThqd/sJiU1mW1B
+REl0ZORAM9dhSvPKiEDEDMoiz4ossflz9ZUNBdX/IwXl2upW3HpO0515lYpKPr4g
+kLUEjcpfM1LXW/DtPFq4gfsjXh+J8R0lyjPk1SxMUiCa1nu1xfdwvF1DVg2D8zXs
+fj/p/kEBKxFLef23gRhrj5gY9oEmw8clzsHeUx70pPgT3nH2tvLSIJS6aKM/gOwA
+a5xvH9nG5j1QklInzhbmiUmbariZMAfrvbFUPyM/7uaCvvhTLYf34DI6VNUHj4ju
+FNMVcp0hTG/1GQ2fddw5
+=xa0y
 -----END PGP SIGNATURE-----
 
 ```
@@ -103,7 +103,7 @@ size   exec  file                                             contents
 3066               mstile-310x150.png                         30c5c20b7cd596b858314ead423f643a446c3faa181f47b04bea1bc7e469b86a|3ac985955a8ef6562fda2df29d1c5f4681b131d5e61b1821f8a0e58846ce3e6d
 8992               mstile-310x310.png                         a75e952c0c0b3a70d0d6b3c7bedacdbd8f187ccf7284661ae888ec397dde84d2|1bf0eac9b613bdb44012c45eb39f3c1a235f33e3682ef5d335c96dab92d49d6b
 2742               mstile-70x70.png                           cacfacab2cea6892817f67b8ce03fbedd6f57c9ab925cea1432495e3cbe38cb5|86fe8492c491e9681f9babad908e3ea92e48e0c79fae58bf164b316feeaf6c83
-30125            skier.png                                    107f08b6cbf6904e457b3db766e6d07b8fe751e04de8cadc16e213090cb7c0aa|8c7986d4c1bf1f63f5ed691cd2fc5d37ce55598c792d6300e5e7bbd01ec7a709
+29898            skier.png                                    2a95028c8d6f153881f049d27d640286050ba917ae8d29e58248b8ff4b34c9dd|1cf97d427689274dff77a7651a5c72e3495e8b225b0c1e8673e5cccbef115fba
                templates/                                                                                                                                                                      
                  about/                                                                                                                                                                        
 247                faq.html                                   cb36c33b74ae53f563a359a33398f77ab74d8a45133e0bbc387c5753360bac94                                                                 

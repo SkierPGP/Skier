@@ -8,13 +8,14 @@
 {% endblock %}
 
 {% block content %}
-    <div class="text-center">
+    <div class="center-block text-center">
         <h1>Skier PGP server at <em>{{ host }}</em></h1>
         <h2><a href="{{ url_for("frontend.whatispgp") }}">What is PGP?</a> / <a href="#">How do I use it?</a></h2>
         <h2><a href="{{ url_for("frontend.add") }}">Add a public key</a></h2>
         <h2><a href="{{ url_for("frontend.search") }}">Search for a key</a></h2>
         <h2><a href="{{ url_for("frontend.pool") }}">View my pool information</a></h2>
         <hr>
+        <img style="height: 50%; width: auto" src="{{ url_for("static", filename="skier.png") }}">
         <h4><a href="{{ url_for("frontend.about") }}">About Skier</a></h4>
         <h4><a href={{ url_for("frontend.faq") }}>F.A.Q</a></h4>
         <h4><a href="#">Run your own</a></h4>
