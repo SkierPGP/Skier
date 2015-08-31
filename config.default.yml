@@ -49,3 +49,6 @@ pool_name: skier-core
 keyservers_synch:
   - pgp.sundwarf.me
 
+# The bootstrap theme to use, or 'bootstrap' for default.
+theme: cosmo
+

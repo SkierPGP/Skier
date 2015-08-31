@@ -57,7 +57,7 @@
                 <li>sigs:</li>
                 <ul>
                     {% for sig in key.signatures[key.shortid] %}
-                        <li style="white-space: pre;">{{ key.translate(sig) }} <a href="{{ url_for(".getkeyinfo", key=sig[0]) }}">{{ sig[0] }}</a>({{ sig[1][0] if sig[1][0] != "[" else sig[1] }})</li>
+                        <li style="white-space: pre;">{{ key.translate(sig) }} <a href="{{ url_for(".getkeyinfo", key=sig[0]) }}">{{ sig[0] }}</a> ({{ sig[1][0] if sig[1][0] != "[" else sig[1] }})</li>
                     {% endfor %}
                 </ul>
             </ul>

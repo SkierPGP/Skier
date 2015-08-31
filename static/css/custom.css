@@ -1,9 +1,8 @@
 body {
     background-color: #D7E8CA;
-    /*color: #FFFBF0*/
 }
 .keyinfo {
-    font-family: "Lucida Console", Monaco, monospace
+    font-family: "Hack", Monaco, monospace
 }
 .ks-success {
     color: darkgreen;

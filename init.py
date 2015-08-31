@@ -18,6 +18,7 @@ def init(app):
 
     app.config["SQLALCHEMY_DATABASE_URI"] = cfg.sqlalchemy_uri
 
+    app.jinja_env.globals.update(theme = cfg.cfg.config.theme)
 
     @app.before_first_request
     def f(*args, **kwargs):

@@ -99,7 +99,7 @@ if cfg.config.pool_enabled.syncactions:
         except TypeError: # or whatever
             dt = datetime.datetime.utcnow()
         # Query the database, check how many keys have been added since.
-        keys_since = db.Key.query.filter(db.Key.added_time > dt)
+        keys_since = db.Key.query.filter(db.Key.added_time < dt)
         # Return a list of keys, and the count.
         # Assuming the other server has a correct API, it will take this result, and compare it with the other servers results.
         # Whichever has the highest number will be used.

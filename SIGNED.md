@@ -3,19 +3,19 @@
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQIcBAABCAAGBQJV5J32AAoJELM7eGjErpPKgiYP/RvHqE/fq8rVHGm0Mihgopp6
-73/Envvz8fRiZHouQbugw62MKvTEuz3Nx3/qMDYeP4Fts1fx5umnNu2q5Yofuhwq
-XR3yZgnhejtZhNQ/JY857wodQh4iLrs0iA/6sE1sCYz9btREvsr5+/RTZMlWRwqV
-cMcHWknXEo1T+P/hJXJHwwhMKvzga5KO5/0lbJQVwZij+wRoF71bsRG8DjhT62RS
-dBAUM9noO+pV1W7g62Z0+I787m+TO7nXSd0vmAs035apSz7PiegHbhn5S5KeisY3
-vcRP/kIXDyVlK/ImV5nEU6m7LwfmrD6Xi0+EaqN9e8+sZMKJvFitHj1GlEchweMV
-JwEEgDCKprC/cQsVmG6tkE8nsjkqrwryQMnoyMrqjICIhjJHerThqd/sJiU1mW1B
-REl0ZORAM9dhSvPKiEDEDMoiz4ossflz9ZUNBdX/IwXl2upW3HpO0515lYpKPr4g
-kLUEjcpfM1LXW/DtPFq4gfsjXh+J8R0lyjPk1SxMUiCa1nu1xfdwvF1DVg2D8zXs
-fj/p/kEBKxFLef23gRhrj5gY9oEmw8clzsHeUx70pPgT3nH2tvLSIJS6aKM/gOwA
-a5xvH9nG5j1QklInzhbmiUmbariZMAfrvbFUPyM/7uaCvvhTLYf34DI6VNUHj4ju
-FNMVcp0hTG/1GQ2fddw5
-=xa0y
+iQIcBAABCAAGBQJV5LJfAAoJELM7eGjErpPKB0cQAK8FC/i2KDASwHdNUNfZrmY+
+gUGxMdkUt72QNrcF5eF+H4yEaWiAEqahRa1iQ3fsCpFfWhQDEWlSBR0Hd4+qSj0f
+bWbDDfnqyXlueyzdfyHcW9a2C0rT2TW9Tre1Cpn6x/SNE9XZOsEFs0zYtcAqh6pS
+ywkIRvrlaOxRLpZmAs7q1XZDKNeFyH3XVQMC5K7XZdVDvrd0zusDkIySUt7RjPdC
+rGdNIJyNNcLgSIbcWa4ki0PbQ+5q8JqGiITQZ6Qdd3vkt1+olkUqsgSO59aPkw4n
+PynMk2YDakY54XOk7qCCaGIE/W4Dk2EkhhjtCA0lNYZW2r7DmNZ+7PocbIK9lcs7
+kmEvmWwzR97IH1NlJLjlrv1mIppHjJlEu2ENMMed008SmD5zaSmQDt6K9TYCbK0s
+0KEZaEys7RB+hROZ0H9lxchx6/pWHTOTWyhGMQn285lExs76Ex0EkDiQt3h2Y9/Y
+ycD0ik4eU+5sgsTEBPozw+TCOmfT4efmjRXJ0zVvlCuJK/hn5NS0/t50KP9Mdo+P
+ynkZmIporQOpgXquLqjcDBDTLpLdptwUzPKpkJKitNqvXxiG0sHaP9jb8mBRiCl8
+j+602dd6EFBCAGJUS40IQZjdxa1tXb5qjHxUNTiAh1x5ig174HCbFN92hSF1Ydmc
+1Spc8GCWbD+dDJcy+cFa
+=jtzI
 -----END PGP SIGNATURE-----
 
 ```
@@ -32,11 +32,11 @@ size   exec  file                                             contents
 884            .gitignore                                     c91a7b164cd4e40d78394d5b6b65847fa957d01af2c0489636bf2445696493a3                                                                 
 882            app.py                                         5e8eeb6e64c4b0abb1d1193d7e2182eca911c8278cac39022bf18297b5617277                                                                 
 685            cfg.py                                         aa245ace231b35f482e072fa62c3d0b6c2d6561c2c28b567e6ff5f36e647278e                                                                 
-942            config.default.yml                             f9e53baf75d66ee8af9e67e7443ea0afc1f90412a00d13d9248feb1ef8a1a923                                                                 
+1014           config.default.yml                             2361b2832cfe5a05127e900314a0582ab887fb02a77a96d424e9d59bae16b1b7                                                                 
 1378           CONTRIBUTING.md                                c4fab7e295a2d1022781c218330c69e9f9ed968e5aaa296d6e51a3a28236d165                                                                 
 3171           db.py                                          a68321f4eae1a22e2636e4833422de6fc33c07ab25f2ecffe998e1a9a0d90005                                                                 
 823            gunicorn_config.py                             086842346acc7c5c3ed37e23948f91efd959219b4614842e9a46c41ad67b5595                                                                 
-1023           init.py                                        7096f4606af4d05fb67fc527ea843c2dac1e8b84e25dcb4c4c12a24ec436b1dd                                                                 
+1086           init.py                                        1afa2600c6fdcc1f59558890f8931a9a24489e5040edd3d81b57cb2fdca978e1                                                                 
 34519          LICENCE                                        91b65277959ec273763d28ef002e83a6b3fba57c7a35436c9e5b66536333d720                                                                 
 3211   x       manager.py                                     ee09629c347454b69da9ee1971958ac9fcc52c9f960a9402116a55039dc375ac                                                                 
                markdown/                                                                                                                                                                       
@@ -67,13 +67,13 @@ size   exec  file                                             contents
 9524               pgp.py                                     827d4eae7c604b9db3023caf84e9bb8836f17f05c394c0c58be569a3ff02ca06                                                                 
 4245             pgp.py                                       16feba1556ed144b76fbabe780a14c250444215dec36249b274b4d1b40423a34                                                                 
 5513             pgpactions.py                                a204e4da0ce5fdecd197441f77f439d03f3ecd90d304869d42e9124f816b2ae6                                                                 
-5073             pgpapi.py                                    edcb726af1a08c27db5189d48321ae90ce81b63ff7994b275a3b6ee35a370bfc                                                                 
+5073             pgpapi.py                                    a41a23a157ed4a6646a01b8fa466027b084b51fc81f60764a2b828874e2a6907                                                                 
 1671             pks.py                                       e6badff7e521e7dbea32393b0dfa6c0ae0c1553b5943f0b8e6992457918d08fd                                                                 
 194            skier.py                                       70b4b1032e676e72dca0ce4de161b9f8bcb441e6670930e713e5c1d92310c824                                                                 
 59     x       start.sh                                       0d36f57edb7b4917be091124c6fcefdfe14727e0c68535e72605d74b74a913e0                                                                 
                static/                                                                                                                                                                         
                  css/                                                                                                                                                                          
-203                custom.css                                 4672ebe6d995b8cb18b36027a4b3073ccd1b3deeb014a0ab96203cdacb65fb01                                                                 
+170                custom.css                                 877034f0c957cd35dd5dbad3ee35f7f07fc3fe1e76c48015de02eeebb81a9cd2                                                                 
                  icon/                                                                                                                                                                         
 4534               android-chrome-144x144.png                 cdb74870e03a5df1988e0d89412bb61b0e621ee2c015a99ec997b4b5821592f7|9c998e2dea43e0c9b196e46196c493a67cf8194b7beeb38a8c5d24abd1212d03
 6849               android-chrome-192x192.png                 fef3518c0c6c49006da0d9da7937cb8a7b91b6b630fa88dacd81ec5810ca9384|b91e3e4ee2b1e1d58c5b16c15af7b862fe1ee364ba1d922587281b168c4208e9
@@ -110,13 +110,13 @@ size   exec  file                                             contents
 253                pgp.html                                   e45cf627903a7f9690e099dc5c84b373bbaa9ea52aa17f92cba9f9541de2d765                                                                 
 635                pool.html                                  fb0dc223fa578cd0f24323a7f584d6966b9026a9ab07b82bcb35c5b806b13680                                                                 
 256                skier_vs_sks.html                          9c9bfd3ffbd26ecc81f5b5476404eebc7db250a5712041f29a9ba4739348d7c4                                                                 
-2900             base.html                                    28426eef04c97e4a347767b07980404ca1b46691278d7ed67d31531a4478eb01                                                                 
+3214             base.html                                    62d9669f723c4f523e6d08cf6814037a418fbcf613968339d374ddc6ac5102b3                                                                 
                  error/                                                                                                                                                                        
 304                403.html                                   f0913eabcc392835205bd4ec9da3a81304df189b496d3609bb166afa565e2153                                                                 
 285                404.html                                   2840a9f068b6cd9e8079c948d940fc92ed9899144516956c1b0cac04c6605074                                                                 
 2398             import.html                                  39fe0923eb96829708d357dd25826acb62d29e09e88ba019974028bca17faac0                                                                 
 943              index.html                                   01741ca4bf4db187ebeccb82a2238c250b160ad2cde919e19e3abe441dd81d91                                                                 
-3911             keyinfo.html                                 fe394063f6aa2a0e298a61ef116b6735f7ffd7d874e343e314b882f8646c6cf7                                                                 
+3912             keyinfo.html                                 947a7ae572a5598a608ac2804f868bc91264374440062039a6d460421a19b416                                                                 
 1814             navbar.html                                  c8c316a554f097efa654d42b3ab24bfe65d841c77d276baffe003d1cbc81c0a5                                                                 
 4756             search.html                                  6c99af82ed4cec26b8e1d75dae75898bbcbc0798a5c0625a59ca28ba67915a73                                                                 
 1946             submit.html                                  5200d8b6b68ae0429c0d59aa505bcc20563e53004d8af8070e8172cbed17b217                                                                 
