@@ -47,6 +47,7 @@ def searchkeys(search_str: str):
          "ids": [item.key_fp_id for item in results.items]}
     ), 200 if results.total else 404, {"Content-Type": "application/json"}
 
+
 @pgpapi.route("/keyinfo/<keyid>", methods=["GET"])
 def get_pgpapi_keyinfo(keyid):
     pass
@@ -66,6 +67,7 @@ def addkey():
         return json.dumps({"error": 0, "msg": key[1]}), 200, {"Content-Type": "application/json"}
     else:
         return json.dumps({"error": key[1], "msg": "invalid-key-data"}), 401, {"Content-Type": "application/json"}
+
 
 @pgpapi.route("/import/<keyserver>/<keyid>", methods=["POST"])
 def importkey(keyserver, keyid):

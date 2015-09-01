@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, url_for, request, redirect
 
+import db
 from skier import pgp
 from cfg import cfg
 from skier.keyinfo import KeyInfo
@@ -10,13 +11,11 @@ frontend_keys = Blueprint("user_display_keys", __name__)
 
 @frontend.route("/")
 def index():
-    return render_template("index.html", host=cfg.config.hostname)
+    return render_template("index.html", host=cfg.config.hostname, keys_served=db.Key.query.count())
 
 @frontend.route("/about")
 def about():
     return render_template("generated/_about_skier.html")
-
-
 
 @frontend.route("/about/pool")
 def pool():

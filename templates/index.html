@@ -10,6 +10,7 @@
 {% block content %}
     <div class="center-block text-center">
         <h1>Skier PGP server at <em>{{ host }}</em></h1>
+        <h2>Serving {{ keys_served }} keys</h2>
         <h2><a href="{{ url_for("frontend.whatispgp") }}">What is PGP?</a> / <a href="#">How do I use it?</a></h2>
         <h2><a href="{{ url_for("frontend.add") }}">Add a public key</a></h2>
         <h2><a href="{{ url_for("frontend.search") }}">Search for a key</a></h2>
