@@ -6,6 +6,7 @@
 #from cfg import cfg, redis_host
 from flask.ext.sqlalchemy import Pagination
 
+from app import cache
 from skier import keyinfo
 import db
 
@@ -49,15 +50,19 @@ def add_pgp_key(armored: str) -> tuple:
         key.id = use_id
     db.db.session.merge(key)
     db.db.session.commit()
+    if cache.exists(key.key_fp_id + "-armor"):
+        cache.delete(key.key_fp_id + "-armor")
+
     return True, newkey.shortid, key
 
-#@cache.memoize(timeout=300)
 def get_pgp_armor_key(keyid: str) -> str:
     """
     Lookup a PGP key.
     :param keyid: The key ID to lookup.
     :return: The armored version of the PGP key, or None if the key does not exist in the DB.
     """
+    if cache.exists(keyid + "-armor"):
+        return cache.get(keyid + "-armor").decode()
     if keyid.startswith("0x"):
         keyid = keyid.replace("0x", "")
     if len(keyid) == 40:
@@ -68,6 +73,7 @@ def get_pgp_armor_key(keyid: str) -> str:
         key = db.Key.query.filter(db.Key.uid.ilike("%{}%".format(keyid))).first()
     if key:
         if key.armored:
+            cache.setex(keyid + "-armor", 60*60*24, key.armored)
             return key.armored
         else:
             return ""
