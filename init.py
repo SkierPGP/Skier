@@ -33,6 +33,10 @@ def init(app):
     def four_oh_three(error):
         return render_template("error/403.html"), 403
 
+    @app.errorhandler(500)
+    def five_oh_oh(error):
+        return render_template("error/500.html"), 500
+
     @app.route("/skier")
     def skier():
         return "", 200
