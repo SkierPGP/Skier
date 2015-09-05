@@ -1,11 +1,11 @@
 import multiprocessing
 
-bind = "0.0.0.0:5001"
+bind = "0.0.0.0:5000"
 workers = multiprocessing.cpu_count() * 2 + 1
 
 # Choose one as appropriate.
-# worker_class = "sync"
-worker_class = "gthread" # Python 3 only.
+worker_class = "sync"
+# worker_class = "gthread" # Python 3 only.
 # worker_class = "gevent"
 # worker_class = "eventlet"
 # worker_class = "tornado"
@@ -25,8 +25,8 @@ daemon = False
 # keyfile = "ssl/server.key"
 # certfile = "ssl/server.crt"
 
-#accesslog = "/var/skier/log/access.log"
-#errorlog = "/var/skier/log/error.log"
+accesslog = "/var/skier/log/access.log"
+errorlog = "/var/skier/log/error.log"
 
 
 def when_ready(server):
