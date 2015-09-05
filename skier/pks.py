@@ -23,7 +23,7 @@ def pksgetkey():
             return "Invalid key data", 401
         else:
             key = pgp.get_pgp_armor_key(keyid)
-            if key: return key, 200, {"Cache-Control": "no-cache", "Pragma": "no-cache"}
+            if key: return key, 200, {"Cache-Control": "no-cache", "Pragma": "no-cache", "Content-Type": "application/x-pgp-key"}
             else: return "", 404
     elif 'op' in request.args and request.args.get("op") == "index":
         return pkssearch(request.args)
@@ -48,4 +48,4 @@ def pkssearch(rargs):
     if not keys.total:
         return "No keys found", 404
     else:
-        return format_pks(keys), 200, {"X-HKP-Results-Count": keys.total}
+        return format_pks(keys), 200, {"X-HKP-Results-Count": keys.total, "Content-Type": "application/x-pgp-search"}
