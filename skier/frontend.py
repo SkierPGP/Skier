@@ -13,10 +13,6 @@ frontend_keys = Blueprint("user_display_keys", __name__)
 def index():
     return render_template("index.html", host=cfg.config.hostname, keys_served=db.Key.query.count())
 
-@frontend.route("/about")
-def about():
-    return render_template("generated/_about_skier.html")
-
 @frontend.route("/about/pool")
 def pool():
     return render_template("about/pool.html",

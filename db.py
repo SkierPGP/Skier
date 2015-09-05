@@ -38,12 +38,7 @@ class Key(db.Model):
     def from_keyinfo(cls, obj):
         k = Key()
         for uid in obj.uid:
-            nuid = UID()
-            nuid.full_uid = uid.full_name
-            nuid.uid_email = uid.email
-            nuid.uid_name = uid.name
-            nuid.uid_comment = uid.comment
-            k.uid.append(nuid)
+            k.uid.append(uid)
 
         k.length = obj.length
         k.created = datetime.datetime.fromtimestamp(obj.created)
