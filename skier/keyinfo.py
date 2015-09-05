@@ -3,16 +3,17 @@ import datetime
 import json
 import time
 import binascii
+import base64
 
-from flask.ext.sqlalchemy_cache import FromCache
+import keybaseapi
 import pgpdump.packet
 from pgpdump import AsciiData
-
 from pgpdump.utils import PgpdumpException
-import keybaseapi
 
 from app import cache
 import db
+import cfg
+from .crc24 import crc24
 
 
 def jsondes(obj):
@@ -225,33 +226,6 @@ class KeyInfo(object):
                        other.uid == self.uid,
                        other.subkeys == self.uid))
 
-    """
-    @classmethod
-    def from_key_listing(cls, listing: dict):
-        \"""
-        Generates a key from a gpg.list_keys key.
-        :param listing: The dict outputted by gpg.list_keys.
-        :return: A new :KeyInfo: object.
-        \"""
-
-        # Nevermind this bit, GPG returns the primary key for looking up subkeys.
-        # Loop over the subkeys, and pick up one, looking it up in the GPG keyring.
-        #for key in listing['subkeys']:
-        #    fingerprint = key[2]
-        #    subkey = gpg.list_keys(keys=[fingerprint])
-        #    if subkey:
-        #        # GPG gives us a list of results for looking up keys, so we get the first one, as there should only be one.
-        #        actual_subkey = subkey[0]
-
-
-        key = KeyInfo(uid=listing["uids"][0], keyid=listing['keyid'], fingerprint=listing['fingerprint'],
-            algo=PGPAlgo(int(listing['algo'])), length=listing['length'], subkeys=[k[2] for k in listing['subkeys']],
-            expires=int(listing['expires']) if listing['expires'] != '' else 0, created=int(listing['date']),
-            sigs=listing['sig'] if 'sig' in listing else [], expired=listing['trust'] == 'e', revoked=listing['trust'] == 'r')
-
-        return key
-    """
-
     @classmethod
     def pgp_dump(cls, armored: str, packets: list=None):
         """
@@ -290,10 +264,18 @@ class KeyInfo(object):
 
         oid = None
 
-        for packet in packets:
+        npackets = []
+
+        for n, packet in enumerate(packets):
             # Public key packet, main body.
             # But NOT a subkey.
             if isinstance(packet, pgpdump.packet.PublicKeyPacket) and not isinstance(packet, pgpdump.packet.PublicSubkeyPacket):
+                if keyid:
+                    # We already have a key. No thanks!
+                    # If you get a REALLY shitty key that puts the public key packets (multiples of them) in front of eachother, that's fucking dumb
+                    # And we're gonna skip those. Better hope your data packets are before your second public key packet!
+                    # I blame GPG for this.
+                    break
                 # Set data
                 created = packet.creation_time.replace(tzinfo=datetime.timezone.utc).timestamp()
                 expires = packet.expiration_time.replace(tzinfo=datetime.timezone.utc).timestamp() if packet.expiration_time is not None else None if not expires else expires
@@ -321,7 +303,7 @@ class KeyInfo(object):
                     revoked = True
                 # Lookup the UserID
                 else:
-                    sig_uid = db.Key.query.options(FromCache(cache)).filter(db.Key.key_fp_id == packet.key_id.decode()[-8:]).first()
+                    sig_uid = db.Key.query.filter(db.Key.key_fp_id == packet.key_id.decode()[-8:]).first()
                     # Check if we know it
                     if not sig_uid:
                         sig_uid = "[User ID Unknown]"
@@ -361,6 +343,26 @@ class KeyInfo(object):
             elif isinstance(packet, str):
                 armored = packet
             most_recent_packet = packet
+            npackets.append(packet)
+
+        # Re-construct the armored data.
+        s = b''.join([p.original_data for p in npackets])
+        s = base64.b64encode(s).decode()
+        s = "".join(s[i:i+64] + "\n" for i in range(0,len(s),64))
+
+        # Construct CRC
+        crc = crc24(b''.join([p.original_data for p in npackets]))
+        crc = crc.to_bytes((crc.bit_length() + 7) // 8, 'big') or b'\0'
+
+        crc = base64.b64encode(crc).decode()
+
+
+        s = """-----BEGIN PGP PUBLIC KEY BLOCK-----\nVersion: SkierPGP v{v}\n\n{content}={crc24}\n-----END PGP PUBLIC KEY BLOCK-----""".format(
+            v = cfg.SKIER_VERSION,
+            content=s,
+            crc24=crc
+        )
+        armored = s
 
 
         return KeyInfo(uid=uid, keyid=keyid, fingerprint=fingerprint, length=length, algo=algo,
@@ -398,7 +400,7 @@ class KeyInfo(object):
                 k.signatures[sig.key_sfp_for] = []
             tmpd = [sig.pgp_keyid]
 
-            sig_uid = db.Key.query.options(FromCache(cache)).filter(db.Key.key_fp_id == sig.pgp_keyid).first()
+            sig_uid = db.Key.query.filter(db.Key.key_fp_id == sig.pgp_keyid).first()
             # Check if we know it
             if not sig_uid:
                 sig_uid = "[User ID Unknown]"
