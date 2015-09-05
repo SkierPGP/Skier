@@ -102,20 +102,18 @@ def search_through_keys(search_str: str, page: int=1, count: int=10) -> Paginati
     if search_str.startswith("0x"):
         search_str = search_str.replace("0x", "")
         if len(search_str) == 40:
-            results = db.Key.query.filter(db.Key.fingerprint == search_str).paginate(page, per_page=count)
+            results = db.Key.query.\
+                filter(db.Key.fingerprint == search_str) \
+                .paginate(page, per_page=count)
         elif len(search_str) == 8:
-            results = db.Key.query.filter(db.Key.key_fp_id == search_str).paginate(page, per_page=count)
+            results = db.Key.query.filter(db.Key.key_fp_id == search_str)\
+                .paginate(page, per_page=count)
         else:
             results = db.Key.query \
                 .join(db.Key.uid) \
                 .filter(db.UID.uid_name.ilike("%{}%".format(search_str))) \
                 .paginate(page, per_page=count)
     else:
-        # This is an absolutely horrendous query. For anybody reading this, and/or having the same problems as me, here's how it works.
-        # First, it constructs a query object for the db.Key object.
-        # Then, it joins the db.Key.uid rows associated with the key to it.
-        # Next, it filters by the the uid_name with an ilike.
-        # Then it paginates it.
         results = db.Key.query \
             .join(db.Key.uid) \
             .filter(db.UID.uid_name.ilike("%{}%".format(search_str))) \

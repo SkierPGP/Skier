@@ -14,6 +14,31 @@ from app import cache
 import db
 
 
+def jsondes(obj):
+    """Default JSON serializer."""
+    import calendar, datetime
+
+    if isinstance(obj, datetime.datetime):
+        if obj.utcoffset() is not None:
+            obj = obj - obj.utcoffset()
+        millis = int(
+            calendar.timegm(obj.timetuple()) * 1000 +
+            obj.microsecond / 1000
+        )
+        return millis
+    elif isinstance(obj, PGPAlgo):
+        return obj.value
+    else:
+        try:
+            return obj.todict
+        except AttributeError as e:
+            # panic
+            try:
+                return obj.json
+            except AttributeError as ee:
+                # double panic
+                raise ValueError("Cannot JSON seralize obj {}".format(obj)) from ee
+
 def wrap(i):
     return i + ((8 - len(i)) * " " if (8 - len(i) > 0) else "")
 
@@ -31,14 +56,6 @@ class PGPAlgo(Enum):
     DH = 21
 
     unknown = 999
-
-
-class UID(object):
-    def __init__(self, name=None, email=None, comment=None):
-        self.name = name
-        self.email = email
-        self.comment = comment
-        self.full_name = None
 
 class KeyInfo(object):
     def __init__(self, uid: list=None, keyid: str=None, fingerprint: str=None,
@@ -76,6 +93,8 @@ class KeyInfo(object):
         self.oid = oid
 
         self.keybase = None
+        self.api_keybase = None
+
 
     def __repr__(self):
         return "<KeyInfo 0x{fp}>".format(fp=self.fingerprint)
@@ -112,6 +131,8 @@ class KeyInfo(object):
             # Note: StrictRedis uses name,time,value. Normal redis uses name,value,time.
             cache.setex("keybase_" + username, 60*60*24, data)
 
+        self.api_keybase = k.raw_keybase_data.dump()
+
         # Second cache pass, check if it was verified.
         if miss:
             try:
@@ -127,6 +148,26 @@ class KeyInfo(object):
             verified = bool(int(cache.get("keybase_" + username + "_ver")))
         self.keybase = (k, verified)
 
+    def from_json(self, data: str):
+        # load in data from the dump
+        data = json.loads(data)
+        # set attributes
+        self.uid = data["uid"]
+
+    def to_json(self):
+        d =  {"uid": self.uid,
+             "keyid": self.keyid,
+             "fingerprint": self.fingerprint,
+             "length": self.length,
+             "algo": self.algo,
+             "created": self.created,
+             "expires": self.expires,
+             "sigs": self.signatures,
+             "subkeys": self.subkeys,
+             "oid": self.oid,
+             "keybase": self.keybase is not None,
+             "revoked": self.revoked}
+        return json.dumps(d, default=jsondes)
 
 
     def get_expired_ymd(self):
@@ -311,10 +352,10 @@ class KeyInfo(object):
                 )
             elif isinstance(packet, pgpdump.packet.UserIDPacket):
                 # Load in the UIDs
-                u = UID()
-                u.name = packet.user_name
-                u.email = packet.user_email
-                u.full_name = packet.user
+                u = db.UID()
+                u.uid_name = packet.user_name
+                u.uid_email = packet.user_email
+                u.full_uid = packet.user
                 uid.append(u)
             elif isinstance(packet, str):
                 armored = packet

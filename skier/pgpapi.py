@@ -50,7 +50,13 @@ def searchkeys(search_str: str):
 
 @pgpapi.route("/keyinfo/<keyid>", methods=["GET"])
 def get_pgpapi_keyinfo(keyid):
-    pass
+    # Load the key info.
+    key = pgp.get_pgp_keyinfo(keyid)
+    # Check if it's none before proceeding
+    if not key:
+        return "{}", 404, {"Content-Type": "application/json"}
+    # Otherwise, return the key info
+    return key.to_json(), 200, {"Content-Type": "application/json"}
 
 
 @pgpapi.route("/addkey", methods=["POST", "PUT"])

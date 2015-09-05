@@ -1,14 +1,9 @@
 import datetime
 
 from flask.ext.sqlalchemy import SQLAlchemy
-
-
-# from skier.keyinfo import UID as KUID
 from sqlalchemy.dialects.postgresql import ARRAY
 
 from app import app
-
-# Setup caching.
 
 db = SQLAlchemy(app)
 
@@ -95,6 +90,10 @@ class UID(db.Model):
 
     def __repr__(self):
         return "{}".format(self.full_uid)
+
+    @property
+    def todict(self):
+        return {"full": self.full_uid, "name": self.uid_name, "email": self.uid_email, "comment": self.uid_comment}
 
 
 class Signature(db.Model):
