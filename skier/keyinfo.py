@@ -345,24 +345,25 @@ class KeyInfo(object):
             most_recent_packet = packet
             npackets.append(packet)
 
-        # Re-construct the armored data.
-        s = b''.join([p.original_data for p in npackets])
-        s = base64.b64encode(s).decode()
-        s = "".join(s[i:i+64] + "\n" for i in range(0,len(s),64))
+        if cfg.cfg.config.features.armor_rewrite:
+            # Re-construct the armored data.
+            s = b''.join([p.original_data for p in npackets])
+            s = base64.b64encode(s).decode()
+            s = "".join(s[i:i+64] + "\n" for i in range(0,len(s),64))
 
-        # Construct CRC
-        crc = crc24(b''.join([p.original_data for p in npackets]))
-        crc = crc.to_bytes((crc.bit_length() + 7) // 8, 'big') or b'\0'
+            # Construct CRC
+            crc = crc24(b''.join([p.original_data for p in npackets]))
+            crc = crc.to_bytes((crc.bit_length() + 7) // 8, 'big') or b'\0'
 
-        crc = base64.b64encode(crc).decode()
+            crc = base64.b64encode(crc).decode()
 
 
-        s = """-----BEGIN PGP PUBLIC KEY BLOCK-----\nVersion: SkierPGP v{v}\n\n{content}={crc24}\n-----END PGP PUBLIC KEY BLOCK-----""".format(
-            v = cfg.SKIER_VERSION,
-            content=s,
-            crc24=crc
-        )
-        armored = s
+            s = """-----BEGIN PGP PUBLIC KEY BLOCK-----\nVersion: SkierPGP v{v}\n\n{content}={crc24}\n-----END PGP PUBLIC KEY BLOCK-----""".format(
+                v = cfg.SKIER_VERSION,
+                content=s,
+                crc24=crc
+            )
+            armored = s
 
 
         return KeyInfo(uid=uid, keyid=keyid, fingerprint=fingerprint, length=length, algo=algo,
@@ -374,12 +375,13 @@ class KeyInfo(object):
         k = KeyInfo()
         k.uid = keyob.uid
         for uid in keyob.uid:
-            if 'keybase.io' in uid.full_uid:
-                # split uid
-                u = uid.full_uid.split()
-                kb = [_ for _ in u if "keybase.io" in _][0].split('/')[-1]
+            if cfg.cfg.config.features.keybase:
+                if 'keybase.io' in uid.full_uid:
+                    # split uid
+                    u = uid.full_uid.split()
+                    kb = [_ for _ in u if "keybase.io" in _][0].split('/')[-1]
 
-                k._setup_keybase(kb)
+                    k._setup_keybase(kb)
 
         k.length = keyob.length
         k.created = keyob.created

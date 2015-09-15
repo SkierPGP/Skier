@@ -52,3 +52,12 @@ keyservers_synch:
 # The bootstrap theme to use, or 'bootstrap' for default.
 theme: cosmo
 
+# Enable/disable specific features.
+features:
+ # Allow key importing? Requires 'requests'.
+ importing: false
+ # Allow keybase integration? Requires 'keybaseio-api'.
+ keybase: false
+ # Allow armor rewriting?
+ armor_rewrite: false
+

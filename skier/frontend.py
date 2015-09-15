@@ -88,7 +88,7 @@ def search():
 
 @frontend.route("/import")
 def import_key():
-    return render_template("import.html"), 200
+    return render_template("import.html", importing=cfg.config.features.importing), 200
 
 
 @frontend_keys.route("/<keyid>")

@@ -9,6 +9,7 @@
 {% endblock %}
 
 {% block content %}
+{% if importing %}
     Scanning keyservers, please hold...
     <ul id="ks-scan">
 
@@ -74,6 +75,8 @@
         })
     });
     </script>
-
+{% else %}
+Sorry, importing is disabled on this server.<br>
+<a href="{{ url_for(".index") }}">Home</a>
+{% endif %}
 {% endblock %}
-

@@ -12,11 +12,8 @@ git+https://github.com/benoitc/gunicorn.git
 Flask-Migrate>=1.5.0
 Flask-Script>=2.0.5
 Flask-SQLAlchemy>=2.0
-Flask-SQLAlchemy-Cache>=0.1.2
 Flask-Compress>=1.2.1
 psycopg2>=2.6.1
 pgpdump3
 # For importing
 python-gnupg>=0.3.7
-# For keybase
-keybaseio-api>=1.0.3
