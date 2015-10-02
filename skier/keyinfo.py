@@ -1,19 +1,21 @@
-from enum import Enum
-import datetime
-import json
 import time
 import binascii
 import base64
 
-import keybaseapi
+from enum import Enum
 import pgpdump.packet
 from pgpdump import AsciiData
 from pgpdump.utils import PgpdumpException
 
+import datetime
+import json
 from app import cache
 import db
 import cfg
 from .crc24 import crc24
+
+if cfg.cfg.config.features.keybase:
+    import keybaseapi
 
 
 def jsondes(obj):

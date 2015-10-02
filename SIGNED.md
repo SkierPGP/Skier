@@ -3,19 +3,19 @@
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQIcBAABCAAGBQJV+GkWAAoJELM7eGjErpPKW+0P/RBwYssR3e9WplVsQ7HI6LEf
-HpBV6R/7Mu2juKaA3nbfp1bhgNChWe6Aee5m5TbUBZwhyugUO65It1pENSM3m6ah
-0brKoPlutArDf667U7A/MKbrGZBNj+0+MIO1lOST5YNPh4VNOmcLRSgHy6QOsgpO
-K00MI0YV78P3LcXrLG6ef2O9d/AhLs++i7r0zptAdG0NeXJrw/XY6e1vDpzisZZL
-TCyJ6KXnAfFgx/wg5OC+Qa/ZA2qffmbaos0S+HkOvG1FTB2d6kmymwmdMyX//IJP
-wj0GG9D7lAAXgPWWV4tkirdGtEbcrhX1PRpfYU6CoU1wp42jMn3D0q9XWCIFNfDD
-Gie87893ILNUpB+iXzZu1bTj9/YB+Vz+vXuQvq2acoohyZneHhpFPHKfjThB4Wi4
-BonVWSprRNAGR8rEtl+0IqHzbkevw5a9QnP82xWaUq4RbmLdyfc2sDbzMHZ2x5Ac
-IMtcyO3fECVhcSd2gHZ1oEiJYFWcroCCILMSC5gw/cnuE3TtR6rXi2aFCTa6dXHW
-FLRQch/NFGasOJArd6Itre4xBXrzNa3I5SjrztsLi7hR0sQHB9IdvEDm4DDTvn6H
-pRZe6g3PBRzRpC8XYjtc26Ke8Nm7yQXY9szuhAznyIPFTJPVcRWdgM+xf4yp4Q0L
-+Fck7TAGyRGjE4iu/WsM
-=eisB
+iQIcBAABCAAGBQJWDnklAAoJELM7eGjErpPKVJoQAKsgzCmXJaYgxUcUC+ubVJSk
+AnBWizttHubkK1DugKH04FlO9e3X7gts+nzeyPGi0pMGlzYX7PTpvSZZ60eWKC3Y
+n9CB64dSYd6Kp05vxwoMRjvTsUEf7xf9HTFQrpauswHIG70ZD4+NouYHcGwHlIfm
+GtwMm3Un5kJwUeQxAFM/PKFHLCbkM88DbHVkHv66CWJ0A+TpAaGNDfo8LGRwrNa4
+2TCPHAbARceyU98pRXcFNAdSKKhun1Ade5wBzLDTzA2a9SVzmT+4g+bLeW7hQQNz
+cx8S6t3xr4Gvpi6dysi/DaL0t96Vl2R39tqSdEm5bJbtVrq0hDtObAdehcMiVm0f
+zqX57S98VJKOMLYyGR0Iv4kL1pNqwlHNvIM5X/dSvgiItKRd+2TYD2y8lDxD5buW
+1Vex+QC4Ff4gWTRz86IZIfIAzDDgz6CBl/60hifWUceghvXzXSngDXN9jgrMJqaA
+sKUu1FLdMCiv0ItdAkqP0RID0x2+zfUDG07manhTNPJ7BjQO2SX6lxhyM8QrdeTa
+MPbjIpHxktEa/fEr/eOf/aKjlQO+3Yphcb/CFV8GqNpI0Ukuy679c4GXOtALwD3/
+KE0WoC/aqgnBnj4eyAclwhKnTSNNSHIE0KSOdXh5tFnRQ7VjE6VvY4GVQcISaT8L
+HrvW9Nc+QRzWigni0wpQ
+=EANa
 -----END PGP SIGNATURE-----
 
 ```
@@ -62,7 +62,7 @@ size   exec  file                                             contents
 0                __init__.py                                  e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855                                                                 
 2969             crc24.py                                     df0227d6c25ed29047f457a15c6f416eb8e94d023e085d76ef2a2f31a78a7cb7                                                                 
 4417             frontend.py                                  8e67455fef09b70cc99e8b3ffc298acd05a4a0211dc677169a398778420a6e95                                                                 
-15180            keyinfo.py                                   71c1b0fa02b1847b427ab61b7e302562007f4076b5303827e557328432bac00a                                                                 
+15221            keyinfo.py                                   ebffcdd23e0c44941504e192f08d42f0ea90f93244e879b79384dc2e2b65d6b2                                                                 
                  old/                                                                                                                                                                          
 9524               pgp.py                                     827d4eae7c604b9db3023caf84e9bb8836f17f05c394c0c58be569a3ff02ca06                                                                 
 4169             pgp.py                                       bafae19e03387ce41fd65fc37673aee98697d1cd2ed989c9c167bda69a43fc2c                                                                 
