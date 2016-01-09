@@ -347,6 +347,10 @@ class KeyInfo(object):
             most_recent_packet = packet
             npackets.append(packet)
 
+        if not pgpdump.packet.PublicKeyPacket in npackets:
+            # Panic and cry.
+            return None
+
         if cfg.cfg.config.features.armor_rewrite:
             # Re-construct the armored data.
             s = b''.join([p.original_data for p in npackets])
