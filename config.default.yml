@@ -54,10 +54,11 @@ theme: cosmo
 
 # Enable/disable specific features.
 features:
- # Allow key importing? Requires 'requests'.
- importing: false
- # Allow keybase integration? Requires 'keybaseio-api'.
- keybase: false
- # Allow armor rewriting?
- armor_rewrite: false
-
+  # Allow key importing? Requires 'requests'.
+  importing: false
+  # Allow keybase integration? Requires 'keybaseio-api'.
+  keybase: false
+  # Allow armor rewriting?
+  armor_rewrite: false
+  # Should we disable the frontend?
+  disable_frontend: false
