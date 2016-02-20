@@ -280,7 +280,10 @@ class KeyInfo(object):
                     break
                 # Set data
                 created = packet.creation_time.replace(tzinfo=datetime.timezone.utc).timestamp()
-                expires = packet.expiration_time.replace(tzinfo=datetime.timezone.utc).timestamp() if packet.expiration_time is not None else None if not expires else expires
+                expires = (
+                    packet.expiration_time.replace(tzinfo=datetime.timezone.utc).timestamp()
+                    if packet.expiration_time is not None else None if not expires else expires
+                )
 
                 try:
                     algo = PGPAlgo(packet.raw_pub_algorithm)
@@ -347,8 +350,10 @@ class KeyInfo(object):
             most_recent_packet = packet
             npackets.append(packet)
 
-        if not pgpdump.packet.PublicKeyPacket in npackets:
-            # Panic and cry.
+        for packet in npackets:
+            if isinstance(packet, pgpdump.packet.PublicKeyPacket):
+                break
+        else:  # Panic and cry.
             return None
 
         if cfg.cfg.config.features.armor_rewrite:
