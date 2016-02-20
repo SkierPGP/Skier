@@ -29,7 +29,7 @@ def add_pgp_key(armored: str) -> tuple:
     # Dump the key data.
     newkey = keyinfo.KeyInfo.pgp_dump(armored)
     # You tried, pgpdump. And that's more than we could ever ask of you.
-    if not newkey:
+    if not isinstance(newkey, keyinfo.KeyInfo):
         return False, -1, None
 
     # Put the data into the database.

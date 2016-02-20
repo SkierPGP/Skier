@@ -4,6 +4,7 @@
 __pycache__/
 *.py[cod]
 *$py.class
+*.sw[op]
 
 # C extensions
 *.so
@@ -69,5 +70,3 @@ config.yml
 
 # Ignore PyCharm files
 .idea/
-
-

@@ -61,9 +61,9 @@ def get_pgpapi_keyinfo(keyid):
 
 @pgpapi.route("/addkey", methods=["POST", "PUT"])
 def addkey():
-    # Read in the key data from the form.
+    # Read in the key data from the url arguments. Goes like ?keydata=.
     try:
-        keydata = request.args.get("keydata")
+        keydata = request.args["keydata"]
     except KeyError:
         return json.dumps({"error": 1, "msg": "no-key"}), 401, {"Content-Type": "application/json"}
     # Attempt to add the key.
