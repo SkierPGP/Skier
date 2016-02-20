@@ -71,8 +71,9 @@ Skier is written in Python, using Flask. This makes getting a server up very eas
     For typical development usage, you'll want to change the DB data and the redis information, and disable the pool functionality.
  
  5. **Generate the autotemplates.**
-    
-        ./setup.sh $(cwd)
+    You need to install `pandoc` on your machine first before running this command.
+
+        ./setup.sh $(pwd)
  
  6. **Import some sample data.**  
     There are three ways to go about this:  
