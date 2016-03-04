@@ -3,8 +3,8 @@ import subprocess
 
 import configmaster
 
-cfg = configmaster.YAMLConfigFile.YAMLConfigFile("config.yml")
-
+skier_config_path = os.environ.get("SKIER_CONFIG_PATH", "config.yml")
+cfg = configmaster.YAMLConfigFile.YAMLConfigFile(skier_config_path)
 cfg.apply_defaults(configmaster.YAMLConfigFile.YAMLConfigFile("config.default.yml"))
 
 API_VERSION = 1
