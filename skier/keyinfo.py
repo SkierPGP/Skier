@@ -1,12 +1,10 @@
 import time
 import binascii
 import base64
-
 from enum import Enum
 import pgpdump.packet
 from pgpdump import AsciiData
 from pgpdump.utils import PgpdumpException
-
 import datetime
 import json
 from app import cache
@@ -43,8 +41,10 @@ def jsondes(obj):
                 # double panic
                 raise ValueError("Cannot JSON seralize obj {}".format(obj)) from ee
 
+
 def wrap(i):
     return i + ((8 - len(i)) * " " if (8 - len(i) > 0) else "")
+
 
 class PGPAlgo(Enum):
     """
@@ -61,11 +61,13 @@ class PGPAlgo(Enum):
 
     unknown = 999
 
+
 class KeyInfo(object):
-    def __init__(self, uid: list=None, keyid: str=None, fingerprint: str=None,
-                 length: int=None, algo: PGPAlgo=None, created: int=None, expires: int=None, subkeys: list=None,
-                 sigs: dict=None,
-                 expired: bool=False, revoked: bool = False, armored: str="", oid=None):
+    def __init__(self, uid: list = None, keyid: str = None, fingerprint: str = None,
+                 length: int = None, algo: PGPAlgo = None, created: int = None, expires: int = None,
+                 subkeys: list = None,
+                 sigs: dict = None,
+                 expired: bool = False, revoked: bool = False, armored: str = "", oid=None):
         self.uid = uid
         self.keyid = keyid
 
@@ -89,7 +91,6 @@ class KeyInfo(object):
         else:
             self.subkeys = list()
 
-        self.expired = expired
         self.revoked = revoked
 
         self.armored = armored
@@ -99,6 +100,16 @@ class KeyInfo(object):
         self.keybase = None
         self.api_keybase = None
 
+    @property
+    def expired(self):
+        # check dates
+        if self.expires in [0, None, datetime.datetime(1970, 1, 1, 0, 0, 0)]:
+            return False
+        else:
+            if self.expires < datetime.datetime.utcnow():
+                return True
+            else:
+                return False
 
     def __repr__(self):
         return "<KeyInfo 0x{fp}>".format(fp=self.fingerprint)
@@ -109,7 +120,8 @@ class KeyInfo(object):
         :return: Two strings, containing info about the key in GnuPG-compatible format.
         """
         # String one gives the fingerprint, the algorithm used, the length of the key, the created date and the expiration date.
-        s1 = "pub:{self.fingerprint}:{algo}:{self.length}:{self.created}:{self.expires}:".format(self=self, algo=PGPAlgo(self.algo).value)
+        s1 = "pub:{self.fingerprint}:{algo}:{self.length}:{self.created}:{self.expires}:"\
+            .format(self=self, algo=PGPAlgo(self.algo).value)
         # String two gives the user ID, and another date, which I believe is the date uploaded, which we don't save.
         s2 = "uid:{self.uid}:{self.created}::".format(self=self)
         return s1, s2
@@ -133,7 +145,7 @@ class KeyInfo(object):
             data = json.dumps(k.raw_keybase_data.dump())
             # Set it on the cache and set it to expire in a day.
             # Note: StrictRedis uses name,time,value. Normal redis uses name,value,time.
-            cache.setex("keybase_" + username, 60*60*24, data)
+            cache.setex("keybase_" + username, 60 * 60 * 24, data)
 
         self.api_keybase = k.raw_keybase_data.dump()
 
@@ -146,7 +158,7 @@ class KeyInfo(object):
             else:
                 verified = True
             # Set it on cache.
-            cache.setex("keybase_" + username + "_ver", 60*60*24*3, "1" if verified else "0")
+            cache.setex("keybase_" + username + "_ver", 60 * 60 * 24 * 3, "1" if verified else "0")
         else:
             # Load it from cache.
             verified = bool(int(cache.get("keybase_" + username + "_ver")))
@@ -159,7 +171,7 @@ class KeyInfo(object):
         self.uid = data["uid"]
 
     def to_json(self):
-        d =  {"uid": self.uid,
+        d = {"uid": self.uid,
              "keyid": self.keyid,
              "fingerprint": self.fingerprint,
              "length": self.length,
@@ -172,7 +184,6 @@ class KeyInfo(object):
              "keybase": self.keybase is not None,
              "revoked": self.revoked}
         return json.dumps(d, default=jsondes)
-
 
     def get_expired_ymd(self):
         if self.expires in [0, None, datetime.datetime(1970, 1, 1, 0, 0, 0)]:
@@ -189,7 +200,7 @@ class KeyInfo(object):
         return PGPAlgo(self.algo).value
 
     def get_user_fingerprint(self):
-        return ' '.join([self.fingerprint[i:i+2] for i in range(0, len(self.fingerprint), 2)])
+        return ' '.join([self.fingerprint[i:i + 2] for i in range(0, len(self.fingerprint), 2)])
 
     def translate(self, sig):
         if sig[2] == 32:
@@ -218,18 +229,18 @@ class KeyInfo(object):
             return False
         else:
             return all((other.fingerprint == self.fingerprint,
-                       other.algo == self.algo,
-                       other.created == self.created,
-                       other.expires == self.expires,
-                       other.keyid == self.keyid,
-                       other.length == self.length,
-                       other.shortid == self.shortid,
-                       other.signatures == self.signatures,
-                       other.uid == self.uid,
-                       other.subkeys == self.uid))
+                        other.algo == self.algo,
+                        other.created == self.created,
+                        other.expires == self.expires,
+                        other.keyid == self.keyid,
+                        other.length == self.length,
+                        other.shortid == self.shortid,
+                        other.signatures == self.signatures,
+                        other.uid == self.uid,
+                        other.subkeys == self.uid))
 
     @classmethod
-    def pgp_dump(cls, armored: str, packets: list=None):
+    def pgp_dump(cls, armored: str, packets: list = None):
         """
         Generates a key using pgpdump.
         :param armored: The armored data to output.
@@ -271,7 +282,8 @@ class KeyInfo(object):
         for n, packet in enumerate(packets):
             # Public key packet, main body.
             # But NOT a subkey.
-            if isinstance(packet, pgpdump.packet.PublicKeyPacket) and not isinstance(packet, pgpdump.packet.PublicSubkeyPacket):
+            if (isinstance(packet, pgpdump.packet.PublicKeyPacket)
+                    and not isinstance(packet, pgpdump.packet.PublicSubkeyPacket)):
                 if keyid:
                     # We already have a key. No thanks!
                     # If you get a REALLY shitty key that puts the public key packets (multiples of them) in front of eachother, that's fucking dumb
@@ -360,7 +372,7 @@ class KeyInfo(object):
             # Re-construct the armored data.
             s = b''.join([p.original_data for p in npackets])
             s = base64.b64encode(s).decode()
-            s = "".join(s[i:i+64] + "\n" for i in range(0,len(s),64))
+            s = "".join(s[i:i + 64] + "\n" for i in range(0, len(s), 64))
 
             # Construct CRC
             crc = crc24(b''.join([p.original_data for p in npackets]))
@@ -368,17 +380,16 @@ class KeyInfo(object):
 
             crc = base64.b64encode(crc).decode()
 
-
             s = """-----BEGIN PGP PUBLIC KEY BLOCK-----\nVersion: SkierPGP v{v}\n\n{content}={crc24}\n-----END PGP PUBLIC KEY BLOCK-----""".format(
-                v = cfg.SKIER_VERSION,
+                v=cfg.SKIER_VERSION,
                 content=s,
                 crc24=crc
             )
             armored = s
 
-
         return KeyInfo(uid=uid, keyid=keyid, fingerprint=fingerprint, length=length, algo=algo,
-                       created=created, expires=expires, revoked=revoked, expired=(time.time() - expires if expires else 1) < 0,
+                       created=created, expires=expires, revoked=revoked,
+                       expired=(time.time() - expires if expires else 1) < 0,
                        subkeys=subkeys, sigs=signatures, armored=armored, oid=oid)
 
     @classmethod
@@ -403,7 +414,6 @@ class KeyInfo(object):
         k.algo = PGPAlgo(keyob.keyalgo)
 
         k.added_time = datetime.datetime.utcnow()
-
 
         k.armored = keyob.armored
 
