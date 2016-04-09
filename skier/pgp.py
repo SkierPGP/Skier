@@ -111,11 +111,11 @@ def search_through_keys(search_str: str, page: int=1, count: int=10) -> Paginati
         else:
             results = db.Key.query \
                 .join(db.Key.uid) \
-                .filter(db.UID.uid_name.ilike("%{}%".format(search_str))) \
+                .filter(db.UID.full_uid.ilike("%{}%".format(search_str))) \
                 .paginate(page, per_page=count)
     else:
         results = db.Key.query \
             .join(db.Key.uid) \
-            .filter(db.UID.uid_name.ilike("%{}%".format(search_str))) \
+            .filter(db.UID.full_uid.ilike("%{}%".format(search_str))) \
             .paginate(page, per_page=count)
     return results
