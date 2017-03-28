@@ -20,9 +20,9 @@ if host == "docker0":
     host = local_ip
 
 
-sqlalchemy_uri = "postgresql://{user}:{password}@{host}:{port}/{database}".format(
+sqlalchemy_uri = "postgresql://{user}{password}@{host}:{port}/{database}".format(
     user = cfg.config.db.user,
-    password = cfg.config.db.password,
+    password = ":" + cfg.config.db.password if hasattr(cfg.config.db, "password") else "",
     host = host,
     port = os.environ.get("POSTGRES_PORT_5432_TCP_PORT") or cfg.config.db.port, # This doesn't make any sense.
     database = cfg.config.db.database
