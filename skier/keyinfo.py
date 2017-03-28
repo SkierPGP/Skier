@@ -119,7 +119,8 @@ class KeyInfo(object):
         Formats a KeyInfo object into a PKS style string for GnuPG.
         :return: Two strings, containing info about the key in GnuPG-compatible format.
         """
-        # String one gives the fingerprint, the algorithm used, the length of the key, the created date and the expiration date.
+        # String one gives the fingerprint, the algorithm used, the length of the key,
+        # the created date and the expiration date.
         s1 = "pub:{self.fingerprint}:{algo}:{self.length}:{self.created}:{self.expires}:"\
             .format(self=self, algo=PGPAlgo(self.algo).value)
         # String two gives the user ID, and another date, which I believe is the date uploaded, which we don't save.
@@ -318,6 +319,10 @@ class KeyInfo(object):
                 elif packet.raw_sig_type == 32:
                     sig_uid = "Revocation signature from primary key"
                     revoked = True
+                    # No more processing is required after this.
+                    keyid = packet.key_id
+                    # Exit the loop.
+                    fingerprint = keyid
                 # Lookup the UserID
                 else:
                     sig_uid = db.Key.query.filter(db.Key.key_fp_id == packet.key_id.decode()[-8:]).first()
